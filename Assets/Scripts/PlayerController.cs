@@ -25,11 +25,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // movement
-        if (playerInput.move != Vector2.zero)
-        {
-            playerCharacter.Move(playerInput.move.normalized);
-        }
+        // movement        
+        playerCharacter.Move(playerInput.move.normalized);
+        
     }
 
     private void OnDash()
