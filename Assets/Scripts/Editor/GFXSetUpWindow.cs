@@ -4,7 +4,7 @@ using UnityEngine;
 public class GFXSetUpWindow : EditorWindow
 {
     // Sprite set up
-    string spritesDirectory = "Assets/Resources/Sprites";
+    string spritesDirectory = "Assets/Sprites";
     int spritePpu = 540;
 
     [MenuItem("Custom/GFX Set-up")]
