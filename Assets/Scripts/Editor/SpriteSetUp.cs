@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpriteSetUp
 {
-    // remake this into a struct -sprite_info- later:
+    // remake this into a struct sprite_info later:
     private int ppu;
 
     public SpriteSetUp(int ppu)

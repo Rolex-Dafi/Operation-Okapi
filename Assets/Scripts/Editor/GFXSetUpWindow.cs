@@ -4,8 +4,11 @@ using UnityEngine;
 public class GFXSetUpWindow : EditorWindow
 {
     // Sprite set up
-    string spritesDirectory = "Assets/Sprites";
+    string spritesDirectory = "Assets/Resources/Sprites";
     int spritePpu = 540;
+
+    // Animations creation
+
 
     [MenuItem("Custom/GFX Set-up")]
     static void Init()
@@ -17,7 +20,7 @@ public class GFXSetUpWindow : EditorWindow
     private void OnGUI()
     {
         // Sprite set up
-        GUILayout.Label("Sprites' Set-up", EditorStyles.boldLabel);
+        GUILayout.Label("Sprite Set-up", EditorStyles.boldLabel);
         spritesDirectory = EditorGUILayout.TextField("Sprites' root directory", spritesDirectory);                
         GUILayout.Label("Sprite Properties", EditorStyles.miniBoldLabel);
         spritePpu = EditorGUILayout.IntField("Desired sprite PPU", spritePpu);
@@ -28,6 +31,6 @@ public class GFXSetUpWindow : EditorWindow
             Debug.Log("Sprite set-up finished");
         }
 
-
+        // Animations creation
     }
 }
