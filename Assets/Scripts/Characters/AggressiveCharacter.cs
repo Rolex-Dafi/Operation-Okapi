@@ -32,6 +32,12 @@ public class AggressiveCharacter : Character, IDamagable
         rb.MovePosition(rb.position + move * Time.deltaTime * movementSpeed);
 
         // set anim vars
+        animator.SetFloat("Speed", move.sqrMagnitude);
+
+        float moveX = move.x == 0 ? 0 : move.x < 0 ? -1 : 1;
+        float moveY = move.y == 0 ? 0 : move.y < 0 ? -1 : 1;
+        animator.SetFloat("DirectionX", moveX);
+        animator.SetFloat("DirectionY", moveY);
     }
 
     public void Dash()

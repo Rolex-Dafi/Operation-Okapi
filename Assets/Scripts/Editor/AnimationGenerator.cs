@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -24,7 +22,7 @@ public class AnimationGenerator
             GFXUtility.resourcesDirectory, 
             GFXUtility.characterSritesDirectory,
             characterName
-        });// GFXUtility.resourcesDirectory + "/" + spritesPath;
+        });
 
         DirectoryInfo dirInfo = new DirectoryInfo(dir);
         if (!dirInfo.Exists)
