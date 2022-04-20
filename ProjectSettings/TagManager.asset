@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Tilemap
+    uniqueID: 1195545919
+    locked: 0
+  - name: ObjectsInScene
+    uniqueID: 308386233
+    locked: 0
