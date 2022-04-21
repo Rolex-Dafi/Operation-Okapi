@@ -9,7 +9,7 @@ public static class GFXUtility
 
     public static bool IsFolderRelevant(string folderName, Type t)
     {
-        if (t.Equals(typeof(EAnimation)) || t.Equals(typeof(EDirection))) 
+        if (t.Equals(typeof(EAnimation)) || t.Equals(typeof(EDirection)))
         {
             foreach (var value in Enum.GetValues(t))
             {
@@ -25,7 +25,4 @@ public enum EAnimation
     idle, movement, dash, melee, ranged, hit, death
 }
 
-public enum EDirection
-{
-    n, e, s, w, ne, nw, se, sw
-}
+
