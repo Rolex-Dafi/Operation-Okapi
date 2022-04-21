@@ -44,6 +44,6 @@ TagManager:
   - name: Tilemap
     uniqueID: 1195545919
     locked: 0
-  - name: ObjectsInScene
+  - name: Foreground
     uniqueID: 308386233
     locked: 0
