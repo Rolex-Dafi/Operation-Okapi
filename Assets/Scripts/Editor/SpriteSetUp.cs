@@ -1,24 +1,39 @@
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
+
+public struct SpriteImportSettings
+{
+    public int ppu;
+    public Pivot pivot;
+}
+
+[Serializable]
+public struct Pivot
+{
+    public SpriteAlignment type;
+    public Vector2 vector;
+}
+
 public class SpriteSetUp
 {
     // remake this into a struct "sprite_info" later:
-    private int ppu;
+    private SpriteImportSettings settings;
 
-    public SpriteSetUp(int ppu)
+    public SpriteSetUp(SpriteImportSettings settings)
     {
-        this.ppu = ppu;
+        this.settings = settings;
     }
 
     /// <summary>
-    /// Sets PPU of all sprites in directory at <param name="dir"> to the 
-    /// value provided in <param name="ppu">.
+    /// Sets import settings of all sprites in given directory, containing string specified in their file name.
     /// </summary>
-    /// <param name="dir">directory of sprites to set up</param>
-    /// <param name="ppu">pixels per unit</param>
-    public void SetSpriteImportSettings(string dir)
+    /// <param name="dir">Directory of sprites to modify</param>
+    /// <param name="nameContains">Only modify sprites with this in their file name. Modifies all sprites
+    /// if not specified. </param>
+    public void SetSpriteImportSettings(string dir, string nameContains)
     {
         DirectoryInfo dirInfo = new DirectoryInfo(dir);
         if (!dirInfo.Exists)
@@ -27,7 +42,7 @@ public class SpriteSetUp
             return;
         }
 
-        GetDirPathRec(dirInfo, dir);
+        GetDirPathRec(dirInfo, dir, nameContains);
     }
 
     /// <summary>
@@ -35,23 +50,32 @@ public class SpriteSetUp
     /// </summary>
     /// <param name="dirInfo"></param>
     /// <param name="dir"></param>
-    private void GetDirPathRec(DirectoryInfo dirInfo, string dir)
+    private void GetDirPathRec(DirectoryInfo dirInfo, string dir, string nameContains)
     {
         foreach (DirectoryInfo subdir in dirInfo.GetDirectories())
         {
             FileInfo[] files = subdir.GetFiles();
             foreach (FileInfo file in files)
             {
+                if (nameContains != "" && !file.Name.Contains(nameContains)) continue;
+
                 string path = dir + "/" + subdir.Name + "/" + file.Name;
 
                 TextureImporter textureImporter = AssetImporter.GetAtPath(path) as TextureImporter;
                 if (textureImporter != null)
                 {
-                    textureImporter.spritePixelsPerUnit = ppu;
+                    TextureImporterSettings texSettings = new TextureImporterSettings();
+
+                    textureImporter.ReadTextureSettings(texSettings);
+                    texSettings.spriteAlignment = (int)settings.pivot.type;
+                    textureImporter.SetTextureSettings(texSettings);
+
+                    textureImporter.spritePixelsPerUnit = settings.ppu;
+                    textureImporter.spritePivot = settings.pivot.vector;
                     AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
                 }
             }
-            GetDirPathRec(subdir, dir + "/" + subdir.Name);
+            GetDirPathRec(subdir, dir + "/" + subdir.Name, nameContains);
         }
     }
 
