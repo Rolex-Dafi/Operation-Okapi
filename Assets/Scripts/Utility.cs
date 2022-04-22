@@ -40,38 +40,37 @@ public static class Utility
             {
                 return EDirection.n;
             }
-            if (vector.y < 0)
+            else if (vector.y < 0)
             {
                 return EDirection.s;
             }
         }
-        if (vector.x > 0)
+        else if (vector.x > 0)
         {
             if (vector.y == 0)
             {
                 return EDirection.e;
             }
-            if (vector.y > 0)
+            else if (vector.y > 0)
             {
                 return EDirection.ne;
             }
-            if (vector.y < 0)
+            else
             {
                 return EDirection.se;
             }
         }
-
-        if (vector.x < 0)
+        else
         {
             if (vector.y == 0)
             {
                 return EDirection.w;
             }
-            if (vector.y > 0)
+            else if (vector.y > 0)
             {
                 return EDirection.nw;
             }
-            if (vector.y < 0)
+            else
             {
                 return EDirection.sw;
             }
