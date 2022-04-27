@@ -1,5 +1,10 @@
 using UnityEngine;
 
+public enum EAbility
+{
+    idle, walk, dash, melee, ranged, hit, death, NDEF
+}
+
 public enum EDirection
 {
     n, e, s, w, ne, nw, se, sw, NDEF

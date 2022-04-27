@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class GFXSetUpWindow : EditorWindow
 {
-    // Dummy spriten generation
-    private string dummyFolder;
+    // Sprite organization
+    private bool showSpriteOrganization = false;
     private string nameRenameFrom;
     private string nameRenameTo;
     private string toRemove;
@@ -12,13 +12,12 @@ public class GFXSetUpWindow : EditorWindow
     // Sprite set up
     private string folderName = "";
     private string nameContains = "";
-    private SpriteImportSettings settings = 
-        new SpriteImportSettings{ ppu = 540, pivot = 
-            new Pivot { type = SpriteAlignment.Center, vector = new Vector2(.5f, .25f) } };
+    private SpriteImportSettings settings = GFXUtility.defaultSpriteImportSettings;
 
     // Animations creation
-    private string characterName = "Player";
-
+    private string characterName = "";
+    private EAbility animationType = EAbility.NDEF;
+    private AnimationClipProperties animationClipProperties = GFXUtility.defaultAnimationClipProperties;
 
     [MenuItem("Custom/GFX Set-up")]
     static void Init()
@@ -29,62 +28,74 @@ public class GFXSetUpWindow : EditorWindow
 
     private void OnGUI()
     {
-        // Dummy sprite generation
-        GUILayout.Label("Dummy sprite generation", EditorStyles.boldLabel);
-        dummyFolder = EditorGUILayout.TextField(new GUIContent(
-            "Dummy folder",
-            "Folder containing the dummy sprites, relative to \"" + GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory +
-            "\". If not specified, defaults to \"" + GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory + "\"."
-            ), dummyFolder);
-
-        nameRenameFrom = EditorGUILayout.TextField(new GUIContent(
-            "Rename from",
-            "Rename this string for \"Rename to\" for all sprites in the given folder."
-            ), nameRenameFrom);
-
-        nameRenameTo = EditorGUILayout.TextField(new GUIContent(
-            "Rename to",
-            "Rename \"Rename from\" to this string for all sprites in the given folder."
-            ), nameRenameTo);
-
-        toRemove = EditorGUILayout.TextField(new GUIContent(
-            "Files to remove",
-            "Removes all files containing this string in the given folder."
-            ), toRemove);
-
-        if (GUILayout.Button("Rename dummy sprites"))
+        #region Sprite organization
+        GUILayout.Label("Sprite organization", EditorStyles.boldLabel);
+        showSpriteOrganization = EditorGUILayout.Foldout(showSpriteOrganization, "Show/Hide");
+        if (showSpriteOrganization)
         {
-            new DummySpriteGenerator().Rename(
-                GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory + (dummyFolder == "" ? "" : "/" + dummyFolder),
-                nameRenameFrom,
-                nameRenameTo
-                );
-            Debug.Log("Renaming finished");
-        }
+            folderName = EditorGUILayout.TextField(new GUIContent(
+                "Directory",
+                "Directory containing the sprites, relative to \"" + GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory +
+                "\". If not specified, defaults to \"" + GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory + "\"."
+                ), folderName);
 
-        if (GUILayout.Button("Remove dummy sprites"))
-        {
-            new DummySpriteGenerator().Remove(
-                GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory + (dummyFolder == "" ? "" : "/" + dummyFolder),
-                toRemove
-                );
-            Debug.Log("Removing finished");
+            GUILayout.Label("Sprite Renaming", EditorStyles.miniBoldLabel);
+            nameRenameFrom = EditorGUILayout.TextField(new GUIContent(
+                "Rename from",
+                "Rename this string for \"Rename to\" for all sprites in the given directory."
+                ), nameRenameFrom);
+
+            nameRenameTo = EditorGUILayout.TextField(new GUIContent(
+                "Rename to",
+                "Rename \"Rename from\" to this string for all sprites in the given directory."
+                ), nameRenameTo);
+
+            if (GUILayout.Button("Rename sprites"))
+            {
+                new SpriteOrganizer().Rename(
+                    GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory + (folderName == "" ? "" : "/" + folderName),
+                    nameRenameFrom,
+                    nameRenameTo
+                    );
+                Debug.Log("Renaming finished");
+            }
+
+            GUILayout.Label("Sprite DELETION", EditorStyles.miniBoldLabel);
+
+            toRemove = EditorGUILayout.TextField(new GUIContent(
+                "Files to delete",
+                "DELETES all files containing this string in their file name in the given directory."
+                ), toRemove);
+
+            if (GUILayout.Button("DELETE sprites"))
+            {
+                ConfirmPopup popup = new ConfirmPopup();
+                PopupWindow.Show(new Rect(), popup);
+                if (popup.Confirmed)
+                {
+                    new SpriteOrganizer().Delete(
+                        GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory + (folderName == "" ? "" : "/" + folderName),
+                        toRemove
+                        );
+                    Debug.Log("DELETING finished");
+                }
+            }
         }
+        #endregion Sprite organization
 
         GUILayout.Space(20);
 
-
-        // Sprite set up
+        #region Sprite set up
         GUILayout.Label("Sprite Set-up", EditorStyles.boldLabel);
         GUILayout.Label("Sprite Specification", EditorStyles.miniBoldLabel);
         folderName = EditorGUILayout.TextField(new GUIContent(
-            "Folder", 
-            "Folder containing the sprites, relative to \"" + GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory +
+            "Directory",
+            "Directory containing the sprites, relative to \"" + GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory +
             "\". If not specified, defaults to \"" + GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory + "\"."
             ), folderName);
         nameContains = EditorGUILayout.TextField(new GUIContent(
-            "Name contains", 
-            "Only modify sprites with this in their file name. If not specified, modifies all sprites in the given folder."
+            "Name contains",
+            "Only modify sprites with this in their file name. If not specified, modifies all sprites in the given directory."
             ), nameContains);
 
         GUILayout.Label("Sprite Import Settings", EditorStyles.miniBoldLabel);
@@ -100,17 +111,78 @@ public class GFXSetUpWindow : EditorWindow
                 );
             Debug.Log("Sprite set-up finished");
         }
-        
+        #endregion Sprite set up
+
         GUILayout.Space(20);
 
-        // Animation clips generation
-        GUILayout.Label("Animation creation", EditorStyles.boldLabel);
-        characterName = EditorGUILayout.TextField("Character to generate", characterName);
+        #region Animation clip generation
+        GUILayout.Label("Animation clip generation", EditorStyles.boldLabel);
+        characterName = EditorGUILayout.TextField(new GUIContent(
+            "Character directory",
+            "Looks for this character's directory in \"Assets/Resources/Sprites/Characters\"."
+            ), characterName);
+        GUILayout.Label("Animation clip settings", EditorStyles.miniBoldLabel);
+        animationType = (EAbility)EditorGUILayout.EnumPopup(new GUIContent(
+            "Animation type",
+            "If not defined generates all possible animation clips given the contents of the character's directory."
+            ), animationType);
+        animationClipProperties.frameRate = EditorGUILayout.FloatField("Frame rate", animationClipProperties.frameRate);
+        animationClipProperties.loop = EditorGUILayout.Toggle("Loop", animationClipProperties.loop);
+        animationClipProperties.spriteColor = EditorGUILayout.ColorField("Sprite tint", animationClipProperties.spriteColor);
+        animationClipProperties.duplicateSingleFrame = EditorGUILayout.Toggle(new GUIContent(
+            "Duplicate single",
+            "If there is only a single sprite for the given clip duplicate it into two frames?"
+            ), animationClipProperties.duplicateSingleFrame);
+
         if (GUILayout.Button("Generate animation clips"))
         {
-            int numClips = new AnimationGenerator().GenerateAnimations(characterName);
+            int numClips = 0;
+            if (animationType == EAbility.NDEF) numClips = new AnimationClipGenerator(characterName).GenerateAllAnimations();
+            else numClips = new AnimationClipGenerator(characterName).GenerateAnimations(animationType);
 
             Debug.Log("Number of animation clips generated = " + numClips);
         }
+        #endregion Animation clip generation
+    }
+}
+
+public class ConfirmPopup : PopupWindowContent
+{
+    private bool confirmed;
+    private string message;
+
+    public bool Confirmed { get => confirmed; set => confirmed = value; }
+
+    public ConfirmPopup(string message = "Are you sure you want to proceed?")
+    {
+        confirmed = false;
+        this.message = message;
+    }
+
+    public override Vector2 GetWindowSize()
+    {
+        return new Vector2(250, 150);
+    }
+
+    public override void OnGUI(Rect rect)
+    {
+        GUILayout.Label(message, EditorStyles.boldLabel); 
+        
+        if (GUILayout.Button("Yes"))
+        {
+            confirmed = true;
+        }
+        if (GUILayout.Button("Cancel"))
+        {
+            confirmed = false;
+        }
+    }
+
+    public override void OnOpen()
+    {
+    }
+
+    public override void OnClose()
+    {
     }
 }

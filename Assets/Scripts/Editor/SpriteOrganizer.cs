@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class DummySpriteGenerator
+public class SpriteOrganizer
 {
-
-    public void Remove(string dir, string nameContains)
+    public void Delete(string dir, string nameContains)
     {
         DirectoryInfo dirInfo = new DirectoryInfo(dir);
         if (!dirInfo.Exists)
@@ -15,9 +14,10 @@ public class DummySpriteGenerator
             return;
         }
 
-        RemoveRec(dirInfo, nameContains);
+        DeleteRec(dirInfo, nameContains);
     }
-    private void RemoveRec(DirectoryInfo dirInfo, string nameContains)
+
+    private void DeleteRec(DirectoryInfo dirInfo, string nameContains)
     {
         foreach (DirectoryInfo subdir in dirInfo.GetDirectories())
         {
@@ -26,7 +26,7 @@ public class DummySpriteGenerator
             {
                 if (file.Name.Contains(nameContains)) File.Delete(file.FullName);
             }
-            RemoveRec(subdir, nameContains);
+            DeleteRec(subdir, nameContains);
         }
     }
 
