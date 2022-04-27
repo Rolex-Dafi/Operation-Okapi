@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class GFXSetUpWindow : EditorWindow
 {
+    // Dummy spriten generation
+    private string dummyFolder;
+    private string nameRenameFrom;
+    private string nameRenameTo;
+    private string toRemove;
+
     // Sprite set up
     private string folderName = "";
     private string nameContains = "";
@@ -23,6 +29,51 @@ public class GFXSetUpWindow : EditorWindow
 
     private void OnGUI()
     {
+        // Dummy sprite generation
+        GUILayout.Label("Dummy sprite generation", EditorStyles.boldLabel);
+        dummyFolder = EditorGUILayout.TextField(new GUIContent(
+            "Dummy folder",
+            "Folder containing the dummy sprites, relative to \"" + GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory +
+            "\". If not specified, defaults to \"" + GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory + "\"."
+            ), dummyFolder);
+
+        nameRenameFrom = EditorGUILayout.TextField(new GUIContent(
+            "Rename from",
+            "Rename this string for \"Rename to\" for all sprites in the given folder."
+            ), nameRenameFrom);
+
+        nameRenameTo = EditorGUILayout.TextField(new GUIContent(
+            "Rename to",
+            "Rename \"Rename from\" to this string for all sprites in the given folder."
+            ), nameRenameTo);
+
+        toRemove = EditorGUILayout.TextField(new GUIContent(
+            "Files to remove",
+            "Removes all files containing this string in the given folder."
+            ), toRemove);
+
+        if (GUILayout.Button("Rename dummy sprites"))
+        {
+            new DummySpriteGenerator().Rename(
+                GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory + (dummyFolder == "" ? "" : "/" + dummyFolder),
+                nameRenameFrom,
+                nameRenameTo
+                );
+            Debug.Log("Renaming finished");
+        }
+
+        if (GUILayout.Button("Remove dummy sprites"))
+        {
+            new DummySpriteGenerator().Remove(
+                GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory + (dummyFolder == "" ? "" : "/" + dummyFolder),
+                toRemove
+                );
+            Debug.Log("Removing finished");
+        }
+
+        GUILayout.Space(20);
+
+
         // Sprite set up
         GUILayout.Label("Sprite Set-up", EditorStyles.boldLabel);
         GUILayout.Label("Sprite Specification", EditorStyles.miniBoldLabel);
