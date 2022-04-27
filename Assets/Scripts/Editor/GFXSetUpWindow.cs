@@ -138,7 +138,7 @@ public class GFXSetUpWindow : EditorWindow
         {
             int numClips = 0;
             if (animationType == EAbility.NDEF) numClips = new AnimationClipGenerator(characterName).GenerateAllAnimations();
-            else numClips = new AnimationClipGenerator(characterName).GenerateAnimations(animationType);
+            else numClips = new AnimationClipGenerator(characterName, animationClipProperties).GenerateAnimations(animationType);
 
             Debug.Log("Number of animation clips generated = " + numClips);
         }

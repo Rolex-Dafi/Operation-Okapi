@@ -162,6 +162,7 @@ public class AnimationClipGenerator
         // tint the sprites if relevant
         if (animationProperties.spriteColor != Color.white)
         {
+            Debug.Log("coloring sprite with " + animationProperties.spriteColor + " color");
             ret = ret && AddColorAnimationCurve(clip, animationProperties.spriteColor);
         }
 
