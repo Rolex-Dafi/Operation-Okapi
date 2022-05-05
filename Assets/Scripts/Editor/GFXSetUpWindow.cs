@@ -118,8 +118,8 @@ public class GFXSetUpWindow : EditorWindow
         #region Animation clip generation
         GUILayout.Label("Animation clip generation", EditorStyles.boldLabel);
         characterName = EditorGUILayout.TextField(new GUIContent(
-            "Character directory",
-            "Looks for this character's directory in \"Assets/Resources/Sprites/Characters\"."
+            "Character name",
+            "Looks for this character's directory in \"Assets/Resources/Sprites/Characters\", saves clips in \"Assets/Animation/Characters/char_name\"."
             ), characterName);
         GUILayout.Label("Animation clip settings", EditorStyles.miniBoldLabel);
         animationType = (EAbility)EditorGUILayout.EnumPopup(new GUIContent(
@@ -143,6 +143,26 @@ public class GFXSetUpWindow : EditorWindow
             Debug.Log("Number of animation clips generated = " + numClips);
         }
         #endregion Animation clip generation
+
+        GUILayout.Space(20);
+
+        #region Animator generation
+
+        GUILayout.Label("Animator generation", EditorStyles.boldLabel);
+        characterName = EditorGUILayout.TextField(new GUIContent(
+            "Character name",
+            "Looks for this character's directory in \"Assets/Resources/Sprites/Characters\", saves clips in \"Assets/Animation/Characters/char_name\"."
+            ), characterName);
+
+        if (GUILayout.Button("Generate animator"))
+        {
+            new AnimatorGenerator(characterName).GenerateAnimator();
+
+            Debug.Log("Animator for character " + characterName + " generated.");
+        }
+
+
+        #endregion Animator generation
     }
 }
 

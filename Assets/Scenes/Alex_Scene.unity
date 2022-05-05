@@ -277,6 +277,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 9018899980597586612, guid: 28ac508a4fd66e246911f9d0874995e6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d54a16047cf7ce245a5c5c76f9ac2356, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28ac508a4fd66e246911f9d0874995e6, type: 3}
 --- !u!4 &2131757521 stripped
@@ -2789,9 +2793,21 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 2131757521}
+    - target: {fileID: 663621966, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
+      propertyPath: m_Lens.OrthographicSize
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 663621967, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6108388586334052180, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
       propertyPath: m_Name
       value: BaseCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 6108388586334052183, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
+      propertyPath: orthographic size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6108388586334052264, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
       propertyPath: m_RootOrder
@@ -2803,7 +2819,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6108388586334052264, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.019999884
+      value: 0.07999983
       objectReference: {fileID: 0}
     - target: {fileID: 6108388586334052264, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
       propertyPath: m_LocalPosition.z
