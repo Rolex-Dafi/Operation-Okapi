@@ -58,7 +58,7 @@ public class AggressiveCharacter : Character, IDamagable
         animator.SetTrigger(EAnimationParameter.dash.ToString());
         Vector2 direction = facing.ToVector2().normalized;
         Debug.Log("dashing in: " + direction);
-        rb.AddForce(direction * 500);
+        rb.AddForce(direction * 1500);
     }
 
     public void Attack(Attack attack)
