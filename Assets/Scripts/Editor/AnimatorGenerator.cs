@@ -106,6 +106,9 @@ public class AnimatorGenerator
         // from redirection state - TODO - change this to a loop for more attacks later !!
         AddAttackTransition(redirectionState, states[EAbility.melee], stateMachines[EStateMachine.move], 0);
         AddAttackTransition(redirectionState, states[EAbility.ranged], stateMachines[EStateMachine.move], 1);
+        // add behaviours
+        states[EAbility.melee].AddStateMachineBehaviour<AttackStateMachine>();
+        states[EAbility.ranged].AddStateMachineBehaviour<AttackStateMachine>();
 
         // dash
         AddTriggerTransition(states[EAbility.idle], states[EAbility.dash], stateMachines[EStateMachine.move], EAnimationParameter.dash.ToString());

@@ -16,11 +16,11 @@ public class PlayerController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         playerInput.Init();
 
-        playerInput.dashEvent.AddListener(OnDash);
-        playerInput.meleeAttackEvent.AddListener(OnMeleeAttack);
-        playerInput.rangedAttackEvent.AddListener(OnRangedAttack);
-        playerInput.specialAttackEvent.AddListener(OnSpecialAttack);
-        playerInput.interactEvent.AddListener(OnInteract);
+        playerInput.dashButtonDown.AddListener(OnDash);
+        playerInput.meleeButtonDown.AddListener(OnMeleeAttack);
+        playerInput.rangedButtonDown.AddListener(OnRangedAttack);
+        playerInput.specialButtonDown.AddListener(OnSpecialAttack);
+        playerInput.interactButtonDown.AddListener(OnInteract);
     }
 
     private void FixedUpdate()
@@ -42,10 +42,20 @@ public class PlayerController : MonoBehaviour
         playerCharacter.MeleeAttack();
     }
 
+    private void OnMeleeAttackEnd()
+    {
+        Debug.Log("player ended a melee attack!");
+    }
+
     private void OnRangedAttack()
     {
         Debug.Log("player wants to perform a ranged attack!");
         playerCharacter.RangedAttack();
+    }
+
+    private void OnRangedAttackEnd()
+    {
+        Debug.Log("player ended a ranged attack!");
     }
 
     private void OnSpecialAttack()

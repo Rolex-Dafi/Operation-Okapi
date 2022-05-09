@@ -8,22 +8,29 @@ public class PlayerInput : MonoBehaviour
 {
     [HideInInspector] public Vector2 move;
 
-    [HideInInspector] public UnityEvent dashEvent;
+    [HideInInspector] public UnityEvent dashButtonDown;
 
-    [HideInInspector] public UnityEvent meleeAttackEvent;
-    [HideInInspector] public UnityEvent rangedAttackEvent;
-    [HideInInspector] public UnityEvent specialAttackEvent;
+    [HideInInspector] public UnityEvent meleeButtonDown;
+    [HideInInspector] public UnityEvent meleeButtonUp;
+    [HideInInspector] public UnityEvent rangedButtonDown;
+    [HideInInspector] public UnityEvent rangedButtonUp;
+    [HideInInspector] public UnityEvent specialButtonDown;
 
-    [HideInInspector] public UnityEvent interactEvent;
+    [HideInInspector] public UnityEvent interactButtonDown;
 
     public void Init()
     {
-        dashEvent = new UnityEvent();
-        meleeAttackEvent = new UnityEvent();
-        rangedAttackEvent = new UnityEvent();
-        specialAttackEvent = new UnityEvent();
+        dashButtonDown = new UnityEvent();
 
-        interactEvent = new UnityEvent();
+        meleeButtonDown = new UnityEvent();
+        meleeButtonUp = new UnityEvent();
+
+        rangedButtonDown = new UnityEvent();
+        rangedButtonUp = new UnityEvent();
+
+        specialButtonDown = new UnityEvent();
+
+        interactButtonDown = new UnityEvent();
     }
 
     private void Update()
@@ -33,27 +40,35 @@ public class PlayerInput : MonoBehaviour
 
         if (Input.GetButtonDown("Dash"))
         {
-            dashEvent.Invoke();
+            dashButtonDown.Invoke();
         }
 
         if (Input.GetButtonDown("Melee"))
         {
-            meleeAttackEvent.Invoke();
+            meleeButtonDown.Invoke();
+        }
+        else if (Input.GetButtonUp("Melee"))
+        {
+            meleeButtonUp.Invoke();
         }
 
         if (Input.GetButtonDown("Ranged"))
         {
-            rangedAttackEvent.Invoke();
+            rangedButtonDown.Invoke();
+        }
+        else if (Input.GetButtonUp("Ranged"))
+        {
+            rangedButtonUp.Invoke();
         }
 
         if (Input.GetButtonDown("Special"))
         {
-            specialAttackEvent.Invoke();
+            specialButtonDown.Invoke();
         }
 
         if (Input.GetButtonDown("Interact"))
         {
-            interactEvent.Invoke();
+            interactButtonDown.Invoke();
         }
     }
 }

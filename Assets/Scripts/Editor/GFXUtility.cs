@@ -32,7 +32,7 @@ public static class GFXUtility
         {
             foreach (var value in Enum.GetValues(t))
             {
-                if (folderName.Equals(value.ToString())) return true;
+                if (folderName.Equals(value.ToString(), StringComparison.CurrentCultureIgnoreCase)) return true;
             }
         }
         return false;
