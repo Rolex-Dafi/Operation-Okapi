@@ -101,19 +101,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   move: {x: 0, y: 0}
-  dashEvent:
+  dashButtonDown:
     m_PersistentCalls:
       m_Calls: []
-  meleeAttackEvent:
+  meleeButtonDown:
     m_PersistentCalls:
       m_Calls: []
-  rangedAttackEvent:
+  meleeButtonUp:
     m_PersistentCalls:
       m_Calls: []
-  specialAttackEvent:
+  rangedButtonDown:
     m_PersistentCalls:
       m_Calls: []
-  interactEvent:
+  rangedButtonUp:
+    m_PersistentCalls:
+      m_Calls: []
+  specialButtonDown:
+    m_PersistentCalls:
+      m_Calls: []
+  interactButtonDown:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &6181267531167378259
@@ -188,7 +194,7 @@ Animator:
   m_GameObject: {fileID: 2929782994530680387}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3d7807af37ba2d34b9cefcae3d1d2b69, type: 2}
+  m_Controller: {fileID: 9100000, guid: d54a16047cf7ce245a5c5c76f9ac2356, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
