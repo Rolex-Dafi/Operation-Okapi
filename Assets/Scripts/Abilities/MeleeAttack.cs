@@ -4,11 +4,13 @@
 /// </summary>
 public class MeleeAttack : Attack
 {
-    public MeleeAttack() : base(0)
+    public MeleeAttack(AggressiveCharacter character) : base(character, 0)
     {
+        attackType = EAttackType.Melee;
     }
 
-    public MeleeAttack(int attackNumber) : base(attackNumber)
+    public MeleeAttack(AggressiveCharacter character, int attackNumber) : base(character, attackNumber)
     {
+        attackType = EAttackType.Melee;
     }
 }

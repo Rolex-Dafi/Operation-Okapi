@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -9,26 +10,28 @@ public class AggressiveCharacter : Character, IDamagable
 {
     // movement
     protected float movementSpeed;
+    protected float currentSpeed;
     protected EDirection facing;
 
     // combat
     protected Health health;
     protected bool canMove;
+    protected List<Attack> attacks;
 
     // components
     protected Rigidbody2D rb;
-    protected Animator animator;
 
     protected void Init(int startingHealth, int startingMoney, float movementSpeed)
     {
         Init(startingMoney);
         this.movementSpeed = movementSpeed;
+        currentSpeed = movementSpeed;
         facing = EDirection.s;
 
         health = new Health(startingHealth);
+        attacks = new List<Attack>();
 
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
 
         canMove = true;
     }
@@ -47,7 +50,7 @@ public class AggressiveCharacter : Character, IDamagable
 
         if (!canMove) return;
 
-        rb.MovePosition(rb.position + move * Time.deltaTime * movementSpeed);
+        rb.MovePosition(rb.position + move * Time.deltaTime * currentSpeed);
         animator.SetFloat(EAnimationParameter.speed.ToString(), move.sqrMagnitude);
     }
 
@@ -61,11 +64,17 @@ public class AggressiveCharacter : Character, IDamagable
         rb.AddForce(direction * 1500);
     }
 
-    public void Attack(Attack attack)
+    public void Attack(EAttackType attackType, EAttackCommand command)
     {
-        canMove = false;
-        animator.SetTrigger(EAnimationParameter.attack.ToString());
-        animator.SetInteger(EAnimationParameter.attackNumber.ToString(), attack.attackNumber);
+        // loop through (active) attacks and call their OnBegin or OnEnd method if applicable
+        foreach (Attack attack in attacks)
+        {
+            if (attack.attackType == attackType)
+            {
+                if (command == EAttackCommand.Begin) attack.OnBegin();
+                else if (command == EAttackCommand.End) attack.OnEnd();
+            }
+        }
     }
 
     public void TakeDamage(int amount)
@@ -81,5 +90,15 @@ public class AggressiveCharacter : Character, IDamagable
         Destroy(gameObject);
     }
 
-    public void AllowToMove(bool canMove) => this.canMove = canMove;
+    public void SetMovementSpeed(float movementSpeed)
+    {
+        canMove = movementSpeed == 0 ? false : true;
+        currentSpeed = movementSpeed * movementSpeed;
+    }
+
+    public void ResetMovementSpeed() 
+    {
+        currentSpeed = movementSpeed;
+        canMove = true; 
+    }
 }

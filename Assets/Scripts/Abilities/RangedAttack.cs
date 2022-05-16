@@ -4,11 +4,13 @@
 /// </summary>
 public class RangedAttack : Attack
 {
-    public RangedAttack() : base(1)
+    public RangedAttack(AggressiveCharacter character) : base(character, 1)
     {
+        attackType = EAttackType.Ranged;
     }
 
-    public RangedAttack(int attackNumber) : base(attackNumber)
+    public RangedAttack(AggressiveCharacter character, int attackNumber) : base(character, attackNumber)
     {
+        attackType = EAttackType.Ranged;
     }
 }

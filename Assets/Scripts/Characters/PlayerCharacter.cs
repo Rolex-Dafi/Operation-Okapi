@@ -10,26 +10,13 @@ public class PlayerCharacter : AggressiveCharacter
     public void Init()
     {
         Init(3, 0, playerMovementSpeed);
+
+        // TODO - init attacks from scriptable object
+        attacks.Add(new MeleeAttack(this));
+        attacks.Add(new RangedAttack(this));
+
     }
 
-    public void MeleeAttack()
-    {
-        // TODO later: figure out what attack to use depending on the current weapon equipped
-        // - this means attacks will be stored on the weapons
-        Attack(new MeleeAttack());
-    }
 
-    public void RangedAttack()
-    {
-        // TODO later: figure out what attack to use depending on the current weapon equipped
-        // - this means attacks will be stored on the weapons
-        Attack(new RangedAttack());
-    }
 
-    public void SpecialAttack()
-    {
-        // TODO later: figure out what attack to use depending on the current weapon equipped
-        // - this means attacks will be stored on the weapons
-        Attack(new SpecialAttack());
-    }
 }

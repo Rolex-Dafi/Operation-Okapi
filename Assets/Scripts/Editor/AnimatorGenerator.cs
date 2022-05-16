@@ -204,5 +204,37 @@ public class AnimatorGenerator
         return state;
     }
 
+    // TODO Replace animation clips in a blend tree
+    public void ReplaceBlendTreeClips(EAbility ability)
+    {
+        string dir = string.Join("/", new string[] {
+            GFXUtility.characterAnimationsDirectory,
+            characterName
+        });
+
+        AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(dir + "/" + characterName + ".controller");
+
+        EStateMachine esm = ability.ToEStateMachine();
+
+        //AnimatorStateMachine sm = controller.stat
+
+        //BlendTree blendTree
+
+        string clipDirectory = string.Join("/", new string[] { GFXUtility.characterAnimationsDirectory, characterName, ability.ToString() });
+        foreach (EDirection direction in Enum.GetValues(typeof(EDirection)))
+        {
+            if (direction == EDirection.NDEF) continue;
+
+            string clipPath = clipDirectory + "/" + string.Join("_", new string[] {
+                characterName,
+                ability.ToString(),
+                direction.ToString()
+            }) + ".anim";
+            AnimationClip clip = (AnimationClip)AssetDatabase.LoadAssetAtPath(clipPath, typeof(AnimationClip));
+            //blendTree.AddChild(clip, direction.ToVector2());
+        }
+
+    }
+
 
 }

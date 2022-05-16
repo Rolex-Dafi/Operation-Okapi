@@ -100,26 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1669d822b04753644b66c592660a6f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  move: {x: 0, y: 0}
-  dashButtonDown:
-    m_PersistentCalls:
-      m_Calls: []
-  meleeButtonDown:
-    m_PersistentCalls:
-      m_Calls: []
-  meleeButtonUp:
-    m_PersistentCalls:
-      m_Calls: []
-  rangedButtonDown:
-    m_PersistentCalls:
-      m_Calls: []
-  rangedButtonUp:
-    m_PersistentCalls:
-      m_Calls: []
-  specialButtonDown:
-    m_PersistentCalls:
-      m_Calls: []
-  interactButtonDown:
+  moveEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &6181267531167378259
@@ -146,7 +127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 234bfb322fb28bf4caf25fd5076c35dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMovementSpeed: 1.6
+  animator: {fileID: 0}
+  playerMovementSpeed: 25
 --- !u!50 &9151058441287977325
 Rigidbody2D:
   serializedVersion: 4
