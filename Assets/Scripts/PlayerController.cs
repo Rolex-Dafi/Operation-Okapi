@@ -11,10 +11,17 @@ public class PlayerController : MonoBehaviour
     private PlayerCharacter playerCharacter;
     private PlayerInput playerInput;
 
+    [SerializeField] private AttackScriptableObject[] attackScriptableObjects;
+
     private void Start()
     {
+        // player character
         playerCharacter = GetComponent<PlayerCharacter>();
         playerCharacter.Init();
+
+        InitPlayerAttacks();
+
+        // player input
         playerInput = GetComponent<PlayerInput>();
         playerInput.Init();
 
@@ -52,7 +59,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttack<T>(T interaction)
     {
-        playerCharacter.Attack(interaction.ToEAttackType(), interaction.ToEAttackCommand());
+        playerCharacter.Attack(interaction.ToEAttackButton(), interaction.ToEAttackCommand());
     }
 
     private void OnInteract<T>(T interaction)
@@ -60,4 +67,11 @@ public class PlayerController : MonoBehaviour
         Debug.Log("player wants to interact!");
     }
 
+    private void InitPlayerAttacks()
+    {
+        foreach (AttackScriptableObject attackScriptableObject in attackScriptableObjects)
+        {
+
+        }
+    }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public enum EAxis { Horizontal, Vertical }
 public enum EButtonDown { Dash, Melee, Ranged, Special, Interact }
 public enum EButtonUp { Melee, Ranged, Special }
+public enum EAttackButton { Melee, Ranged, Special, NDEF }
 
 public static class InputExtensions
 {
@@ -21,15 +22,15 @@ public static class InputExtensions
         else return EAttackCommand.NDEF;
     }
 
-    public static EAttackType ToEAttackType<T>(this T interaction)
+    public static EAttackButton ToEAttackButton<T>(this T interaction)
     {
         if (typeof(T).Equals(typeof(EButtonDown)) || typeof(T).Equals(typeof(EButtonUp)))
         {
-            foreach (EAttackType attackButton in Enum.GetValues(typeof(EAttackType)))
+            foreach (EAttackButton attackButton in Enum.GetValues(typeof(EAttackButton)))
             {
                 if (attackButton.ToString().Equals(interaction.ToString())) return attackButton;
             }
         }
-        return EAttackType.NDEF;        
+        return EAttackButton.NDEF;        
     }
 }

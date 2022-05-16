@@ -17,19 +17,7 @@ public enum EStateMachine
 
 public enum EAnimationParameter
 {
-    directionX, directionY, speed, dash, hit, death, attack, attackNumber
-}
-
-public class AnimatorParameterValue<T>
-{
-    private T value;
-
-    public AnimatorParameterValue(T value)
-    {
-        this.value = value;
-    }
-
-    public T GetValue() => value;
+    directionX, directionY, speed, dash, hit, death, attack, attackID
 }
 
 public static class Extenstions
@@ -42,7 +30,7 @@ public static class Extenstions
             case EAnimationParameter.directionY:
             case EAnimationParameter.speed:
                 return AnimatorControllerParameterType.Float;
-            case EAnimationParameter.attackNumber:
+            case EAnimationParameter.attackID:
                 return AnimatorControllerParameterType.Int;
             default:
                 return AnimatorControllerParameterType.Trigger;

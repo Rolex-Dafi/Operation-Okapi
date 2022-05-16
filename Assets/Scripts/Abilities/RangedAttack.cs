@@ -1,16 +1,27 @@
+using UnityEngine;
 
 /// <summary>
 /// Base wrapper class for all ranged attacks.
 /// </summary>
 public class RangedAttack : Attack
 {
-    public RangedAttack(AggressiveCharacter character) : base(character, 1)
+    protected ProjectileController projectilePrefab;
+
+    protected Vector2 direction;
+
+    public RangedAttack(AggressiveCharacter character, ProjectileController projectilePrefab) : base(character, 1)
     {
-        attackType = EAttackType.Ranged;
+        Init(projectilePrefab);
     }
 
-    public RangedAttack(AggressiveCharacter character, int attackNumber) : base(character, attackNumber)
+    public RangedAttack(AggressiveCharacter character, ProjectileController projectilePrefab, int attackNumber) : base(character, attackNumber)
     {
-        attackType = EAttackType.Ranged;
+        Init(projectilePrefab);
+    }
+
+    private void Init(ProjectileController projectilePrefab)
+    {
+        this.projectilePrefab = projectilePrefab;
+        this.projectilePrefab.Init(damage);
     }
 }

@@ -38,11 +38,15 @@ public class AggressiveCharacter : Character, IDamagable
 
     private void Update()
     {
-        // set direction
-        animator.SetFloat(EAnimationParameter.directionX.ToString(), facing.ToVector2().x);
-        animator.SetFloat(EAnimationParameter.directionY.ToString(), facing.ToVector2().y);
+        Rotate(facing);
     }
 
+    protected void Rotate(EDirection direction)
+    {
+        // set direction
+        animator.SetFloat(EAnimationParameter.directionX.ToString(), direction.ToVector2().x);
+        animator.SetFloat(EAnimationParameter.directionY.ToString(), direction.ToVector2().y);
+    }
 
     public void Move(Vector2 move)
     {
@@ -64,17 +68,9 @@ public class AggressiveCharacter : Character, IDamagable
         rb.AddForce(direction * 1500);
     }
 
-    public void Attack(EAttackType attackType, EAttackCommand command)
+    public void Attack()
     {
-        // loop through (active) attacks and call their OnBegin or OnEnd method if applicable
-        foreach (Attack attack in attacks)
-        {
-            if (attack.attackType == attackType)
-            {
-                if (command == EAttackCommand.Begin) attack.OnBegin();
-                else if (command == EAttackCommand.End) attack.OnEnd();
-            }
-        }
+
     }
 
     public void TakeDamage(int amount)

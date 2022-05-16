@@ -131,7 +131,7 @@ public class AnimatorGenerator
     private void AddAttackTransition(AnimatorState redirection, AnimatorState to, AnimatorStateMachine returnTo, int attackNum)
     {
         AnimatorStateTransition transition = redirection.AddTransition(to);
-        transition.AddCondition(AnimatorConditionMode.Equals, attackNum, EAnimationParameter.attackNumber.ToString());
+        transition.AddCondition(AnimatorConditionMode.Equals, attackNum, EAnimationParameter.attackID.ToString());
         SetUpTransitionProperties(transition);
         transition = to.AddTransition(returnTo);
         SetUpTransitionProperties(transition, true);
