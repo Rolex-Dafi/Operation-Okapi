@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -14,12 +15,12 @@ public class PlayerCharacter : AggressiveCharacter
     {
         Init(3, 0, playerMovementSpeed);
 
-        // TODO - init attacks from scriptable objects
-        MeleeAttack melee = new MeleeAttack(this);
-        RangedAttack ranged = new RangedAttack(this, null);
+        // init attacks
+        MeleeAttack melee = attacks.OfType<MeleeAttack>().ToArray()[0];
+        if (melee == null) Debug.LogError("Melee attack for player not found!");
 
-        attacks.Add(melee);
-        attacks.Add(ranged);
+        RangedAttack ranged = attacks.OfType<RangedAttack>().ToArray()[0];
+        if (ranged == null) Debug.LogError("Ranged attack for player not found!");
 
         currentAttacks = new Dictionary<EAttackButton, Attack>
         {

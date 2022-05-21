@@ -159,6 +159,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  attackScriptableObjects:
+  - {fileID: 11400000, guid: cbd89847babe681479fc676aa8b37823, type: 2}
+  - {fileID: 11400000, guid: 5329dc980c59b8948bed671ec6720e39, type: 2}
   playerMovementSpeed: 25
 --- !u!50 &9151058441287977325
 Rigidbody2D:

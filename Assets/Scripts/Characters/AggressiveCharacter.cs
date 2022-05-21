@@ -8,6 +8,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
 public class AggressiveCharacter : Character, IDamagable
 {
+    // scriptable objects
+    [SerializeField] private AttackScriptableObject[] attackScriptableObjects;
+
     // movement
     protected float movementSpeed;
     protected float currentSpeed;
@@ -17,28 +20,37 @@ public class AggressiveCharacter : Character, IDamagable
     protected Health health;
     protected bool canMove;
     protected List<Attack> attacks;
+    [SerializeField] private Transform projectileTransform;
 
     // components
     protected Rigidbody2D rb;
+
+    public Transform ProjectileTransform { get => projectileTransform; }
+    public EDirection Facing { get => facing; protected set => facing = value; }
 
     protected void Init(int startingHealth, int startingMoney, float movementSpeed)
     {
         Init(startingMoney);
         this.movementSpeed = movementSpeed;
         currentSpeed = movementSpeed;
-        facing = EDirection.s;
+        Facing = EDirection.s;
 
         health = new Health(startingHealth);
         attacks = new List<Attack>();
+        foreach (AttackScriptableObject scriptableObject in attackScriptableObjects)
+        {
+            Attack attack = scriptableObject.GetAttack(this);
+            if (attack != null) attacks.Add(attack);
+        }
 
         rb = GetComponent<Rigidbody2D>();
 
-        canMove = true;
+        canMove = true;        
     }
 
     private void Update()
     {
-        Rotate(facing);
+        Rotate(Facing);
     }
 
     protected void Rotate(EDirection direction)
@@ -50,7 +62,7 @@ public class AggressiveCharacter : Character, IDamagable
 
     public void Move(Vector2 move)
     {
-        if (move != Vector2.zero) facing = move.ToDirection();
+        if (move != Vector2.zero) Facing = move.ToDirection();
 
         if (!canMove) return;
 
@@ -63,7 +75,7 @@ public class AggressiveCharacter : Character, IDamagable
         if (!canMove) return;
 
         animator.SetTrigger(EAnimationParameter.dash.ToString());
-        Vector2 direction = facing.ToVector2().normalized;
+        Vector2 direction = Facing.ToVector2().normalized;
         Debug.Log("dashing in: " + direction);
         rb.AddForce(direction * 1500);
     }

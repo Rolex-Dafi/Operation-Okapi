@@ -11,15 +11,11 @@ public class PlayerController : MonoBehaviour
     private PlayerCharacter playerCharacter;
     private PlayerInput playerInput;
 
-    [SerializeField] private AttackScriptableObject[] attackScriptableObjects;
-
     private void Start()
     {
         // player character
         playerCharacter = GetComponent<PlayerCharacter>();
         playerCharacter.Init();
-
-        InitPlayerAttacks();
 
         // player input
         playerInput = GetComponent<PlayerInput>();
@@ -67,11 +63,4 @@ public class PlayerController : MonoBehaviour
         Debug.Log("player wants to interact!");
     }
 
-    private void InitPlayerAttacks()
-    {
-        foreach (AttackScriptableObject attackScriptableObject in attackScriptableObjects)
-        {
-
-        }
-    }
 }

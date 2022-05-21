@@ -8,7 +8,7 @@ using UnityEngine.Events;
 /// </summary>
 public class PlayerInput : MonoBehaviour
 {
-    public UnityEvent<Vector2> moveEvent;
+    [HideInInspector] public UnityEvent<Vector2> moveEvent;
     public Dictionary<EButtonDown, UnityEvent<EButtonDown>> buttonDownEvents;
     public Dictionary<EButtonUp, UnityEvent<EButtonUp>> buttonUpEvents;
 
