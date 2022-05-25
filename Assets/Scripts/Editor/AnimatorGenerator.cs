@@ -112,6 +112,7 @@ public class AnimatorGenerator
 
         // dash
         AddTriggerTransition(states[EAbility.idle], states[EAbility.dash], stateMachines[EStateMachine.move], EAnimationParameter.dash.ToString());
+        AddTriggerTransition(states[EAbility.walk], states[EAbility.dash], stateMachines[EStateMachine.move], EAnimationParameter.dash.ToString());
 
         // hit and death
         AddAnyTriggerTransition(stateMachines[EStateMachine.root], states[EAbility.hit], 

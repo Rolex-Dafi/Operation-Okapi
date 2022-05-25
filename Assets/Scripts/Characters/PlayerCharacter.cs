@@ -11,6 +11,10 @@ public class PlayerCharacter : AggressiveCharacter
 
     private Dictionary<EAttackButton, Attack> currentAttacks;
 
+    private PlayerController playerController;
+
+    [SerializeField] private GameObject aimingGFX;
+
     public void Init()
     {
         Init(3, 0, playerMovementSpeed);
@@ -27,6 +31,38 @@ public class PlayerCharacter : AggressiveCharacter
             { EAttackButton.Melee, melee },
             { EAttackButton.Ranged, ranged },
         };
+
+        playerController = GetComponent<PlayerController>();
+    }
+
+    public void StartAiming()
+    {
+        // inform player controller
+        playerController.RotatingWithMouse = true;
+        // show aiming gfx
+        aimingGFX.SetActive(true);
+    }
+
+    public void RotateAimingGFX()
+    {
+        // TODO make it follow isometry rules
+        /*Vector3 eulerAngles = Quaternion.FromToRotation(transform.up, Facing).eulerAngles;
+        aimingGFX.transform.rotation = Quaternion.Euler(
+            Utility.isometricAngle * (1 - (eulerAngles.z % 180) / 180), 
+            eulerAngles.y, 
+            eulerAngles.z
+        );*/
+
+        // rotate in the direction the player is facing
+        aimingGFX.transform.rotation = Quaternion.FromToRotation(transform.up, Facing);
+    }
+
+    public void StopAiming()
+    {
+        // inform player controller
+        playerController.RotatingWithMouse = false;
+        // hide aiming gfx
+        aimingGFX.SetActive(false);
     }
 
     public void Attack(EAttackButton attackButton, EAttackCommand command)
@@ -40,11 +76,6 @@ public class PlayerCharacter : AggressiveCharacter
                 currentAttacks[attackButton]?.OnEnd();
                 break;
         }
-    }
-
-    public void RotateWithMouse()
-    {
-        // set facing acc to mouse position
     }
 
 

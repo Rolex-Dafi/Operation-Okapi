@@ -14,26 +14,30 @@ public class AggressiveCharacter : Character, IDamagable
     // movement
     protected float movementSpeed;
     protected float currentSpeed;
-    protected EDirection facing;
+    protected Vector2 facing;
 
     // combat
     protected Health health;
     protected bool canMove;
     protected List<Attack> attacks;
-    [SerializeField] private Transform projectileTransform;
+    [SerializeField] private Transform projectileSpawnerTransform;
 
     // components
     protected Rigidbody2D rb;
+    protected CircleCollider2D col;
 
-    public Transform ProjectileTransform { get => projectileTransform; }
-    public EDirection Facing { get => facing; protected set => facing = value; }
+    public Transform ProjectileSpawnerTransform { get => projectileSpawnerTransform; }
 
-    protected void Init(int startingHealth, int startingMoney, float movementSpeed)
+    // character rotation in Cartesian coordinates
+    public Vector2 Facing { get => facing; protected set => facing = value; }
+    public float ColliderRadius { get => col.radius; }
+
+    public void Init(int startingHealth, int startingMoney, float movementSpeed)
     {
         Init(startingMoney);
         this.movementSpeed = movementSpeed;
         currentSpeed = movementSpeed;
-        Facing = EDirection.s;
+        Facing = Vector2.down;
 
         health = new Health(startingHealth);
         attacks = new List<Attack>();
@@ -44,6 +48,7 @@ public class AggressiveCharacter : Character, IDamagable
         }
 
         rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<CircleCollider2D>();
 
         canMove = true;        
     }
@@ -53,20 +58,27 @@ public class AggressiveCharacter : Character, IDamagable
         Rotate(Facing);
     }
 
-    protected void Rotate(EDirection direction)
+    /// <summary>
+    /// Sets character to face in the given direction.
+    /// </summary>
+    /// <param name="direction"></param>
+    public void Rotate(Vector2 direction)
     {
-        // set direction
-        animator.SetFloat(EAnimationParameter.directionX.ToString(), direction.ToVector2().x);
-        animator.SetFloat(EAnimationParameter.directionY.ToString(), direction.ToVector2().y);
+        Facing = direction;
+        animator.SetFloat(EAnimationParameter.directionX.ToString(), direction.x);
+        animator.SetFloat(EAnimationParameter.directionY.ToString(), direction.y);
     }
 
-    public void Move(Vector2 move)
+    public virtual void Move(Vector2 move)
     {
-        if (move != Vector2.zero) Facing = move.ToDirection();
+        if (move != Vector2.zero) Facing = move;
 
         if (!canMove) return;
 
-        rb.MovePosition(rb.position + move * Time.deltaTime * currentSpeed);
+        // moving in isometric coordinates !
+        rb.MovePosition(rb.position + move.CartesianToIsometric().normalized * Time.fixedDeltaTime * currentSpeed);
+
+        // animator in cartesian
         animator.SetFloat(EAnimationParameter.speed.ToString(), move.sqrMagnitude);
     }
 
@@ -75,7 +87,8 @@ public class AggressiveCharacter : Character, IDamagable
         if (!canMove) return;
 
         animator.SetTrigger(EAnimationParameter.dash.ToString());
-        Vector2 direction = Facing.ToVector2().normalized;
+        // dash in isometric coordinates !
+        Vector2 direction = Facing.CartesianToIsometric().normalized;
         Debug.Log("dashing in: " + direction);
         rb.AddForce(direction * 1500);
     }

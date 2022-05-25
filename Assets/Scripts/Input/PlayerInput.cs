@@ -8,13 +8,16 @@ using UnityEngine.Events;
 /// </summary>
 public class PlayerInput : MonoBehaviour
 {
-    [HideInInspector] public UnityEvent<Vector2> moveEvent;
+    [HideInInspector] public Vector2 movement;
+    [HideInInspector] public Vector2 mousePosition;
+
+    //[HideInInspector] public UnityEvent<Vector2> moveEvent;
     public Dictionary<EButtonDown, UnityEvent<EButtonDown>> buttonDownEvents;
     public Dictionary<EButtonUp, UnityEvent<EButtonUp>> buttonUpEvents;
 
     public void Init()
     {
-        moveEvent = new UnityEvent<Vector2>();
+        //moveEvent = new UnityEvent<Vector2>();
         InitEvents(ref buttonDownEvents);
         InitEvents(ref buttonUpEvents);
     }
@@ -30,10 +33,14 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        moveEvent.Invoke(new Vector2(
+        movement = new Vector2(Input.GetAxis(EAxis.Horizontal.ToString()), Input.GetAxis(EAxis.Vertical.ToString()));
+
+        mousePosition = Input.mousePosition;
+
+        /*moveEvent.Invoke(new Vector2(
             Input.GetAxis(EAxis.Horizontal.ToString()), 
             Input.GetAxis(EAxis.Vertical.ToString())
-        ));
+        ));*/
 
         GetInput(ref buttonDownEvents);
         GetInput(ref buttonUpEvents);

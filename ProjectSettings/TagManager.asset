@@ -44,9 +44,12 @@ TagManager:
   - name: Tilemap
     uniqueID: 1195545919
     locked: 0
+  - name: Shadows
+    uniqueID: 1906748809
+    locked: 0
+  - name: Entities
+    uniqueID: 3516202691
+    locked: 0
   - name: Foreground
     uniqueID: 308386233
-    locked: 0
-  - name: Projectiles
-    uniqueID: 618306805
     locked: 0

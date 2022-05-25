@@ -7,10 +7,10 @@ public class RangedAttack : Attack
 {
     // projectile
     private ProjectileController projectilePrefab;
-    private Transform projectileTransform;
+    private Transform projectileSpawnerTransform;
     private float projectileSpeed;
 
-    public Transform ProjectileTransform { get => projectileTransform; set => projectileTransform = value; }
+    public Transform ProjectileSpawnerTransform { get => projectileSpawnerTransform; set => projectileSpawnerTransform = value; }
     public float ProjectileSpeed { get => projectileSpeed; set => projectileSpeed = value; }
 
     public RangedAttack(AggressiveCharacter character, ProjectileController projectilePrefab) : base(1, character)
@@ -32,8 +32,15 @@ public class RangedAttack : Attack
 
     protected void SpawnProjectile()
     {
-        ProjectileController instance = GameObject.Instantiate(projectilePrefab, ProjectileTransform);
+        // add a small constant to radius to spawn it outside of the character collider
+        Vector2 spawnOffset = (character.ColliderRadius + .1f) * character.Facing.CartesianToIsometric().normalized;
+        ProjectileController instance = Object.Instantiate(
+            projectilePrefab,
+            ProjectileSpawnerTransform.position + spawnOffset.ToVector3(),
+            Quaternion.identity, 
+            ProjectileSpawnerTransform
+        );
         instance.Init(Damage);
-        instance.Shoot(character.Facing.ToVector2() * projectileSpeed);
+        instance.Shoot(character.Facing * projectileSpeed);
     }
 }

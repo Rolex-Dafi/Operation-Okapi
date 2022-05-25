@@ -6,12 +6,14 @@ using UnityEngine;
 public class ProjectileController : MonoBehaviour
 {
     private int damage;
+    private float lifetime;
 
     private Rigidbody2D rb;
 
-    public void Init(int damage)
+    public void Init(int damage, float lifetime = Utility.defaultProjectileLifetime)
     {
         this.damage = damage;
+        this.lifetime = lifetime;
 
         rb = GetComponent<Rigidbody2D>();
     }
@@ -19,10 +21,35 @@ public class ProjectileController : MonoBehaviour
     public void Shoot(Vector2 force)
     {
         rb.AddForce(force);
+        StartCoroutine(LifetimeCountdown());
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // TODO do damage if relevant + destroy this
+        if (!IsFriendlyFire(collision.transform))
+        {
+            AggressiveCharacter other = collision.gameObject.GetComponent<AggressiveCharacter>();
+            if (other != null)
+            {
+                other.TakeDamage(damage);
+            }
+
+            // TODO add animation/particle effect
+            Destroy(gameObject);
+        }
+
+    }
+
+    private bool IsFriendlyFire(Transform other)
+    {
+        // TODO make this more robust maybe - what if collider isn't on root?
+        return transform.root == other;
+    }
+
+    private IEnumerator LifetimeCountdown()
+    {
+        yield return new WaitForSeconds(lifetime);
+        // TODO make this fancier ?
+        Destroy(gameObject);
     }
 }

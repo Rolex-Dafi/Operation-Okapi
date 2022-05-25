@@ -38,7 +38,7 @@ public class AttackScriptableObject : ScriptableObject
                     Damage = damage,
                     AttackEffect = attackEffect,
                     MovementSpeedFactor = movementSpeedFactor,
-                    ProjectileTransform = character.ProjectileTransform,
+                    ProjectileSpawnerTransform = character.ProjectileSpawnerTransform,
                     ProjectileSpeed = projectileSpeed
                 };
                 break;

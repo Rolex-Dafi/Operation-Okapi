@@ -11,6 +11,10 @@ public class PlayerController : MonoBehaviour
     private PlayerCharacter playerCharacter;
     private PlayerInput playerInput;
 
+    private bool rotatingWithMouse;
+
+    public bool RotatingWithMouse { get => rotatingWithMouse; set => rotatingWithMouse = value; }
+
     private void Start()
     {
         // player character
@@ -22,7 +26,7 @@ public class PlayerController : MonoBehaviour
         playerInput.Init();
 
         // axis events
-        playerInput.moveEvent.AddListener(OnMove);
+        //playerInput.moveEvent.AddListener(OnMove);
 
         // button down events
         foreach (EButtonDown interaction in Enum.GetValues(typeof(EButtonDown)))
@@ -42,9 +46,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        playerCharacter.Move(playerInput.movement.normalized);
+
+        if (rotatingWithMouse) RotateWithMouse();
+    }
+
+    private void RotateWithMouse()
+    {
+        Vector2 mouseWorld = Camera.main.ScreenToWorldPoint(playerInput.mousePosition);
+
+        playerCharacter.Rotate((mouseWorld - transform.position.ToVector2()).normalized);
+
+        // rotate the aiming gfx as well
+        playerCharacter.RotateAimingGFX();
+    }
+
     private void OnMove(Vector2 move)
     {
-        playerCharacter.Move(move.normalized);
+        //playerCharacter.Move(move.normalized);
     }
 
     private void OnDash<T>(T interaction)
