@@ -1,34 +1,56 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class ProjectileController : MonoBehaviour
 {
     private int damage;
-    private float lifetime;
+    private float range;
+    private float speed;
 
     private Rigidbody2D rb;
+    private Vector2 force;
 
-    public void Init(int damage, float lifetime = Utility.defaultProjectileLifetime)
+    private string friendlyTag;
+
+    private float distanceTravelled = 0;
+
+    public void Init(int damage, float speed, float range, string friendlyTag)
     {
         this.damage = damage;
-        this.lifetime = lifetime;
+        this.speed = speed;
+        this.range = range;
+
+        this.friendlyTag = friendlyTag;
+        gameObject.tag = friendlyTag;
 
         rb = GetComponent<Rigidbody2D>();
+
+        force = Vector2.zero;
+    }
+
+    private void FixedUpdate()
+    {
+        if (distanceTravelled > range) Destroy(gameObject);
+
+        Vector2 step = force.normalized * Time.fixedDeltaTime * speed;
+        rb.MovePosition(rb.position + step);
+
+        distanceTravelled += step.magnitude; 
     }
 
     public void Shoot(Vector2 force)
     {
-        rb.AddForce(force);
-        StartCoroutine(LifetimeCountdown());
+        this.force = force;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!IsFriendlyFire(collision.transform))
+        // check for friendly fire
+        if (!collision.CompareTag(friendlyTag))
         {
-            AggressiveCharacter other = collision.gameObject.GetComponent<AggressiveCharacter>();
+            // if object with which we collided is damageable, damage it
+            IDamagable other = collision.gameObject.GetComponent<IDamagable>();
             if (other != null)
             {
                 other.TakeDamage(damage);
@@ -38,18 +60,5 @@ public class ProjectileController : MonoBehaviour
             Destroy(gameObject);
         }
 
-    }
-
-    private bool IsFriendlyFire(Transform other)
-    {
-        // TODO make this more robust maybe - what if collider isn't on root?
-        return transform.root == other;
-    }
-
-    private IEnumerator LifetimeCountdown()
-    {
-        yield return new WaitForSeconds(lifetime);
-        // TODO make this fancier ?
-        Destroy(gameObject);
     }
 }

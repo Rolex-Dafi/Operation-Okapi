@@ -11,10 +11,12 @@ public class RangedAttack : Attack
     private ProjectileController projectilePrefab;
     private Transform projectileSpawnerTransform;
     private float projectileSpeed;
+    private float projectileRange;
 
     public Transform ProjectileSpawnerTransform { get => projectileSpawnerTransform; set => projectileSpawnerTransform = value; }
     public float ProjectileSpeed { get => projectileSpeed; set => projectileSpeed = value; }
     public Vector2 Target { get => target; set => target = value; }
+    public float ProjectileRange { get => projectileRange; set => projectileRange = value; }
 
     public RangedAttack(AggressiveCharacter character, ProjectileController projectilePrefab) : base(1, character)
     {
@@ -30,7 +32,7 @@ public class RangedAttack : Attack
     private void Init(ProjectileController projectilePrefab)
     {
         this.projectilePrefab = projectilePrefab;
-        this.projectilePrefab.Init(Damage);
+        //this.projectilePrefab.Init(Damage, projectileSpeed);
     }
 
     protected void SpawnProjectile()
@@ -46,7 +48,8 @@ public class RangedAttack : Attack
             Quaternion.identity, 
             ProjectileSpawnerTransform
         );
-        instance.Init(Damage);
-        instance.Shoot(direction * projectileSpeed);
+        // Player and enemies have to be tagged correctly for this to work !
+        instance.Init(Damage, projectileSpeed, projectileRange, character.tag);
+        instance.Shoot(direction);
     }
 }

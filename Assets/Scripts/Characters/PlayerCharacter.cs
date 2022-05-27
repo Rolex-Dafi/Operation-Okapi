@@ -38,7 +38,7 @@ public class PlayerCharacter : AggressiveCharacter
     public void StartAiming()
     {
         // inform player controller
-        playerController.RotatingWithMouse = true;
+        playerController.Aiming = true;
         // show aiming gfx
         aimingGFX.SetActive(true);
     }
@@ -60,11 +60,11 @@ public class PlayerCharacter : AggressiveCharacter
     public void StopAiming()
     {
         // inform player controller
-        playerController.RotatingWithMouse = false;
+        playerController.Aiming = false;
         // hide aiming gfx
         aimingGFX.SetActive(false);
         // set the target - get it from input mouse position
-        Vector2 target = playerController.MousePositionWorld;
+        Vector2 target = playerController.TargetPosition;
         ((RangedAttack)currentAttacks[EAttackButton.Ranged]).Target = target;
     }
 

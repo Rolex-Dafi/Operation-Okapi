@@ -50,7 +50,7 @@ public class AggressiveCharacter : Character, IDamagable
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CircleCollider2D>();
 
-        canMove = true;        
+        canMove = true;
     }
 
     private void Update()

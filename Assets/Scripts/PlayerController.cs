@@ -11,11 +11,11 @@ public class PlayerController : MonoBehaviour
     private PlayerCharacter playerCharacter;
     private PlayerInput playerInput;
 
-    private bool rotatingWithMouse;
-    private Vector2 mousePositionWorld;
+    private bool aiming;
+    private Vector2 targetPosition;
 
-    public bool RotatingWithMouse { get => rotatingWithMouse; set => rotatingWithMouse = value; }
-    public Vector2 MousePositionWorld { get => mousePositionWorld; private set => mousePositionWorld = value; }
+    public bool Aiming { get => aiming; set => aiming = value; }
+    public Vector2 TargetPosition { get => targetPosition; private set => targetPosition = value; }
 
     private void Start()
     {
@@ -52,16 +52,32 @@ public class PlayerController : MonoBehaviour
     {
         playerCharacter.Move(playerInput.movement.normalized);
 
-        if (rotatingWithMouse) RotateWithMouse();
+        if (aiming) Aim();
     }
 
-    private void RotateWithMouse()
+    private void Aim()
     {
-        // get world mouse position
-        mousePositionWorld = Camera.main.ScreenToWorldPoint(playerInput.mousePosition);
+        Vector2 direction;
+
+        if (playerInput.gamepadConnected)
+        {
+            // when using gamepad get direction from movement input - already set in playerCharacter
+            direction = playerCharacter.Facing;
+
+            // set target inf front of the player in the direction they're facing
+            targetPosition = transform.position.ToVector2() + direction;
+        }
+        else
+        {
+            // get world mouse position
+            targetPosition = Camera.main.ScreenToWorldPoint(playerInput.mousePosition);
+
+            // player faces in the direction of the mouse
+            direction = (targetPosition - transform.position.ToVector2());
+        }
 
         // rotate the character
-        playerCharacter.Rotate((mousePositionWorld - transform.position.ToVector2()).normalized);
+        playerCharacter.Rotate(direction.normalized);
 
         // rotate the aiming gfx as well
         playerCharacter.RotateAimingGFX();

@@ -15,6 +15,8 @@ public class PlayerInput : MonoBehaviour
     public Dictionary<EButtonDown, UnityEvent<EButtonDown>> buttonDownEvents;
     public Dictionary<EButtonUp, UnityEvent<EButtonUp>> buttonUpEvents;
 
+    [HideInInspector] public bool gamepadConnected;
+
     public void Init()
     {
         //moveEvent = new UnityEvent<Vector2>();
@@ -44,6 +46,8 @@ public class PlayerInput : MonoBehaviour
 
         GetInput(ref buttonDownEvents);
         GetInput(ref buttonUpEvents);
+
+        gamepadConnected = Input.GetJoystickNames().Length > 0;
     }
 
     private void GetInput<T>(ref Dictionary<T, UnityEvent<T>> eventDictionary)

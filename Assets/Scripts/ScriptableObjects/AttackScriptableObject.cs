@@ -16,6 +16,7 @@ public class AttackScriptableObject : ScriptableObject
     // for ranged only
     public ProjectileController projectilePrefab;
     public float projectileSpeed = 100;
+    [Range(1, 10)] public float projectileRange = 5; // in Unity units
 
     // TODO - return more attack classes, after they're designed and I create them
     public Attack GetAttack(AggressiveCharacter character)
@@ -39,7 +40,8 @@ public class AttackScriptableObject : ScriptableObject
                     AttackEffect = attackEffect,
                     MovementSpeedFactor = movementSpeedFactor,
                     ProjectileSpawnerTransform = character.ProjectileSpawnerTransform,
-                    ProjectileSpeed = projectileSpeed
+                    ProjectileSpeed = projectileSpeed,
+                    ProjectileRange = projectileRange
                 };
                 break;
             case EAttackButton.Special:

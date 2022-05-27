@@ -5,11 +5,8 @@ public static class Utility
     // we're using 2:1 isometry, computed from dot product, in degrees
     public static float isometricAngle = Mathf.Acos(2 / Mathf.Sqrt(5)) * Mathf.Rad2Deg;
 
-    // in seconds
-    public const float defaultProjectileLifetime = 5f;
-
-    // in Unity units
-    public const float defaultProjectileHeight = 3;
+    public const string playerTag = "Player";
+    public const string enemyTag = "Enemy";
 }
 
 public enum EAbility
