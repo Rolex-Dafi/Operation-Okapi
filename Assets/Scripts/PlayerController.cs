@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Connects the player input and player character, issuing commands
@@ -9,62 +11,74 @@ public class PlayerController : MonoBehaviour
     private PlayerCharacter playerCharacter;
     private PlayerInput playerInput;
 
+    private bool rotatingWithMouse;
+    private Vector2 mousePositionWorld;
+
+    public bool RotatingWithMouse { get => rotatingWithMouse; set => rotatingWithMouse = value; }
+    public Vector2 MousePositionWorld { get => mousePositionWorld; private set => mousePositionWorld = value; }
+
     private void Start()
     {
+        // player character
         playerCharacter = GetComponent<PlayerCharacter>();
         playerCharacter.Init();
+
+        // player input
         playerInput = GetComponent<PlayerInput>();
         playerInput.Init();
 
-        playerInput.dashButtonDown.AddListener(OnDash);
-        playerInput.meleeButtonDown.AddListener(OnMeleeAttack);
-        playerInput.rangedButtonDown.AddListener(OnRangedAttack);
-        playerInput.specialButtonDown.AddListener(OnSpecialAttack);
-        playerInput.interactButtonDown.AddListener(OnInteract);
+        // axis events
+        //playerInput.moveEvent.AddListener(OnMove);
+
+        // button down events
+        foreach (EButtonDown interaction in Enum.GetValues(typeof(EButtonDown)))
+        {
+            UnityAction<EButtonDown> action;
+            if (interaction == EButtonDown.Dash) action = OnDash;
+            else if (interaction == EButtonDown.Interact) action = OnInteract;
+            else action = OnAttack;
+
+            playerInput.buttonDownEvents[interaction].AddListener(action);
+        }
+
+        // button up events
+        foreach (EButtonUp interaction in Enum.GetValues(typeof(EButtonUp)))
+        {
+            playerInput.buttonUpEvents[interaction].AddListener(OnAttack);
+        }
     }
 
     private void FixedUpdate()
     {
-        // movement        
-        playerCharacter.Move(playerInput.move.normalized);
-        
+        playerCharacter.Move(playerInput.movement.normalized);
+
+        if (rotatingWithMouse) RotateWithMouse();
     }
 
-    private void OnDash()
+    private void RotateWithMouse()
+    {
+        // get world mouse position
+        mousePositionWorld = Camera.main.ScreenToWorldPoint(playerInput.mousePosition);
+
+        // rotate the character
+        playerCharacter.Rotate((mousePositionWorld - transform.position.ToVector2()).normalized);
+
+        // rotate the aiming gfx as well
+        playerCharacter.RotateAimingGFX();
+    }
+
+    private void OnDash<T>(T interaction)
     {
         Debug.Log("player wants to dash!");
         playerCharacter.Dash();
     }
 
-    private void OnMeleeAttack()
+    private void OnAttack<T>(T interaction)
     {
-        Debug.Log("player wants to perform a melee attack!");
-        playerCharacter.MeleeAttack();
+        playerCharacter.Attack(interaction.ToEAttackButton(), interaction.ToEAttackCommand());
     }
 
-    private void OnMeleeAttackEnd()
-    {
-        Debug.Log("player ended a melee attack!");
-    }
-
-    private void OnRangedAttack()
-    {
-        Debug.Log("player wants to perform a ranged attack!");
-        playerCharacter.RangedAttack();
-    }
-
-    private void OnRangedAttackEnd()
-    {
-        Debug.Log("player ended a ranged attack!");
-    }
-
-    private void OnSpecialAttack()
-    {
-        Debug.Log("player wants to perform a special attack!");
-        playerCharacter.SpecialAttack();
-    }
-
-    private void OnInteract()
+    private void OnInteract<T>(T interaction)
     {
         Debug.Log("player wants to interact!");
     }

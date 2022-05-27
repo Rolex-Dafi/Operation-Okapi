@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,47 +8,77 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
 public class AggressiveCharacter : Character, IDamagable
 {
+    // scriptable objects
+    [SerializeField] private AttackScriptableObject[] attackScriptableObjects;
+
     // movement
     protected float movementSpeed;
-    protected EDirection facing;
+    protected float currentSpeed;
+    protected Vector2 facing;
 
     // combat
     protected Health health;
     protected bool canMove;
+    protected List<Attack> attacks;
+    [SerializeField] private Transform projectileSpawnerTransform;
 
     // components
     protected Rigidbody2D rb;
-    protected Animator animator;
+    protected CircleCollider2D col;
 
-    protected void Init(int startingHealth, int startingMoney, float movementSpeed)
+    public Transform ProjectileSpawnerTransform { get => projectileSpawnerTransform; }
+
+    // character rotation in Cartesian coordinates
+    public Vector2 Facing { get => facing; protected set => facing = value; }
+    public float ColliderRadius { get => col.radius; }
+
+    public void Init(int startingHealth, int startingMoney, float movementSpeed)
     {
         Init(startingMoney);
         this.movementSpeed = movementSpeed;
-        facing = EDirection.s;
+        currentSpeed = movementSpeed;
+        Facing = Vector2.down;
 
         health = new Health(startingHealth);
+        attacks = new List<Attack>();
+        foreach (AttackScriptableObject scriptableObject in attackScriptableObjects)
+        {
+            Attack attack = scriptableObject.GetAttack(this);
+            if (attack != null) attacks.Add(attack);
+        }
 
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        col = GetComponent<CircleCollider2D>();
 
-        canMove = true;
+        canMove = true;        
     }
 
     private void Update()
     {
-        // set direction
-        animator.SetFloat(EAnimationParameter.directionX.ToString(), facing.ToVector2().x);
-        animator.SetFloat(EAnimationParameter.directionY.ToString(), facing.ToVector2().y);
+        Rotate(Facing);
     }
 
-
-    public void Move(Vector2 move)
+    /// <summary>
+    /// Sets character to face in the given direction.
+    /// </summary>
+    /// <param name="direction"></param>
+    public void Rotate(Vector2 direction)
     {
-        if (move != Vector2.zero) facing = move.ToDirection();
+        Facing = direction;
+        animator.SetFloat(EAnimationParameter.directionX.ToString(), direction.x);
+        animator.SetFloat(EAnimationParameter.directionY.ToString(), direction.y);
+    }
+
+    public virtual void Move(Vector2 move)
+    {
+        if (move != Vector2.zero) Facing = move;
 
         if (!canMove) return;
 
-        rb.MovePosition(rb.position + move * Time.deltaTime * movementSpeed);
+        // moving in isometric coordinates !
+        rb.MovePosition(rb.position + move.CartesianToIsometric().normalized * Time.fixedDeltaTime * currentSpeed);
+
+        // animator in cartesian
         animator.SetFloat(EAnimationParameter.speed.ToString(), move.sqrMagnitude);
     }
 
@@ -56,16 +87,15 @@ public class AggressiveCharacter : Character, IDamagable
         if (!canMove) return;
 
         animator.SetTrigger(EAnimationParameter.dash.ToString());
-        Vector2 direction = facing.ToVector2().normalized;
+        // dash in isometric coordinates !
+        Vector2 direction = Facing.CartesianToIsometric().normalized;
         Debug.Log("dashing in: " + direction);
         rb.AddForce(direction * 1500);
     }
 
-    public void Attack(Attack attack)
+    public void Attack()
     {
-        canMove = false;
-        animator.SetTrigger(EAnimationParameter.attack.ToString());
-        animator.SetInteger(EAnimationParameter.attackNumber.ToString(), attack.attackNumber);
+
     }
 
     public void TakeDamage(int amount)
@@ -81,5 +111,15 @@ public class AggressiveCharacter : Character, IDamagable
         Destroy(gameObject);
     }
 
-    public void AllowToMove(bool canMove) => this.canMove = canMove;
+    public void SetMovementSpeed(float movementSpeed)
+    {
+        canMove = movementSpeed == 0 ? false : true;
+        currentSpeed = movementSpeed * movementSpeed;
+    }
+
+    public void ResetMovementSpeed() 
+    {
+        currentSpeed = movementSpeed;
+        canMove = true; 
+    }
 }

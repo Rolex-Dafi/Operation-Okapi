@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,69 +8,49 @@ using UnityEngine.Events;
 /// </summary>
 public class PlayerInput : MonoBehaviour
 {
-    [HideInInspector] public Vector2 move;
+    [HideInInspector] public Vector2 movement;
+    [HideInInspector] public Vector2 mousePosition;
 
-    [HideInInspector] public UnityEvent dashButtonDown;
-
-    [HideInInspector] public UnityEvent meleeButtonDown;
-    [HideInInspector] public UnityEvent meleeButtonUp;
-    [HideInInspector] public UnityEvent rangedButtonDown;
-    [HideInInspector] public UnityEvent rangedButtonUp;
-    [HideInInspector] public UnityEvent specialButtonDown;
-
-    [HideInInspector] public UnityEvent interactButtonDown;
+    //[HideInInspector] public UnityEvent<Vector2> moveEvent;
+    public Dictionary<EButtonDown, UnityEvent<EButtonDown>> buttonDownEvents;
+    public Dictionary<EButtonUp, UnityEvent<EButtonUp>> buttonUpEvents;
 
     public void Init()
     {
-        dashButtonDown = new UnityEvent();
+        //moveEvent = new UnityEvent<Vector2>();
+        InitEvents(ref buttonDownEvents);
+        InitEvents(ref buttonUpEvents);
+    }
 
-        meleeButtonDown = new UnityEvent();
-        meleeButtonUp = new UnityEvent();
-
-        rangedButtonDown = new UnityEvent();
-        rangedButtonUp = new UnityEvent();
-
-        specialButtonDown = new UnityEvent();
-
-        interactButtonDown = new UnityEvent();
+    private void InitEvents<T>(ref Dictionary<T, UnityEvent<T>> eventDictionary)
+    {
+        eventDictionary = new Dictionary<T, UnityEvent<T>>();
+        foreach (T interaction in Enum.GetValues(typeof(T)))
+        {
+            eventDictionary.Add(interaction, new UnityEvent<T>());
+        }
     }
 
     private void Update()
     {
-        move.x = Input.GetAxis("Horizontal");
-        move.y = Input.GetAxis("Vertical");
+        movement = new Vector2(Input.GetAxis(EAxis.Horizontal.ToString()), Input.GetAxis(EAxis.Vertical.ToString()));
 
-        if (Input.GetButtonDown("Dash"))
-        {
-            dashButtonDown.Invoke();
-        }
+        mousePosition = Input.mousePosition;
 
-        if (Input.GetButtonDown("Melee"))
-        {
-            meleeButtonDown.Invoke();
-        }
-        else if (Input.GetButtonUp("Melee"))
-        {
-            meleeButtonUp.Invoke();
-        }
+        /*moveEvent.Invoke(new Vector2(
+            Input.GetAxis(EAxis.Horizontal.ToString()), 
+            Input.GetAxis(EAxis.Vertical.ToString())
+        ));*/
 
-        if (Input.GetButtonDown("Ranged"))
-        {
-            rangedButtonDown.Invoke();
-        }
-        else if (Input.GetButtonUp("Ranged"))
-        {
-            rangedButtonUp.Invoke();
-        }
+        GetInput(ref buttonDownEvents);
+        GetInput(ref buttonUpEvents);
+    }
 
-        if (Input.GetButtonDown("Special"))
+    private void GetInput<T>(ref Dictionary<T, UnityEvent<T>> eventDictionary)
+    {
+        foreach (T interaction in Enum.GetValues(typeof(T)))
         {
-            specialButtonDown.Invoke();
-        }
-
-        if (Input.GetButtonDown("Interact"))
-        {
-            interactButtonDown.Invoke();
+            if (interaction.GetInput()) eventDictionary[interaction].Invoke(interaction);
         }
     }
 }

@@ -13,7 +13,7 @@ public class AttackStateMachine : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateinfo, int layerindex)
     {
-        aggressiveCharacter.AllowToMove(true);
+        aggressiveCharacter.ResetMovementSpeed();
     }
 
 }

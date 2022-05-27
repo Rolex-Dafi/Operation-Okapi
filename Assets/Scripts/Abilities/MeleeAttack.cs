@@ -4,11 +4,11 @@
 /// </summary>
 public class MeleeAttack : Attack
 {
-    public MeleeAttack() : base(0)
+    public MeleeAttack(AggressiveCharacter character) : base(0, character)
     {
     }
 
-    public MeleeAttack(int attackNumber) : base(attackNumber)
+    public MeleeAttack(int attackID, AggressiveCharacter character) : base(attackID, character)
     {
     }
 }

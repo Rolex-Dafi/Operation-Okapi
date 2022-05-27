@@ -1,5 +1,17 @@
 using UnityEngine;
 
+public static class Utility
+{
+    // we're using 2:1 isometry, computed from dot product, in degrees
+    public static float isometricAngle = Mathf.Acos(2 / Mathf.Sqrt(5)) * Mathf.Rad2Deg;
+
+    // in seconds
+    public const float defaultProjectileLifetime = 5f;
+
+    // in Unity units
+    public const float defaultProjectileHeight = 3;
+}
+
 public enum EAbility
 {
     idle, walk, dash, melee, ranged, hit, death, NDEF
@@ -7,7 +19,7 @@ public enum EAbility
 
 public enum EDirection
 {
-    n, e, s, w, ne, nw, se, sw, NDEF
+    e, ne, n, nw, w, sw, s, se, NDEF
 }
 
 public enum EStateMachine
@@ -17,19 +29,7 @@ public enum EStateMachine
 
 public enum EAnimationParameter
 {
-    directionX, directionY, speed, dash, hit, death, attack, attackNumber
-}
-
-public class AnimatorParameterValue<T>
-{
-    private T value;
-
-    public AnimatorParameterValue(T value)
-    {
-        this.value = value;
-    }
-
-    public T GetValue() => value;
+    directionX, directionY, speed, dash, hit, death, attack, attackID
 }
 
 public static class Extenstions
@@ -42,7 +42,7 @@ public static class Extenstions
             case EAnimationParameter.directionY:
             case EAnimationParameter.speed:
                 return AnimatorControllerParameterType.Float;
-            case EAnimationParameter.attackNumber:
+            case EAnimationParameter.attackID:
                 return AnimatorControllerParameterType.Int;
             default:
                 return AnimatorControllerParameterType.Trigger;
@@ -64,33 +64,73 @@ public static class Extenstions
         }
     }
 
+    public static Vector2 CartesianToIsometric(this Vector2 vector)
+    {
+        return new Vector2(vector.x * 2, vector.y);
+    }
+
+    public static Vector2 ToVector2(this Vector3 vector)
+    {
+        return new Vector2(vector.x, vector.y);
+    }
+    public static Vector3 ToVector3(this Vector2 vector)
+    {
+        return new Vector3(vector.x, vector.y, 0);
+    }
+
     public static Vector2 ToVector2(this EDirection direction)
     {
+        Vector2 ret = Vector2.zero;
+
         switch (direction)
         {
             case EDirection.n:
-                return new Vector2(0, 1);
+                ret =  new Vector2(0, 1);
+                break;
             case EDirection.e:
-                return new Vector2(1, 0);
+                ret = new Vector2(1, 0);
+                break;
             case EDirection.s:
-                return new Vector2(0, -1);
+                ret = new Vector2(0, -1);
+                break;
             case EDirection.w:
-                return new Vector2(-1, 0);
+                ret = new Vector2(-1, 0);
+                break;
             case EDirection.ne:
-                return new Vector2(1, 1);
+                ret = new Vector2(1, 1);
+                break;
             case EDirection.nw:
-                return new Vector2(-1, 1);
+                ret = new Vector2(-1, 1);
+                break;
             case EDirection.se:
-                return new Vector2(1, -1);
+                ret = new Vector2(1, -1);
+                break;
             case EDirection.sw:
-                return new Vector2(-1, -1);
-            default:
-                return Vector2.zero;
-        }        
+                ret = new Vector2(-1, -1);
+                break;
+        }
+
+        return ret.normalized;
     }
 
     public static EDirection ToDirection(this Vector2 vector)
     {
+        /*// size of the angle of one direction arc
+        float directionIncrement = 45;
+
+        // directions start from east:
+        // angle between vector and pure east vector, in range (-180, 180)
+        float angle = Vector2.SignedAngle(vector, new Vector2(1, 0));
+        // convert to (0, 360)
+        angle = angle < 0 ? 360 - angle : angle;
+
+        // which direction arc does the input vector belong to?
+        int direction = Mathf.FloorToInt((angle + directionIncrement / 2) / directionIncrement);
+        // make sure the result will return a valid direction - loop around
+        direction = direction > 7 ? 0 : direction;
+
+        //return (EDirection)direction;*/
+
         if (vector.x == 0)
         {
             if (vector.y > 0)

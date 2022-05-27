@@ -112,6 +112,7 @@ public class AnimatorGenerator
 
         // dash
         AddTriggerTransition(states[EAbility.idle], states[EAbility.dash], stateMachines[EStateMachine.move], EAnimationParameter.dash.ToString());
+        AddTriggerTransition(states[EAbility.walk], states[EAbility.dash], stateMachines[EStateMachine.move], EAnimationParameter.dash.ToString());
 
         // hit and death
         AddAnyTriggerTransition(stateMachines[EStateMachine.root], states[EAbility.hit], 
@@ -131,7 +132,7 @@ public class AnimatorGenerator
     private void AddAttackTransition(AnimatorState redirection, AnimatorState to, AnimatorStateMachine returnTo, int attackNum)
     {
         AnimatorStateTransition transition = redirection.AddTransition(to);
-        transition.AddCondition(AnimatorConditionMode.Equals, attackNum, EAnimationParameter.attackNumber.ToString());
+        transition.AddCondition(AnimatorConditionMode.Equals, attackNum, EAnimationParameter.attackID.ToString());
         SetUpTransitionProperties(transition);
         transition = to.AddTransition(returnTo);
         SetUpTransitionProperties(transition, true);
@@ -202,6 +203,38 @@ public class AnimatorGenerator
         state.motion = blendTree;
 
         return state;
+    }
+
+    // TODO Replace animation clips in a blend tree
+    public void ReplaceBlendTreeClips(EAbility ability)
+    {
+        string dir = string.Join("/", new string[] {
+            GFXUtility.characterAnimationsDirectory,
+            characterName
+        });
+
+        AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(dir + "/" + characterName + ".controller");
+
+        EStateMachine esm = ability.ToEStateMachine();
+
+        //AnimatorStateMachine sm = controller.stat
+
+        //BlendTree blendTree
+
+        string clipDirectory = string.Join("/", new string[] { GFXUtility.characterAnimationsDirectory, characterName, ability.ToString() });
+        foreach (EDirection direction in Enum.GetValues(typeof(EDirection)))
+        {
+            if (direction == EDirection.NDEF) continue;
+
+            string clipPath = clipDirectory + "/" + string.Join("_", new string[] {
+                characterName,
+                ability.ToString(),
+                direction.ToString()
+            }) + ".anim";
+            AnimationClip clip = (AnimationClip)AssetDatabase.LoadAssetAtPath(clipPath, typeof(AnimationClip));
+            //blendTree.AddChild(clip, direction.ToVector2());
+        }
+
     }
 
 
