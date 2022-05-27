@@ -1,12 +1,11 @@
 using UnityEngine;
 
 /// <summary>
-/// Base wrapper class for all ranged attacks.
+/// Class for ranged attacks aimed by the player.
 /// </summary>
 public class AimRangedAttack : RangedAttack
 {
-    private PlayerController playerController;
-
+    // only player can perform aim attacks
     private new PlayerCharacter character;
 
     public AimRangedAttack(AggressiveCharacter character, ProjectileController projectilePrefab) : base(character, projectilePrefab)
@@ -31,6 +30,8 @@ public class AimRangedAttack : RangedAttack
     {
         // TODO stop animation -> changes in Animator neccessary
         character.StopAiming();
+        // TODO set target according to player mouse position
+
         SpawnProjectile();
     }
 }

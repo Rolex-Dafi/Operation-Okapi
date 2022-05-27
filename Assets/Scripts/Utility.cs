@@ -7,6 +7,9 @@ public static class Utility
 
     // in seconds
     public const float defaultProjectileLifetime = 5f;
+
+    // in Unity units
+    public const float defaultProjectileHeight = 3;
 }
 
 public enum EAbility

@@ -19,4 +19,4 @@ MonoBehaviour:
   damage: 1
   movementSpeedFactor: 0
   projectilePrefab: {fileID: 4754095188408049542, guid: 5c61aeab842b3c545a391ffb9482a26b, type: 3}
-  projectileSpeed: 1
+  projectileSpeed: 0.1

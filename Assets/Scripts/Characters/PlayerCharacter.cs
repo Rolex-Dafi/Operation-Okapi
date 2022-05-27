@@ -45,16 +45,16 @@ public class PlayerCharacter : AggressiveCharacter
 
     public void RotateAimingGFX()
     {
-        // TODO make it follow isometry rules
-        /*Vector3 eulerAngles = Quaternion.FromToRotation(transform.up, Facing).eulerAngles;
-        aimingGFX.transform.rotation = Quaternion.Euler(
-            Utility.isometricAngle * (1 - (eulerAngles.z % 180) / 180), 
-            eulerAngles.y, 
-            eulerAngles.z
-        );*/
-
         // rotate in the direction the player is facing
         aimingGFX.transform.rotation = Quaternion.FromToRotation(transform.up, Facing);
+
+        // make it follow isometry rules
+        Vector3 eulerAngles = Quaternion.FromToRotation(transform.up, Facing).eulerAngles;
+        aimingGFX.transform.rotation = Quaternion.Euler(
+            Utility.isometricAngle,
+            eulerAngles.y,
+            eulerAngles.z
+        );
     }
 
     public void StopAiming()
@@ -63,6 +63,9 @@ public class PlayerCharacter : AggressiveCharacter
         playerController.RotatingWithMouse = false;
         // hide aiming gfx
         aimingGFX.SetActive(false);
+        // set the target - get it from input mouse position
+        Vector2 target = playerController.MousePositionWorld;
+        ((RangedAttack)currentAttacks[EAttackButton.Ranged]).Target = target;
     }
 
     public void Attack(EAttackButton attackButton, EAttackCommand command)

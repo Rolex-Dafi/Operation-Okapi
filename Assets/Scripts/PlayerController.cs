@@ -12,8 +12,10 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
 
     private bool rotatingWithMouse;
+    private Vector2 mousePositionWorld;
 
     public bool RotatingWithMouse { get => rotatingWithMouse; set => rotatingWithMouse = value; }
+    public Vector2 MousePositionWorld { get => mousePositionWorld; private set => mousePositionWorld = value; }
 
     private void Start()
     {
@@ -55,17 +57,14 @@ public class PlayerController : MonoBehaviour
 
     private void RotateWithMouse()
     {
-        Vector2 mouseWorld = Camera.main.ScreenToWorldPoint(playerInput.mousePosition);
+        // get world mouse position
+        mousePositionWorld = Camera.main.ScreenToWorldPoint(playerInput.mousePosition);
 
-        playerCharacter.Rotate((mouseWorld - transform.position.ToVector2()).normalized);
+        // rotate the character
+        playerCharacter.Rotate((mousePositionWorld - transform.position.ToVector2()).normalized);
 
         // rotate the aiming gfx as well
         playerCharacter.RotateAimingGFX();
-    }
-
-    private void OnMove(Vector2 move)
-    {
-        //playerCharacter.Move(move.normalized);
     }
 
     private void OnDash<T>(T interaction)
