@@ -39,7 +39,6 @@ public class RangedAttack : Attack
     {
         // add a small constant to radius to spawn it outside of the character collider
         // shoot at target - asumes target is set beforehand !!
-        Debug.Log("shooting at target " + target);
         Vector2 direction = (target - projectileSpawnerTransform.position.ToVector2()).normalized;
         Vector2 spawnOffset = (character.ColliderRadius + .1f) * direction;
         ProjectileController instance = Object.Instantiate(

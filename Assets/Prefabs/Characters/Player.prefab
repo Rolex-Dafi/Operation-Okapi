@@ -164,8 +164,8 @@ MonoBehaviour:
   attackScriptableObjects:
   - {fileID: 11400000, guid: cbd89847babe681479fc676aa8b37823, type: 2}
   - {fileID: 11400000, guid: 5329dc980c59b8948bed671ec6720e39, type: 2}
+  movementSpeed: 2
   projectileSpawnerTransform: {fileID: 1354588313482233939}
-  playerMovementSpeed: 2
   aimingGFX: {fileID: 5090473625307181570}
 --- !u!50 &9151058441287977325
 Rigidbody2D:

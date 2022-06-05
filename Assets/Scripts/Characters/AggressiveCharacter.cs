@@ -12,7 +12,7 @@ public class AggressiveCharacter : Character, IDamagable
     [SerializeField] private AttackScriptableObject[] attackScriptableObjects;
 
     // movement
-    protected float movementSpeed;
+    [SerializeField] protected float movementSpeed;
     protected float currentSpeed;
     protected Vector2 facing;
 
@@ -32,10 +32,9 @@ public class AggressiveCharacter : Character, IDamagable
     public Vector2 Facing { get => facing; protected set => facing = value; }
     public float ColliderRadius { get => col.radius; }
 
-    public void Init(int startingHealth, int startingMoney, float movementSpeed)
+    public void Init(int startingHealth, int startingMoney)
     {
         Init(startingMoney);
-        this.movementSpeed = movementSpeed;
         currentSpeed = movementSpeed;
         Facing = Vector2.down;
 

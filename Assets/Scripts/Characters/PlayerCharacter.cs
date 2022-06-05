@@ -7,8 +7,6 @@ using UnityEngine;
 /// </summary>
 public class PlayerCharacter : AggressiveCharacter
 {
-    [SerializeField] private float playerMovementSpeed;
-
     private Dictionary<EAttackButton, Attack> currentAttacks;
 
     private PlayerController playerController;
@@ -17,7 +15,7 @@ public class PlayerCharacter : AggressiveCharacter
 
     public void Init()
     {
-        Init(3, 0, playerMovementSpeed);
+        Init(3, 0);
 
         // init attacks
         MeleeAttack melee = attacks.OfType<MeleeAttack>().ToArray()[0];
