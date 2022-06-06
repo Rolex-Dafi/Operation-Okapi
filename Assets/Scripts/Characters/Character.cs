@@ -18,7 +18,6 @@ public class Character : MonoBehaviour
 
     protected void Init(int startingMoney = 0)
     {
-        Debug.Log("Init in Character");
         money = new Money(startingMoney);
         animator = GetComponent<Animator>();
     }

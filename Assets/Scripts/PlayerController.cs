@@ -85,7 +85,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnDash<T>(T interaction)
     {
-        Debug.Log("player wants to dash!");
         playerCharacter.Dash();
     }
 

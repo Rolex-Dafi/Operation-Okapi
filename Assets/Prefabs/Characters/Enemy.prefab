@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 1045408381992066634}
   - component: {fileID: 1045408381992066637}
   - component: {fileID: 1045408381992066636}
+  - component: {fileID: 3963275056060874243}
   - component: {fileID: 1045408381992066646}
   - component: {fileID: 1045408381992066633}
   - component: {fileID: 3078057376987710060}
@@ -259,6 +260,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3963275056060874243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045408381992066639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eb553f70130f7045a2d123b7613734a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrollPoints: []
 --- !u!114 &1045408381992066646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,6 +285,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aad0dec2b5752047bee7cf88b4f308c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDestinationReached:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1045408381992066633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,8 +302,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   attackScriptableObjects: []
-  movementSpeed: 2
+  movementSpeed: 0.5
   projectileSpawnerTransform: {fileID: 1045408380506308069}
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3078057376987710060
 MonoBehaviour:
   m_ObjectHideFlags: 0

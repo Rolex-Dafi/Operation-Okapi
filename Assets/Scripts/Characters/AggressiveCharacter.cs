@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Base class for all aggressive characters - i.e. characters that can engage in combat.
@@ -21,6 +23,9 @@ public class AggressiveCharacter : Character, IDamagable
     protected bool canMove;
     protected List<Attack> attacks;
     [SerializeField] private Transform projectileSpawnerTransform;
+
+    // events
+    [HideInInspector] public UnityEvent onDeath = new UnityEvent();
 
     // components
     protected Rigidbody2D rb;
@@ -88,7 +93,6 @@ public class AggressiveCharacter : Character, IDamagable
         animator.SetTrigger(EAnimationParameter.dash.ToString());
         // dash in isometric coordinates !
         Vector2 direction = Facing.CartesianToIsometric().normalized;
-        Debug.Log("dashing in: " + direction);
         rb.AddForce(direction * 1500);
     }
 
@@ -107,6 +111,7 @@ public class AggressiveCharacter : Character, IDamagable
     public void Die()
     {
         animator.SetTrigger(EAnimationParameter.death.ToString());
+        onDeath.Invoke();
         Destroy(gameObject);
     }
 
@@ -120,5 +125,10 @@ public class AggressiveCharacter : Character, IDamagable
     {
         currentSpeed = movementSpeed;
         canMove = true; 
+    }
+
+    private void OnDestroy()
+    {
+        onDeath.RemoveAllListeners();
     }
 }
