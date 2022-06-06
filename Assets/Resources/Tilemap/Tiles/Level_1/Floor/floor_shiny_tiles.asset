@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: wall_window_left_corner_B
+  m_Name: floor_shiny_tiles
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: 0c0463abe652ac54aaf9983cfa55c5c2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e61456a2706828440923b492f062661f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
