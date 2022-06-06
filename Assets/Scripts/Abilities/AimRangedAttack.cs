@@ -29,8 +29,8 @@ public class AimRangedAttack : RangedAttack
     public override void OnEnd()
     {
         // TODO stop animation -> changes in Animator neccessary
+        character.animator.SetTrigger(EAnimationParameter.attackReleased.ToString());
         character.StopAiming();
-        // TODO set target according to player mouse position
 
         SpawnProjectile();
     }

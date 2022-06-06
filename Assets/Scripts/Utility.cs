@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public static class Utility
@@ -9,10 +10,24 @@ public static class Utility
     public const string enemyTag = "Enemy";
 }
 
+// Enums
+
 public enum EAbility
 {
     idle, walk, dash, melee, ranged, hit, death, NDEF
 }
+
+public enum EAttackCommand 
+{ 
+    Begin, End, NDEF 
+}
+
+public enum EAttackEffect // equivalent to button down, hold, up - for player
+{ 
+    Click, // 0 startup, x active, 0 recovery frames
+    Spray, // x startup, y active, 0 recovery frames 
+    Aim    // x startup, y active, z recovery frames
+} 
 
 public enum EDirection
 {
@@ -26,12 +41,69 @@ public enum EStateMachine
 
 public enum EAnimationParameter
 {
-    directionX, directionY, speed, dash, hit, death, attack, attackID
+    directionX, directionY, speed, dash, hit, death, attack, attackReleased, attackID
+}
+
+// Structs
+
+/// <summary>
+/// Specifies the frame count per each attack phase - startup, active, recovery.
+/// (So far) only utilized for animation clip generation - depending on the type of attack, some of the 
+/// counts will always be zero.
+/// </summary>
+public class AttackFrames
+{
+    private EAttackEffect attackEffect;
+
+    private int startup;
+    private int active;
+    private int recovery;
+
+    public AttackFrames(EAttackEffect attackEffect = EAttackEffect.Click, int startup = 0, int active = 0, int recovery = 0)
+    {
+        this.attackEffect = attackEffect;
+        this.startup = startup;
+        this.active = active;
+        this.recovery = recovery;
+    }
+
+    public EAttackEffect AttackEffect { get => attackEffect; }
+
+    public int Startup { get => startup; }
+    public int Active { get => active; }
+    public int Recovery { get => recovery; }
+
+    public Tuple<int, int> GetStartupIndexes()
+    {
+        return new Tuple<int, int>
+        (
+            0,
+            Startup
+        );
+    }
+
+    public Tuple<int, int> GetActiveIndexes()
+    {
+        return new Tuple<int, int>
+        (
+            Startup,
+            Startup + Active
+        );
+    }
+
+    public Tuple<int, int> GetRecoveryIndexes()
+    {
+        return new Tuple<int, int>
+        (
+            Startup + Active,
+            Startup + Active + Recovery
+        );
+    }
 }
 
 public static class Extenstions
 {   
-    public static AnimatorControllerParameterType ToType(this EAnimationParameter parameter)
+    public static AnimatorControllerParameterType ToAnimatorParameterType(this EAnimationParameter parameter)
     {
         switch (parameter)
         {

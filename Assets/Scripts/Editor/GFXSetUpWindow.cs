@@ -17,6 +17,11 @@ public class GFXSetUpWindow : EditorWindow
     // Animations creation
     private string characterName = "";
     private EAbility animationType = EAbility.NDEF;
+    private AttackFrames attackFrames;
+    private EAttackEffect attackEffect = EAttackEffect.Click;
+    private int startup = 0;
+    private int active = 0;
+    private int recovery = 0;
     private AnimationClipProperties animationClipProperties = GFXUtility.defaultAnimationClipProperties;
 
     [MenuItem("Custom/GFX Set-up")]
@@ -126,6 +131,23 @@ public class GFXSetUpWindow : EditorWindow
             "Animation type",
             "If not defined generates all possible animation clips given the contents of the character's directory."
             ), animationType);
+        if (animationType == EAbility.melee || animationType == EAbility.ranged)
+        {
+            attackEffect = (EAttackEffect)EditorGUILayout.EnumPopup(new GUIContent(
+            "Attack effect",
+            "If not defined defaults to click attack."
+            ), attackEffect);
+            if (attackEffect == EAttackEffect.Aim || attackEffect == EAttackEffect.Spray)
+            {
+                startup = EditorGUILayout.IntField("Startup frame count", startup);
+                active = EditorGUILayout.IntField("Active frame count", active);
+                if (attackEffect == EAttackEffect.Spray)
+                {
+                    recovery = EditorGUILayout.IntField("Recovery frame count", recovery);
+                }
+            }
+            attackFrames = new AttackFrames(attackEffect, startup, active, recovery);
+        }
         animationClipProperties.frameRate = EditorGUILayout.FloatField("Frame rate", animationClipProperties.frameRate);
         animationClipProperties.loop = EditorGUILayout.Toggle("Loop", animationClipProperties.loop);
         animationClipProperties.spriteColor = EditorGUILayout.ColorField("Sprite tint", animationClipProperties.spriteColor);
@@ -138,7 +160,7 @@ public class GFXSetUpWindow : EditorWindow
         {
             int numClips = 0;
             if (animationType == EAbility.NDEF) numClips = new AnimationClipGenerator(characterName).GenerateAllAnimations();
-            else numClips = new AnimationClipGenerator(characterName, animationClipProperties).GenerateAnimations(animationType);
+            else numClips = new AnimationClipGenerator(characterName, animationClipProperties).GenerateAnimations(animationType, attackFrames);
 
             Debug.Log("Number of animation clips generated = " + numClips);
         }

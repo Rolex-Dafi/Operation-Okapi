@@ -34,6 +34,7 @@ public class AnimatorGenerator
 {
     private string characterName;
     private readonly string redirection = "redirection";
+    private readonly string startup = "startup";
 
     public AnimatorGenerator(string characterName)
     {
@@ -63,7 +64,7 @@ public class AnimatorGenerator
         // add parameters
         foreach (EAnimationParameter parameter in Enum.GetValues(typeof(EAnimationParameter)))
         {
-            controller.AddParameter(parameter.ToString(), parameter.ToType());
+            controller.AddParameter(parameter.ToString(), parameter.ToAnimatorParameterType());
         }
 
         // add statemachines
@@ -81,11 +82,16 @@ public class AnimatorGenerator
         {
             if (ability == EAbility.NDEF) continue;
 
-            states.Add(ability, CreateBlendTree(controller, stateMachines[ability.ToEStateMachine()], ability.ToString()));
+            // TODO change this to be less hacky later
+            string attackFramesName = ability == EAbility.ranged ? "active" : "";
+
+            states.Add(ability, CreateBlendTree(controller, stateMachines[ability.ToEStateMachine()], ability.ToString(), attackFramesName));
         }
         // redirection state for attacks
         AnimatorState redirectionState = stateMachines[EStateMachine.attack].AddState(redirection);
-        // set deafault states for each sm
+        // startup state for aimed ranged attack
+        AnimatorState rangedStartupState = CreateBlendTree(controller, stateMachines[EAbility.ranged.ToEStateMachine()], EAbility.ranged.ToString(), "startup");
+        // set default states for each sm
         stateMachines[EStateMachine.root].defaultState = states[EAbility.idle];
         stateMachines[EStateMachine.move].defaultState = states[EAbility.idle];
         stateMachines[EStateMachine.attack].defaultState = redirectionState;
@@ -103,12 +109,14 @@ public class AnimatorGenerator
             new AnimatorTransitionProperties(AnimatorConditionMode.If, 0, EAnimationParameter.attack.ToString()));
         AddTransition(states[EAbility.walk], redirectionState,
             new AnimatorTransitionProperties(AnimatorConditionMode.If, 0, EAnimationParameter.attack.ToString()));
-        // from redirection state - TODO - change this to a loop for more attacks later !!
+        // from redirection state -
+        // TODO change this to a loop for more attacks later !!
+        // TODO also take into account different attack effects (i.e. for click, aim and spray attacks there'll be different states !!
         AddAttackTransition(redirectionState, states[EAbility.melee], stateMachines[EStateMachine.move], 0);
-        AddAttackTransition(redirectionState, states[EAbility.ranged], stateMachines[EStateMachine.move], 1);
+        AddAttackTransition(redirectionState, states[EAbility.ranged], stateMachines[EStateMachine.move], 1, EAttackEffect.Aim, rangedStartupState);
         // add behaviours
         states[EAbility.melee].AddStateMachineBehaviour<AttackStateMachine>();
-        states[EAbility.ranged].AddStateMachineBehaviour<AttackStateMachine>();
+        rangedStartupState.AddStateMachineBehaviour<AttackStateMachine>();
 
         // dash
         AddTriggerTransition(states[EAbility.idle], states[EAbility.dash], stateMachines[EStateMachine.move], EAnimationParameter.dash.ToString());
@@ -129,14 +137,28 @@ public class AnimatorGenerator
         SetUpTransitionProperties(transition, properties.hasExit, properties.exitTime, properties.duration);
     }
 
-    private void AddAttackTransition(AnimatorState redirection, AnimatorState to, AnimatorStateMachine returnTo, int attackNum)
+    private void AddAttackTransition(AnimatorState redirection, AnimatorState to, AnimatorStateMachine returnTo, int attackNum, 
+        EAttackEffect attackEffect = EAttackEffect.Click, AnimatorState startup = null)
     {
-        AnimatorStateTransition transition = redirection.AddTransition(to);
-        transition.AddCondition(AnimatorConditionMode.Equals, attackNum, EAnimationParameter.attackID.ToString());
-        SetUpTransitionProperties(transition);
-        transition = to.AddTransition(returnTo);
-        SetUpTransitionProperties(transition, true);
-
+        if (attackEffect == EAttackEffect.Click)
+        {
+            AnimatorStateTransition transition = redirection.AddTransition(to);
+            transition.AddCondition(AnimatorConditionMode.Equals, attackNum, EAnimationParameter.attackID.ToString());
+            SetUpTransitionProperties(transition);
+            transition = to.AddTransition(returnTo);
+            SetUpTransitionProperties(transition, true);
+        }
+        else if (attackEffect == EAttackEffect.Aim)
+        {
+            AnimatorStateTransition transition = redirection.AddTransition(startup);
+            transition.AddCondition(AnimatorConditionMode.Equals, attackNum, EAnimationParameter.attackID.ToString());
+            SetUpTransitionProperties(transition);
+            transition = startup.AddTransition(to);
+            transition.AddCondition(AnimatorConditionMode.If, 0, EAnimationParameter.attackReleased.ToString());
+            SetUpTransitionProperties(transition);
+            transition = to.AddTransition(returnTo);
+            SetUpTransitionProperties(transition, true);
+        }
     }
 
     private void AddTriggerTransition(AnimatorState from, AnimatorState to, AnimatorStateMachine returnTo, string trigger)
@@ -164,9 +186,10 @@ public class AnimatorGenerator
         transition.exitTime = exitTime;
     }
 
-    private AnimatorState CreateBlendTree(AnimatorController controller, AnimatorStateMachine subSM, string name)
+    private AnimatorState CreateBlendTree(AnimatorController controller, AnimatorStateMachine subSM, string name, string attackFramesName = "")
     {
         string clipDirectory = string.Join("/", new string[] { GFXUtility.characterAnimationsDirectory, characterName, name });
+        clipDirectory += attackFramesName == "" ? "" : "/" + attackFramesName;
 
         if (!Directory.Exists(clipDirectory))
         {
@@ -174,9 +197,12 @@ public class AnimatorGenerator
             return null;
         }
 
+        string stateName = name;
+        stateName += attackFramesName == "" ? "" : "_" + attackFramesName;
+
         BlendTree blendTree = new BlendTree
         {
-            name = name,
+            name = stateName,
             hideFlags = HideFlags.HideInHierarchy,
             blendType = BlendTreeType.SimpleDirectional2D,
 
@@ -188,18 +214,20 @@ public class AnimatorGenerator
         {
             if (direction == EDirection.NDEF) continue;
 
-            string clipPath = clipDirectory + "/" + string.Join("_", new string[] { 
+            string clipPath = clipDirectory + "/" + string.Join("_", new string[] {
                 characterName,
                 name,
-                direction.ToString() 
-            })  + ".anim";
+                direction.ToString()
+            });
+            clipPath += attackFramesName == "" ? "" : "_" + attackFramesName;
+            clipPath += ".anim";
             AnimationClip clip = (AnimationClip)AssetDatabase.LoadAssetAtPath(clipPath, typeof(AnimationClip));
             blendTree.AddChild(clip, direction.ToVector2());
         }
 
         AssetDatabase.AddObjectToAsset(blendTree, controller);
 
-        AnimatorState state = subSM.AddState(name);
+        AnimatorState state = subSM.AddState(stateName);
         state.motion = blendTree;
 
         return state;

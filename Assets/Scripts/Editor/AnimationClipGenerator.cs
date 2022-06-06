@@ -47,7 +47,7 @@ public class AnimationClipGenerator
     /// </summary>
     /// <param name="characterName"></param>
     /// <returns>Number of clips generated.</returns>
-    public int GenerateAnimations(EAbility ability)
+    public int GenerateAnimations(EAbility ability, AttackFrames attackFrames = null)
     {
         string dir = string.Join("/", new string[] {
             GFXUtility.resourcesDirectory,
@@ -63,7 +63,9 @@ public class AnimationClipGenerator
             return 0;
         }
 
-        return FindDirectionFolders(dirInfo);
+        AttackFrames frames = attackFrames != null && attackFrames.AttackEffect != EAttackEffect.Click ? attackFrames : null;
+
+        return FindDirectionFolders(dirInfo, frames);
     }
 
     /// <summary>
@@ -111,7 +113,8 @@ public class AnimationClipGenerator
     /// The directory should be at "Assets/Resources/Sprites/Characters/{character-name}/{animation-name}".
     /// </summary>
     /// <param name="dirInfo">Directory to be searched.</param>
-    private int FindDirectionFolders(DirectoryInfo dirInfo)
+    /// <param name="attackFrames">If the frames are to be split into several animation clips </param>
+    private int FindDirectionFolders(DirectoryInfo dirInfo, AttackFrames attackFrames = null)
     {
         int numClips = 0;
         foreach (DirectoryInfo subInfo in dirInfo.GetDirectories())
@@ -122,7 +125,16 @@ public class AnimationClipGenerator
                 string saveTo = string.Join("/", new string[] { GFXUtility.characterAnimationsDirectory, characterName, dirInfo.Name });
                 string saveAs = string.Join("_", new string[] { characterName, dirInfo.Name, subInfo.Name });
 
-                if (GenerateAnimationClip(loadFrom, saveTo, saveAs)) ++numClips;
+                if (attackFrames != null)
+                {
+                    if (GenerateAnimationClip(loadFrom, saveTo + "/startup", saveAs + "_startup", attackFrames.GetStartupIndexes())) ++numClips;
+                    if (GenerateAnimationClip(loadFrom, saveTo + "/active", saveAs + "_active", attackFrames.GetActiveIndexes())) ++numClips;
+                    if (GenerateAnimationClip(loadFrom, saveTo + "/recovery", saveAs + "_recovery", attackFrames.GetRecoveryIndexes())) ++numClips;
+                }
+                else
+                {
+                    if (GenerateAnimationClip(loadFrom, saveTo, saveAs)) ++numClips;
+                }
             }
         }
         return numClips;
@@ -138,10 +150,14 @@ public class AnimationClipGenerator
     /// <param name="loadFrom">Path to animation frame sprites.</param>
     /// <param name="saveTo">Path where the animation clip will be saved.</param>
     /// <param name="saveAs">The name of the clip.</param>
+    /// <param name="fromToFrames">Which frames to take from the loadFrom folder (only relevant for attack animations).</param>
     /// <returns>Whether the clip was generated.</returns>
-    private bool GenerateAnimationClip(string loadFrom, string saveTo, string saveAs)
+    private bool GenerateAnimationClip(string loadFrom, string saveTo, string saveAs, Tuple<int, int> fromToFrames = null)
     {
         Debug.Log("Processing sprites at path " + loadFrom);
+
+        // num of frames to generate from is zero -> don't generate an animation clip
+        if (fromToFrames != null && fromToFrames.Item1 == fromToFrames.Item2) return false;
 
         if (File.Exists(saveTo + "/" + saveAs + ".anim")) return false;
 
@@ -157,7 +173,7 @@ public class AnimationClipGenerator
         AnimationUtility.SetAnimationClipSettings(clip, settings);
 
         // add the sprites
-        bool ret = AddSpriteAnimationCurve(clip, loadFrom);
+        bool ret = AddSpriteAnimationCurve(clip, loadFrom, fromToFrames);
 
         // tint the sprites if relevant
         if (animationProperties.spriteColor != Color.white)
@@ -176,7 +192,7 @@ public class AnimationClipGenerator
         return ret;
     }
 
-    private bool AddSpriteAnimationCurve(AnimationClip clip, string loadFrom)
+    private bool AddSpriteAnimationCurve(AnimationClip clip, string loadFrom, Tuple<int, int> fromToFrames = null)
     {
         // create the binding
         EditorCurveBinding binding = new EditorCurveBinding
@@ -191,6 +207,10 @@ public class AnimationClipGenerator
         {
             Debug.LogError("No sprites at " + loadFrom);
             return false;
+        }
+        if (fromToFrames != null)
+        {
+            sprites = sprites.SubArray<Sprite>(fromToFrames.Item1, fromToFrames.Item2);
         }
 
         // add keyframes
@@ -263,4 +283,25 @@ public class AnimationClipGenerator
     }
 
 
+}
+
+public static class AnimationClipGeneratorExtensions
+{
+    /// <summary>
+    /// Returns a sub-array of the provided array, specified by the given indexes (from - inclusive, to - exclusive).
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="array"></param>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    /// <returns></returns>
+    public static T[] SubArray<T>(this T[] array, int from, int to)
+    {
+        T[] subsetArray = new T[to - from];
+        for (int i = 0; i < subsetArray.Length; i++)
+        {
+            subsetArray[i] = array[i + from];
+        }
+        return subsetArray;
+    }
 }

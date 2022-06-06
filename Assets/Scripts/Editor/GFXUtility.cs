@@ -25,7 +25,6 @@ public static class GFXUtility
             duplicateSingleFrame = false 
         };
 
-
     public static bool IsFolderRelevant(string folderName, Type t)
     {
         if (t.Equals(typeof(EAbility)) || t.Equals(typeof(EDirection)))

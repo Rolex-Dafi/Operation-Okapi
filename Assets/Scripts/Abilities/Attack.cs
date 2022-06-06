@@ -2,10 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum EAttackCommand { Begin, End, NDEF }
-
-public enum EAttackEffect { Click, Spray, Aim } // equivalent to button down, hold, up - for player
-
 /// <summary>
 /// Base wrapper class for all possible attacks.
 /// </summary>
