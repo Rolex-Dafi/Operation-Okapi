@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -22,6 +23,8 @@ public class PlayerInput : MonoBehaviour
         //moveEvent = new UnityEvent<Vector2>();
         InitEvents(ref buttonDownEvents);
         InitEvents(ref buttonUpEvents);
+
+        StartCoroutine(DetectGamepadInput());
     }
 
     private void InitEvents<T>(ref Dictionary<T, UnityEvent<T>> eventDictionary)
@@ -46,8 +49,23 @@ public class PlayerInput : MonoBehaviour
 
         GetInput(ref buttonDownEvents);
         GetInput(ref buttonUpEvents);
+        
+    }
 
-        gamepadConnected = Input.GetJoystickNames().Length > 0;
+    private IEnumerator DetectGamepadInput()
+    {
+        while(true)
+        {
+            // check if any joystick is connected
+            bool connected = false;
+            foreach (string name in Input.GetJoystickNames())
+            {
+                //if any of the joystick names are not empty -> a gamepad is connected
+                connected |= name != "";
+            }
+            gamepadConnected = connected;
+            yield return new WaitForSeconds(2);
+        }
     }
 
     private void GetInput<T>(ref Dictionary<T, UnityEvent<T>> eventDictionary)

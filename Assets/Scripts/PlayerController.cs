@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
             // when using gamepad get direction from movement input - already set in playerCharacter
             direction = playerCharacter.Facing;
 
-            // set target inf front of the player in the direction they're facing
+            // set target in front of the player in the direction they're facing
             targetPosition = transform.position.ToVector2() + direction;
         }
         else

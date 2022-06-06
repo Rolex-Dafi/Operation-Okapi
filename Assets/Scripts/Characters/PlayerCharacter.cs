@@ -61,7 +61,7 @@ public class PlayerCharacter : AggressiveCharacter
         playerController.Aiming = false;
         // hide aiming gfx
         aimingGFX.SetActive(false);
-        // set the target - get it from input mouse position
+        // set the target !
         Vector2 target = playerController.TargetPosition;
         ((RangedAttack)currentAttacks[EAttackButton.Ranged]).Target = target;
     }
