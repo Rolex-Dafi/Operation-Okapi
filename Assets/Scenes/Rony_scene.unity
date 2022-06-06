@@ -484,37 +484,9 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 1991028858}
-    - target: {fileID: 663621966, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
-      propertyPath: m_Lens.OrthographicSize
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 663621967, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 663621967, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 663621967, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1722841500, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
-      propertyPath: m_ScreenX
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1722841500, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
-      propertyPath: m_ScreenY
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 6108388586334052180, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
       propertyPath: m_Name
       value: BaseCamera
-      objectReference: {fileID: 0}
-    - target: {fileID: 6108388586334052183, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
-      propertyPath: orthographic size
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6108388586334052264, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
       propertyPath: m_RootOrder
@@ -2015,31 +1987,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1 &696984927 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6108388586334052180, guid: c10b23f015445ea49bfe4376686157fb, type: 3}
-  m_PrefabInstance: {fileID: 34057800}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &696984932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 696984927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AssetsPPU: 270
-  m_RefResolutionX: 3840
-  m_RefResolutionY: 2160
-  m_UpscaleRT: 0
-  m_PixelSnapping: 0
-  m_CropFrameX: 0
-  m_CropFrameY: 0
-  m_StretchFill: 0
 --- !u!1 &777330652
 GameObject:
   m_ObjectHideFlags: 0
