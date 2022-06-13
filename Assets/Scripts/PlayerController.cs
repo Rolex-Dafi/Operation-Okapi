@@ -27,9 +27,6 @@ public class PlayerController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         playerInput.Init();
 
-        // axis events
-        //playerInput.moveEvent.AddListener(OnMove);
-
         // button down events
         foreach (EButtonDown interaction in Enum.GetValues(typeof(EButtonDown)))
         {

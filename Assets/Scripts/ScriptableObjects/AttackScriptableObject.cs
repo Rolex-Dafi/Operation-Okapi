@@ -5,12 +5,15 @@ using UnityEngine;
 public class AttackScriptableObject : ScriptableObject
 {
     public string attackName;
-    public int attackID;
+    public int id;
 
-    public EAttackButton attackButton; // for player attacks only
-    public EAttackEffect attackEffect;
+    public EAttackButton button; // for player attacks only
+    public EAttackEffect effect;
 
     [Range(1, 10)] public int damage;
+    
+    // min wait time between attacks
+    public float delta;
     [Range(0, 1)] public float movementSpeedFactor = 0;
 
     // for ranged only
@@ -23,26 +26,13 @@ public class AttackScriptableObject : ScriptableObject
     {
         Attack attack = null;
 
-        switch (attackButton)
+        switch (button)
         {
             case EAttackButton.Melee:
-                attack = new MeleeAttack(attackID, character)
-                {
-                    Damage = damage,
-                    AttackEffect = attackEffect,
-                    MovementSpeedFactor = movementSpeedFactor
-                };
+                attack = new MeleeAttack(character, this);
                 break;
             case EAttackButton.Ranged:
-                attack = new AimRangedAttack(attackID, character, projectilePrefab)
-                {
-                    Damage = damage,
-                    AttackEffect = attackEffect,
-                    MovementSpeedFactor = movementSpeedFactor,
-                    ProjectileSpawnerTransform = character.ProjectileSpawnerTransform,
-                    ProjectileSpeed = projectileSpeed,
-                    ProjectileRange = projectileRange
-                };
+                attack = new AimRangedAttack(character, this);
                 break;
             case EAttackButton.Special:
                 break;

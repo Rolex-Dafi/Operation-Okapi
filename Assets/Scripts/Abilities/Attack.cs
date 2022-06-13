@@ -9,29 +9,21 @@ public class Attack
 {
     protected AggressiveCharacter character;
 
-    private int attackID;
-    private int damage;    
-    private float movementSpeedFactor = 0;
-    private EAttackEffect attackEffect;
+    protected AttackScriptableObject data;
 
-    public int AttackID { get => attackID; private set => attackID = value; }
-    public int Damage { get => damage; set => damage = value; }    
-    public float MovementSpeedFactor { get => movementSpeedFactor; set => movementSpeedFactor = value; } // does the character slow down during the attack + how much
-    public EAttackEffect AttackEffect { get => attackEffect; set => attackEffect = value; }
-
-    public Attack(int attackID, AggressiveCharacter character)
+    public Attack(AggressiveCharacter character, AttackScriptableObject data)
     {
         this.character = character;
-        AttackID = attackID;
+        this.data = data;
     }
 
     public virtual void OnBegin()
     {
         // start playing anim
         character.animator.SetTrigger(EAnimationParameter.attack.ToString());
-        character.animator.SetInteger(EAnimationParameter.attackID.ToString(), AttackID);
+        character.animator.SetInteger(EAnimationParameter.attackID.ToString(), data.id);
         // slow down character
-        character.SetMovementSpeed(MovementSpeedFactor);
+        character.SetMovementSpeed(data.movementSpeedFactor);
     }
 
     public virtual void OnContinue()

@@ -22,6 +22,7 @@ public class AggressiveCharacter : Character, IDamagable
     protected Health health;
     protected bool canMove;
     protected List<Attack> attacks;
+    protected Dash dash;
     [SerializeField] private Transform projectileSpawnerTransform;
 
     // events
@@ -73,7 +74,7 @@ public class AggressiveCharacter : Character, IDamagable
         animator.SetFloat(EAnimationParameter.directionY.ToString(), direction.y);
     }
 
-    public virtual void Move(Vector2 move)
+    public void Move(Vector2 move)
     {
         if (move != Vector2.zero) Facing = move;
 
@@ -96,9 +97,17 @@ public class AggressiveCharacter : Character, IDamagable
         rb.AddForce(direction * 1500);
     }
 
-    public void Attack()
+    public void Attack(Attack attack, EAttackCommand attackCommand)
     {
-
+        switch (attackCommand)
+        {
+            case EAttackCommand.Begin:
+                attack.OnBegin();
+                break;
+            case EAttackCommand.End:
+                attack.OnEnd();
+                break;
+        }
     }
 
     public void TakeDamage(int amount)

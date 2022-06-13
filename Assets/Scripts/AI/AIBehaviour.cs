@@ -10,8 +10,8 @@ public class AIBehaviour : MonoBehaviour
     public Transform[] patrollPoints;
 
 
-    // fox this hack later
-    private AIController aiController;
+    // fix this hack later
+    private AIPathing aiPathing;
 
     private EAIState currentState;
 
@@ -20,8 +20,7 @@ public class AIBehaviour : MonoBehaviour
 
     private void Start()
     {
-        aiController = GetComponent<AIController>();
-        aiController.onDestinationReached.AddListener(PatrollPointReached);
+        aiPathing = GetComponent<AIPathing>();
 
         currentState = EAIState.Patrolling;
     }
@@ -49,7 +48,7 @@ public class AIBehaviour : MonoBehaviour
         if (movingToNextPatrolPoint) return;
 
         Debug.Log("Moving to patroll point " + nextPatrollPoint);
-        aiController.MoveTo(patrollPoints[nextPatrollPoint]);
+        aiPathing.MoveTo(patrollPoints[nextPatrollPoint], PatrollPointReached);
         movingToNextPatrolPoint = true;
     }
 

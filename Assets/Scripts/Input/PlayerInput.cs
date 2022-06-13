@@ -12,7 +12,6 @@ public class PlayerInput : MonoBehaviour
     [HideInInspector] public Vector2 movement;
     [HideInInspector] public Vector2 mousePosition;
 
-    //[HideInInspector] public UnityEvent<Vector2> moveEvent;
     public Dictionary<EButtonDown, UnityEvent<EButtonDown>> buttonDownEvents;
     public Dictionary<EButtonUp, UnityEvent<EButtonUp>> buttonUpEvents;
 
@@ -20,7 +19,6 @@ public class PlayerInput : MonoBehaviour
 
     public void Init()
     {
-        //moveEvent = new UnityEvent<Vector2>();
         InitEvents(ref buttonDownEvents);
         InitEvents(ref buttonUpEvents);
 
@@ -42,11 +40,6 @@ public class PlayerInput : MonoBehaviour
 
         mousePosition = Input.mousePosition;
 
-        /*moveEvent.Invoke(new Vector2(
-            Input.GetAxis(EAxis.Horizontal.ToString()), 
-            Input.GetAxis(EAxis.Vertical.ToString())
-        ));*/
-
         GetInput(ref buttonDownEvents);
         GetInput(ref buttonUpEvents);
         
@@ -64,6 +57,8 @@ public class PlayerInput : MonoBehaviour
                 connected |= name != "";
             }
             gamepadConnected = connected;
+
+            // check every 2 seconds
             yield return new WaitForSeconds(2);
         }
     }

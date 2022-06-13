@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: RangedAttackData
   m_EditorClassIdentifier: 
   attackName: Ranged
-  attackID: 1
-  attackButton: 1
-  attackEffect: 2
+  id: 1
+  button: 1
+  effect: 2
   damage: 1
   movementSpeedFactor: 0
   projectilePrefab: {fileID: 4754095188408049542, guid: 5c61aeab842b3c545a391ffb9482a26b, type: 3}

@@ -34,7 +34,6 @@ public class AnimatorGenerator
 {
     private string characterName;
     private readonly string redirection = "redirection";
-    private readonly string startup = "startup";
 
     public AnimatorGenerator(string characterName)
     {

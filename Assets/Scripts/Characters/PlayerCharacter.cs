@@ -68,15 +68,7 @@ public class PlayerCharacter : AggressiveCharacter
 
     public void Attack(EAttackButton attackButton, EAttackCommand command)
     {
-        switch (command)
-        {
-            case EAttackCommand.Begin:
-                currentAttacks[attackButton]?.OnBegin();
-                break;
-            case EAttackCommand.End:
-                currentAttacks[attackButton]?.OnEnd();
-                break;
-        }
+        if (currentAttacks[attackButton] != null) Attack(currentAttacks[attackButton], command);
     }
 
 
