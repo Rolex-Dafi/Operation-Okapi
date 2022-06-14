@@ -13,13 +13,14 @@ public class Character : MonoBehaviour
     // inventory/drops
 
     // components
-    [HideInInspector] public Animator animator;
+    [HideInInspector] protected Animator animator;
 
+    public Animator Animator { get => animator; set => animator = value; }
 
     protected void Init(int startingMoney = 0)
     {
         money = new Money(startingMoney);
-        animator = GetComponent<Animator>();
+        Animator = GetComponent<Animator>();
     }
 
 }

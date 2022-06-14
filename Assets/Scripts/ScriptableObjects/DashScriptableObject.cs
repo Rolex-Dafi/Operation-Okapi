@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AttackData", menuName = "ScriptableObjects/AttackScriptableObject")]
+[CreateAssetMenu(fileName = "DashData", menuName = "ScriptableObjects/DashScriptableObject")]
 public class DashScriptableObject : ScriptableObject
 {
     // maximum distance of the dash - in Unity units

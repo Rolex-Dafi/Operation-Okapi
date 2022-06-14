@@ -273,8 +273,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b8712999c7ea944980000d6130915f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
   attackScriptableObjects: []
+  dashScriptableObject: {fileID: 11400000, guid: 4c560f02b7fcc884697340bbfbcb18e0, type: 2}
   movementSpeed: 0.5
   projectileSpawnerTransform: {fileID: 1045408380506308069}
   onDeath:

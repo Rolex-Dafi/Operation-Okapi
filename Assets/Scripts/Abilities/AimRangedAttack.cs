@@ -21,7 +21,7 @@ public class AimRangedAttack : RangedAttack
 
     public override void OnEnd()
     {
-        character.animator.SetTrigger(EAnimationParameter.attackReleased.ToString());
+        character.Animator.SetTrigger(EAnimationParameter.attackReleased.ToString());
         character.StopAiming();
 
         SpawnProjectile();

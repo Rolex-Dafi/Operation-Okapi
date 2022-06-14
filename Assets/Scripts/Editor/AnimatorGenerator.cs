@@ -118,8 +118,8 @@ public class AnimatorGenerator
         rangedStartupState.AddStateMachineBehaviour<AttackStateMachine>();
 
         // dash
-        AddTriggerTransition(states[EAbility.idle], states[EAbility.dash], stateMachines[EStateMachine.move], EAnimationParameter.dash.ToString());
-        AddTriggerTransition(states[EAbility.walk], states[EAbility.dash], stateMachines[EStateMachine.move], EAnimationParameter.dash.ToString());
+        AddBoolTransition(states[EAbility.idle], states[EAbility.dash], stateMachines[EStateMachine.move], EAnimationParameter.dashing.ToString());
+        AddBoolTransition(states[EAbility.walk], states[EAbility.dash], stateMachines[EStateMachine.move], EAnimationParameter.dashing.ToString());
 
         // hit and death
         AddAnyTriggerTransition(stateMachines[EStateMachine.root], states[EAbility.hit], 
@@ -158,6 +158,16 @@ public class AnimatorGenerator
             transition = to.AddTransition(returnTo);
             SetUpTransitionProperties(transition, true);
         }
+    }
+
+    private void AddBoolTransition(AnimatorState from, AnimatorState to, AnimatorStateMachine returnTo, string boolean)
+    {
+        AnimatorStateTransition transition = from.AddTransition(to);
+        transition.AddCondition(AnimatorConditionMode.If, 0, boolean);
+        SetUpTransitionProperties(transition);
+        transition = to.AddTransition(returnTo);
+        transition.AddCondition(AnimatorConditionMode.IfNot, 0, boolean);
+        SetUpTransitionProperties(transition, true);
     }
 
     private void AddTriggerTransition(AnimatorState from, AnimatorState to, AnimatorStateMachine returnTo, string trigger)

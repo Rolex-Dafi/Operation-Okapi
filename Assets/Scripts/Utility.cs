@@ -41,7 +41,7 @@ public enum EStateMachine
 
 public enum EAnimationParameter
 {
-    directionX, directionY, speed, dash, hit, death, attack, attackReleased, attackID
+    directionX, directionY, speed, dashing, hit, death, attack, attackReleased, attackID
 }
 
 // Structs
@@ -113,6 +113,8 @@ public static class Extenstions
                 return AnimatorControllerParameterType.Float;
             case EAnimationParameter.attackID:
                 return AnimatorControllerParameterType.Int;
+            case EAnimationParameter.dashing:
+                return AnimatorControllerParameterType.Bool;
             default:
                 return AnimatorControllerParameterType.Trigger;
         }

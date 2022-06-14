@@ -12,6 +12,7 @@ public class AggressiveCharacter : Character, IDamagable
 {
     // scriptable objects
     [SerializeField] private AttackScriptableObject[] attackScriptableObjects;
+    [SerializeField] private DashScriptableObject dashScriptableObject;
 
     // movement
     [SerializeField] protected float movementSpeed;
@@ -32,11 +33,12 @@ public class AggressiveCharacter : Character, IDamagable
     protected Rigidbody2D rb;
     protected CircleCollider2D col;
 
+    // vars exposed to other classes
     public Transform ProjectileSpawnerTransform { get => projectileSpawnerTransform; }
-
     // character rotation in Cartesian coordinates
     public Vector2 Facing { get => facing; protected set => facing = value; }
     public float ColliderRadius { get => col.radius; }
+    public Rigidbody2D RB { get => rb; protected set => rb = value; }
 
     public void Init(int startingHealth, int startingMoney)
     {
@@ -51,8 +53,9 @@ public class AggressiveCharacter : Character, IDamagable
             Attack attack = scriptableObject.GetAttack(this);
             if (attack != null) attacks.Add(attack);
         }
+        dash = dashScriptableObject.GetDash(this);
 
-        rb = GetComponent<Rigidbody2D>();
+        RB = GetComponent<Rigidbody2D>();
         col = GetComponent<CircleCollider2D>();
 
         canMove = true;
@@ -70,31 +73,33 @@ public class AggressiveCharacter : Character, IDamagable
     public void Rotate(Vector2 direction)
     {
         Facing = direction;
-        animator.SetFloat(EAnimationParameter.directionX.ToString(), direction.x);
-        animator.SetFloat(EAnimationParameter.directionY.ToString(), direction.y);
+        Animator.SetFloat(EAnimationParameter.directionX.ToString(), direction.x);
+        Animator.SetFloat(EAnimationParameter.directionY.ToString(), direction.y);
     }
 
     public void Move(Vector2 move)
     {
         if (move != Vector2.zero) Facing = move;
 
-        if (!canMove) return;
+        if (!canMove || dash.CurrentlyDashing) return;
 
         // moving in isometric coordinates !
-        rb.MovePosition(rb.position + move.CartesianToIsometric().normalized * Time.fixedDeltaTime * currentSpeed);
+        RB.MovePosition(RB.position + move.CartesianToIsometric().normalized * Time.fixedDeltaTime * currentSpeed);
 
         // animator in cartesian
-        animator.SetFloat(EAnimationParameter.speed.ToString(), move.sqrMagnitude);
+        Animator.SetFloat(EAnimationParameter.speed.ToString(), move.sqrMagnitude);
     }
 
     public void Dash()
     {
         if (!canMove) return;
 
-        animator.SetTrigger(EAnimationParameter.dash.ToString());
+        dash.OnBegin();
+
+        //Animator.SetTrigger(EAnimationParameter.dash.ToString());
         // dash in isometric coordinates !
-        Vector2 direction = Facing.CartesianToIsometric().normalized;
-        rb.AddForce(direction * 1500);
+        //Vector2 direction = Facing.CartesianToIsometric().normalized;
+        //RB.AddForce(direction * 1500);
     }
 
     public void Attack(Attack attack, EAttackCommand attackCommand)
@@ -112,14 +117,14 @@ public class AggressiveCharacter : Character, IDamagable
 
     public void TakeDamage(int amount)
     {
-        animator.SetTrigger(EAnimationParameter.hit.ToString());
+        Animator.SetTrigger(EAnimationParameter.hit.ToString());
         int current = health.ChangeCurrent(-amount);
         if (current == 0) Die();
     }
 
     public void Die()
     {
-        animator.SetTrigger(EAnimationParameter.death.ToString());
+        Animator.SetTrigger(EAnimationParameter.death.ToString());
         onDeath.Invoke();
         Destroy(gameObject);
     }

@@ -20,8 +20,8 @@ public class Attack
     public virtual void OnBegin()
     {
         // start playing anim
-        character.animator.SetTrigger(EAnimationParameter.attack.ToString());
-        character.animator.SetInteger(EAnimationParameter.attackID.ToString(), data.id);
+        character.Animator.SetTrigger(EAnimationParameter.attack.ToString());
+        character.Animator.SetInteger(EAnimationParameter.attackID.ToString(), data.id);
         // slow down character
         character.SetMovementSpeed(data.movementSpeedFactor);
     }
