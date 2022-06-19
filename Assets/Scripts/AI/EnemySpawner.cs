@@ -26,8 +26,10 @@ public class EnemySpawner : MonoBehaviour
     {
         enemyAlive = true;
         AggressiveCharacter enemyInstance = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+        // TODO change this to initialization from a scriptable object
+        enemyInstance.Init(5, 1);
         enemyInstance.onDeath.AddListener(CleanUpEnemy);
-        enemyInstance.GetComponent<AIBehaviour>().patrollPoints = patrollPoints;
+        enemyInstance.GetComponent<PatrollBT>().patrollPoints = patrollPoints;
         Debug.Log("enemy spawning finished");
     }
 

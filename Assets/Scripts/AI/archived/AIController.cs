@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AIBehaviour), typeof(AIPathing), typeof(AggressiveCharacter))]
+[RequireComponent(typeof(AggressiveCharacter))]
 public class AIController : MonoBehaviour
 {
     // required components

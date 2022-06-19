@@ -38,6 +38,11 @@ public class AIPathing : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="onDestinationReached"></param>
     public void MoveTo(Transform target, UnityAction onDestinationReached)
     {
         if (currentlyMoving) return;
