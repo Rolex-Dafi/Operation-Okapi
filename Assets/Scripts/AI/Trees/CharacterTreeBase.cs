@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Seeker), typeof(AggressiveCharacter))]
-public abstract class BTTreeBase : TreeBase
+public abstract class CharacterTreeBase : TreeBase
 {
     // required components
     private AggressiveCharacter character;

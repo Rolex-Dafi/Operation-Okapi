@@ -2,7 +2,7 @@ using BehaviourTree;
 using Pathfinding;
 using UnityEngine;
 
-public class WalkToTarget : BTTaskBase
+public class WalkToTarget : TaskBase
 {
     private Vector3 target;
     private Path currentPath;
@@ -10,7 +10,7 @@ public class WalkToTarget : BTTaskBase
     private int nextWaypoint = 0;
     private bool currentlyMoving = false;
 
-    public WalkToTarget(BTTreeBase characterBT, Vector3 target) : base(characterBT) 
+    public WalkToTarget(CharacterTreeBase characterBT, Vector3 target) : base(characterBT) 
     {
         this.target = target;
     }

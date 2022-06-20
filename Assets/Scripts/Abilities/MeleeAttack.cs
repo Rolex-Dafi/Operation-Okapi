@@ -4,6 +4,17 @@
 /// </summary>
 public class MeleeAttack : Attack
 {
-    public MeleeAttack(AggressiveCharacter character, AttackScriptableObject data) : base(character, data) { }
+    private HitBoxController hitBoxController;
+
+    public MeleeAttack(AggressiveCharacter character, AttackScriptableObject data) : base(character, data) 
+    {
+        hitBoxController = character.GetComponentInChildren<HitBoxController>();
+    }
+
+    public override void OnBegin()
+    {
+        base.OnBegin();
+        hitBoxController.Init(data.damage);
+    }
 
 }

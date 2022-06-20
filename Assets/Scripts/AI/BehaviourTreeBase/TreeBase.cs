@@ -25,7 +25,7 @@ namespace BehaviourTree
         /// <summary>
         /// Initiate every tree in this method - called from Start.
         /// </summary>
-        protected abstract void Init();
+        protected abstract void Init(TreeBase rootTree = null);
 
 
     }

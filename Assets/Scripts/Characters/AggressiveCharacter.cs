@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -69,7 +70,7 @@ public class AggressiveCharacter : Character, IDamagable
     /// <summary>
     /// Sets character to face in the given direction.
     /// </summary>
-    /// <param name="direction"></param>
+    /// <param name="direction">The direction to look in. Expects a normalized vector.</param>
     public void Rotate(Vector2 direction)
     {
         Facing = direction;
@@ -95,12 +96,8 @@ public class AggressiveCharacter : Character, IDamagable
         if (!canMove) return;
 
         dash.OnBegin();
-
-        //Animator.SetTrigger(EAnimationParameter.dash.ToString());
-        // dash in isometric coordinates !
-        //Vector2 direction = Facing.CartesianToIsometric().normalized;
-        //RB.AddForce(direction * 1500);
     }
+
 
     public void Attack(Attack attack, EAttackCommand attackCommand)
     {
@@ -113,6 +110,42 @@ public class AggressiveCharacter : Character, IDamagable
                 attack.OnEnd();
                 break;
         }
+    }
+
+    /// <summary>
+    /// Tries to find a melee attack and performs the first one it finds.
+    /// </summary>
+    /// <param name="attackCommand"></param>
+    /// <returns>Whether an attack was performed.</returns>
+    public bool MeleeAttack(EAttackCommand attackCommand = EAttackCommand.Begin)
+    {
+        MeleeAttack attack = attacks.OfType<MeleeAttack>().ToArray()[0];
+
+        if (attack != null)
+        {
+            Attack(attack, attackCommand);
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Tries to find a ranged attack and performs the first one it finds.
+    /// </summary>
+    /// <param name="attackCommand"></param>
+    /// <returns>Whether an attack was performed.</returns>
+    public bool RangedAttack(EAttackCommand attackCommand = EAttackCommand.Begin)
+    {
+        RangedAttack attack = attacks.OfType<RangedAttack>().ToArray()[0];
+
+        if (attack != null)
+        {
+            Attack(attack, attackCommand);
+            return true;
+        }
+
+        return false;
     }
 
     public void TakeDamage(int amount)

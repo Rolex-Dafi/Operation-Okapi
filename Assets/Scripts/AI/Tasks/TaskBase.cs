@@ -5,13 +5,13 @@ using UnityEngine;
 using BehaviourTree;
 using UnityEngine.Events;
 
-public abstract class BTTaskBase : Leaf
+public abstract class TaskBase : Leaf
 {
-    protected BTTreeBase bt;
+    protected CharacterTreeBase bt;
 
     private bool taskInProgress = false;
 
-    protected BTTaskBase(BTTreeBase characterBT) : base()
+    protected TaskBase(CharacterTreeBase characterBT) : base()
     {
         bt = characterBT;
     }

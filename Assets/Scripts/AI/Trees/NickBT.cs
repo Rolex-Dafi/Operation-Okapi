@@ -1,9 +1,10 @@
 
-public class NickBT : BTTreeBase
+using BehaviourTree;
+
+public class NickBT : CharacterTreeBase
 {
-
-    protected override void Init()
+    protected override void Init(TreeBase rootTree = null)
     {
+        throw new System.NotImplementedException();
     }
-
 }

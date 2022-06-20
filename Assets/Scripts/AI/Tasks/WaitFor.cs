@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class WaitFor : BTTaskBase
+public class WaitFor : TaskBase
 {
     private float waitFor;
 
     private float timePassed;
 
-    public WaitFor(BTTreeBase characterBT, float waitFor) : base(characterBT)
+    public WaitFor(CharacterTreeBase characterBT, float waitFor) : base(characterBT)
     {
         this.waitFor = waitFor;
     }
