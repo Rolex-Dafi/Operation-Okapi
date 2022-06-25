@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 234bfb322fb28bf4caf25fd5076c35dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterData: {fileID: 11400000, guid: 8641d6f11f584264d81eed7bc0e4c627, type: 2}
   attackScriptableObjects:
   - {fileID: 11400000, guid: cbd89847babe681479fc676aa8b37823, type: 2}
   - {fileID: 11400000, guid: 5329dc980c59b8948bed671ec6720e39, type: 2}

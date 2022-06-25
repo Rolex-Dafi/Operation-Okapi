@@ -21,7 +21,7 @@ public class DashScriptableObject : ScriptableObject
     // etc.
     [Range(1, 7)] public int maxNumChained;
 
-    public Dash GetDash(AggressiveCharacter character)
+    public Dash GetDash(CombatCharacter character)
     {
         return new Dash(character, this);
     }

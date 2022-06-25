@@ -7,11 +7,13 @@ using UnityEngine.Events;
 /// </summary>
 public class Attack
 {
-    protected AggressiveCharacter character;
+    protected CombatCharacter character;
 
     protected AttackScriptableObject data;
 
-    public Attack(AggressiveCharacter character, AttackScriptableObject data)
+    public AttackScriptableObject Data { get => data; protected set => data = value; }
+
+    public Attack(CombatCharacter character, AttackScriptableObject data)
     {
         this.character = character;
         this.data = data;

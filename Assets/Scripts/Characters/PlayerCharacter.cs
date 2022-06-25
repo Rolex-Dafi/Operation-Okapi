@@ -5,17 +5,22 @@ using UnityEngine;
 /// <summary>
 /// Handles player movement and combat - both animation and physics.
 /// </summary>
-public class PlayerCharacter : AggressiveCharacter
+public class PlayerCharacter : CombatCharacter
 {
+    private Respect respect;
+
     private Dictionary<EAttackButton, Attack> currentAttacks;
 
     private PlayerController playerController;
 
     [SerializeField] private GameObject aimingGFX;
 
-    public void Init()
+    public Respect Respect { get => respect; private set => respect = value; }
+
+    public override void Init()
     {
-        Init(3, 0);
+        base.Init();
+        Respect = new Respect(characterData.respect);
 
         // init attacks
         MeleeAttack melee = attacks.OfType<MeleeAttack>().ToArray()[0];
@@ -68,7 +73,32 @@ public class PlayerCharacter : AggressiveCharacter
 
     public void Attack(EAttackButton attackButton, EAttackCommand command)
     {
-        if (currentAttacks[attackButton] != null) Attack(currentAttacks[attackButton], command);
+        if (currentAttacks[attackButton] != null)
+        {
+            int attackCost = currentAttacks[attackButton].Data.cost;
+
+            // not enought money to perform the attack
+            if (money.GetCurrent() < attackCost) return;
+
+            // only decrease money when ending the attack
+            if (command == EAttackCommand.End)
+            {
+                money.AddToCurrent(-attackCost);
+            }
+
+            Attack(currentAttacks[attackButton], command);
+        }
+    }
+
+    public void Collect(int amount)
+    {
+        // so far only money
+        money.AddToCurrent(amount);
+    }
+
+    private void OnDestroy()
+    {
+        respect.CleanUp();
     }
 
 

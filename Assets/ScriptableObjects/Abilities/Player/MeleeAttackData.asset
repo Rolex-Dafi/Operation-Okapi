@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: MeleeAttackData
   m_EditorClassIdentifier: 
   attackName: Melee
-  attackID: 0
-  attackButton: 0
-  attackEffect: 0
+  id: 0
+  button: 0
+  effect: 0
   damage: 2
+  cost: 0
+  delta: 0
   movementSpeedFactor: 0.2
   projectilePrefab: {fileID: 0}
+  projectileSpeed: 100
+  projectileRange: 5

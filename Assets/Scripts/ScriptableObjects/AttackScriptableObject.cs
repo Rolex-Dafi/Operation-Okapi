@@ -11,6 +11,8 @@ public class AttackScriptableObject : ScriptableObject
     public EAttackEffect effect;
 
     [Range(1, 10)] public int damage;
+
+    [Range(0, 10)] public int cost; // for player attacks only, enemies should (?) have unlimited attacks
     
     // min wait time between attacks
     public float delta;
@@ -22,7 +24,7 @@ public class AttackScriptableObject : ScriptableObject
     [Range(1, 10)] public float projectileRange = 5; // in Unity units
 
     // TODO - return more attack classes, after they're designed and I create them
-    public Attack GetAttack(AggressiveCharacter character)
+    public Attack GetAttack(CombatCharacter character)
     {
         Attack attack = null;
 

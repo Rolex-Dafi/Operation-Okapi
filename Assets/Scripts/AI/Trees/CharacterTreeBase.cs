@@ -4,20 +4,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Seeker), typeof(AggressiveCharacter))]
+[RequireComponent(typeof(Seeker), typeof(CombatCharacter))]
 public abstract class CharacterTreeBase : TreeBase
 {
     // required components
-    private AggressiveCharacter character;
+    private CombatCharacter character;
     private Seeker seeker; // for pathfinding
 
-    public AggressiveCharacter Character { get => character; private set => character = value; }
+    public CombatCharacter Character { get => character; private set => character = value; }
     public Seeker Seeker { get => seeker; private set => seeker = value; }
 
     private void Start()
     {
         Init();
-        Character = GetComponent<AggressiveCharacter>();
+        Character = GetComponent<CombatCharacter>();
         Seeker = GetComponent<Seeker>();
     }
 }

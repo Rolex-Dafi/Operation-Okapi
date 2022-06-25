@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Dash
 {
-    private AggressiveCharacter character;
+    private CombatCharacter character;
 
     private DashScriptableObject data;
 
@@ -13,7 +13,7 @@ public class Dash
     private bool currentlyDashing;
     public bool CurrentlyDashing { get => currentlyDashing; private set => currentlyDashing = value; }
 
-    public Dash(AggressiveCharacter character, DashScriptableObject data)
+    public Dash(CombatCharacter character, DashScriptableObject data)
     {
         this.character = character;
         this.data = data;

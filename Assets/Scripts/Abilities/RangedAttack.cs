@@ -9,7 +9,7 @@ public class RangedAttack : Attack
 
     public Vector2 Target { get => target; set => target = value; }
 
-    public RangedAttack(AggressiveCharacter character, AttackScriptableObject data) : base(character , data) { }
+    public RangedAttack(CombatCharacter character, AttackScriptableObject data) : base(character , data) { }
 
 
     protected void SpawnProjectile()

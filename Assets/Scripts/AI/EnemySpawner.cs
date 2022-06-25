@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private AggressiveCharacter enemyPrefab;
+    [SerializeField] private EnemyCharacter enemyPrefab;
 
+    // UI
+    [SerializeField] private Canvas worldSpaceCanvas;
+    [SerializeField] private ResourceUI healthBarPrefab;
+    private ResourceUI healthBarInstance;
+
+    // Navigation
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Transform[] patrollPoints;
 
     private bool enemyAlive = false;
-
-
-    void Start()
-    {
-        SpawnEnemy();
-    }
 
     void Update()
     {
@@ -24,19 +24,26 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        enemyAlive = true;
-        AggressiveCharacter enemyInstance = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
-        // TODO change this to initialization from a scriptable object
-        enemyInstance.Init(5, 1);
+        EnemyCharacter enemyInstance = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+        enemyInstance.Init();
         enemyInstance.onDeath.AddListener(CleanUpEnemy);
+
+        // UI
+        healthBarInstance = Instantiate(healthBarPrefab, worldSpaceCanvas.transform);
+        healthBarInstance.Init(enemyInstance.Health);
+        healthBarInstance.GetComponent<FollowTarget>().Init(enemyInstance.transform);
+
+        // Navigation
         enemyInstance.GetComponent<PatrollBT>().patrollPoints = patrollPoints;
-        Debug.Log("enemy spawning finished");
+
+        enemyAlive = true;
     }
 
     private void CleanUpEnemy()
     {
+        Destroy(healthBarInstance.gameObject);
+
         enemyAlive = false;
-        Debug.Log("enemy cleanup finished");
 
     }
 }
