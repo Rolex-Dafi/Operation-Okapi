@@ -7,6 +7,9 @@ using UnityEngine;
 /// </summary>
 public class Character : MonoBehaviour
 {
+    // scriptable objects
+    [SerializeField] protected CharacterSO characterData;
+
     // resources
     protected Money money;
 
@@ -15,12 +18,21 @@ public class Character : MonoBehaviour
     // components
     [HideInInspector] protected Animator animator;
 
+    // exposed vars
     public Animator Animator { get => animator; set => animator = value; }
+    public Money Money { get => money; protected set => money = value; }
+    public CharacterSO CharacterData { get => characterData; protected set => characterData = value; }
 
-    protected void Init(int startingMoney = 0)
+
+    public virtual void Init()
     {
-        money = new Money(startingMoney);
+        Money = new Money(characterData.money);
         Animator = GetComponent<Animator>();
+    }
+
+    private void OnDestroy()
+    {
+        money.CleanUp();
     }
 
 }

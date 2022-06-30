@@ -1,21 +1,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Handles player movement and combat - both animation and physics.
 /// </summary>
-public class PlayerCharacter : AggressiveCharacter
+public class PlayerCharacter : CombatCharacter
 {
+    private Respect respect;
+
     private Dictionary<EAttackButton, Attack> currentAttacks;
 
     private PlayerController playerController;
 
     [SerializeField] private GameObject aimingGFX;
 
-    public void Init()
+    public Respect Respect { get => respect; private set => respect = value; }
+
+    public override void Init()
     {
-        Init(3, 0);
+        base.Init();
+        Respect = new Respect(characterData.respect);
 
         // init attacks
         MeleeAttack melee = attacks.OfType<MeleeAttack>().ToArray()[0];
@@ -61,14 +67,39 @@ public class PlayerCharacter : AggressiveCharacter
         playerController.Aiming = false;
         // hide aiming gfx
         aimingGFX.SetActive(false);
-        // set the target !
-        Vector2 target = playerController.TargetPosition;
-        ((RangedAttack)currentAttacks[EAttackButton.Ranged]).Target = target;
     }
 
     public void Attack(EAttackButton attackButton, EAttackCommand command)
     {
-        if (currentAttacks[attackButton] != null) Attack(currentAttacks[attackButton], command);
+        if (currentAttacks[attackButton] != null)
+        {
+            int attackCost = currentAttacks[attackButton].Data.cost;
+
+            // not enought money to perform the attack
+            if (money.GetCurrent() < attackCost) return;
+
+            // only decrease money when ending the attack
+            if (command == EAttackCommand.End)
+            {
+                money.AddToCurrent(-attackCost);
+            }
+
+            Attack(currentAttacks[attackButton], command);
+        }
+    }
+
+    public void Collect(int amount)
+    {
+        // so far only money
+        money.AddToCurrent(amount);
+    }
+
+    private void OnDestroy()
+    {
+        respect.CleanUp();
+        // TODO change this
+        // reload the scene after player dies
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
 

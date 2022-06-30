@@ -26,7 +26,14 @@ public class Resource
 
     public int GetMax() => maxValue;
 
-    public int ChangeCurrent(int value)
+    public bool IsMaxed() => currentValue == maxValue;
+
+    /// <summary>
+    /// Adds the specified value to the current value of this resource, taking into account the min and max values of this resource.
+    /// </summary>
+    /// <param name="value">The value to add.</param>
+    /// <returns></returns>
+    public int AddToCurrent(int value)
     {
         currentValue += value;
         currentValue = currentValue < 0 ? 0 : currentValue > maxValue ? maxValue : currentValue;
@@ -39,6 +46,12 @@ public class Resource
         maxValue = value >= 0 ? value : 0;
         onChangedMax.Invoke(maxValue);
         return maxValue;
+    }
+
+    public void CleanUp()
+    {
+        onChangedCurrent.RemoveAllListeners();
+        onChangedMax.RemoveAllListeners();
     }
 
 }
