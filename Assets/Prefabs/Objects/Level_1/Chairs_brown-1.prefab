@@ -73,12 +73,12 @@ SpriteRenderer:
   m_SortingLayerID: 308386233
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6bf3af2a742bbe942ae39d096c7df785, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ed3ed93f8469c7541bc45bf500e6b57e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.69814813, y: 0.7962963}
+  m_Size: {x: 1.0777777, y: 0.83518517}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -100,12 +100,12 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -0.2557311, y: 0.11870834}
-  - {x: -0.06976473, y: 0.0037477016}
-  - {x: 0.19709933, y: 0.056175172}
-  - {x: 0.20474237, y: 0.21072882}
-  - {x: -0.085395694, y: 0.2602023}
-  - {x: -0.25980866, y: 0.11870831}
+  - {x: -0.2408213, y: 0.027119428}
+  - {x: -0.10597432, y: -0.08571112}
+  - {x: 0.18218946, y: -0.048193514}
+  - {x: 0.18131268, y: 0.09784025}
+  - {x: -0.057706, y: 0.13879377}
+  - {x: -0.23850894, y: 0.024989486}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -181,12 +181,12 @@ SpriteRenderer:
   m_SortingLayerID: 1906748809
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8beab03fe9717e2468cc11b5aa5081fe, type: 3}
+  m_Sprite: {fileID: 21300000, guid: da625e10ff3f8df45a6673480ea27ecf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.7058824}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.69814813, y: 0.7962963}
+  m_Size: {x: 1.0777777, y: 0.83518517}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

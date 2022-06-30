@@ -9,12 +9,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1678117210744168492, guid: b01b39ed3b1cd754fbb05ba31e647716, type: 3}
       propertyPath: m_Name
-      value: Chairs_brown-2
+      value: Chairs_brown-3
       objectReference: {fileID: 0}
     - target: {fileID: 1678117210744168494, guid: b01b39ed3b1cd754fbb05ba31e647716, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: d8054b423dc7b6a4e9411076524e7099, type: 3}
+      objectReference: {fileID: 21300000, guid: 3bec03598103b1b4b97f86c23225a2a0, type: 3}
     - target: {fileID: 1678117210744168495, guid: b01b39ed3b1cd754fbb05ba31e647716, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -62,6 +62,6 @@ PrefabInstance:
     - target: {fileID: 5382831857089604123, guid: b01b39ed3b1cd754fbb05ba31e647716, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 1877d026cb31b8e46a5406b88c88b69d, type: 3}
+      objectReference: {fileID: 21300000, guid: 422384d4b7287a141a30d63ba5a91eeb, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b01b39ed3b1cd754fbb05ba31e647716, type: 3}
