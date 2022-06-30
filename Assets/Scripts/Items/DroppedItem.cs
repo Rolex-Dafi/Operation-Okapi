@@ -15,7 +15,7 @@ public class DroppedItem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag(Utility.playerTag))
         {
             // check if we're colliding with the player character specifically (not the hit box or a projectile)
             if (collision.TryGetComponent<PlayerCharacter>(out var character))

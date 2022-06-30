@@ -3,13 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PatrollBT))]
+[RequireComponent(typeof(PatrollBT), typeof(RangedAttackBT))]
 public class DummyBT : CharacterTreeBase
 {
-
-    protected override void Init(TreeBase rootTree = null)
+    protected override void Init()
     {
-        Root = GetComponent<PatrollBT>().Root;
+        Root = new Selector(
+            new List<Node> {
+                GetComponent<RangedAttackBT>().Root,
+                GetComponent<PatrollBT>().Root
+            });
+
     }
 
 }

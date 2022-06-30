@@ -6,14 +6,14 @@ public class Dash
 {
     private CombatCharacter character;
 
-    private DashScriptableObject data;
+    private DashSO data;
 
     private float lastTimeUsed;
     private int numUsedInChain;
     private bool currentlyDashing;
     public bool CurrentlyDashing { get => currentlyDashing; private set => currentlyDashing = value; }
 
-    public Dash(CombatCharacter character, DashScriptableObject data)
+    public Dash(CombatCharacter character, DashSO data)
     {
         this.character = character;
         this.data = data;

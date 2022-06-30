@@ -3,7 +3,7 @@ using BehaviourTree;
 
 public class NickBT : CharacterTreeBase
 {
-    protected override void Init(TreeBase rootTree = null)
+    protected override void Init()
     {
         throw new System.NotImplementedException();
     }

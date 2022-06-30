@@ -2833,6 +2833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3225906053a27654788ebfe78a24e4ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hideWhenFull: 0
 --- !u!222 &1690388383
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3153,6 +3154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3225906053a27654788ebfe78a24e4ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hideWhenFull: 0
 --- !u!1 &1925993673
 GameObject:
   m_ObjectHideFlags: 0

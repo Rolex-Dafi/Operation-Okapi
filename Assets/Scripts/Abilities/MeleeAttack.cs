@@ -6,7 +6,7 @@ public class MeleeAttack : Attack
 {
     private HitBoxController hitBoxController;
 
-    public MeleeAttack(CombatCharacter character, AttackScriptableObject data) : base(character, data) 
+    public MeleeAttack(CombatCharacter character, AttackSO data) : base(character, data) 
     {
         hitBoxController = character.GetComponentInChildren<HitBoxController>();
     }

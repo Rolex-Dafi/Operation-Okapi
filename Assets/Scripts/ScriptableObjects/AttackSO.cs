@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AttackData", menuName = "ScriptableObjects/AttackScriptableObject")]
-public class AttackScriptableObject : ScriptableObject
+[CreateAssetMenu(fileName = "AttackData", menuName = "ScriptableObjects/Attack")]
+public class AttackSO : ScriptableObject
 {
     public string attackName;
     public int id;
@@ -15,7 +15,9 @@ public class AttackScriptableObject : ScriptableObject
     [Range(0, 10)] public int cost; // for player attacks only, enemies should (?) have unlimited attacks
     
     // min wait time between attacks
+    // TODO actually use this somewhere
     public float delta;
+
     [Range(0, 1)] public float movementSpeedFactor = 0;
 
     // for ranged only
@@ -34,7 +36,17 @@ public class AttackScriptableObject : ScriptableObject
                 attack = new MeleeAttack(character, this);
                 break;
             case EAttackButton.Ranged:
-                attack = new AimRangedAttack(character, this);
+                {
+                    switch (effect)
+                    {
+                        case EAttackEffect.Click:
+                            attack = new ClickRangedAttack(character, this);
+                            break;
+                        case EAttackEffect.Aim:
+                            attack = new AimRangedAttack(character, this);
+                            break;
+                    }
+                }
                 break;
             case EAttackButton.Special:
                 break;

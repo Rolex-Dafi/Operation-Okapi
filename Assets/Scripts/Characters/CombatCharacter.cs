@@ -12,8 +12,8 @@ using UnityEngine.Events;
 public class CombatCharacter : Character, IDamagable
 {
     // scriptable objects
-    [SerializeField] protected AttackScriptableObject[] attackScriptableObjects;
-    [SerializeField] protected DashScriptableObject dashScriptableObject;
+    [SerializeField] protected AttackSO[] attackScriptableObjects;
+    [SerializeField] protected DashSO dashScriptableObject;
 
     // movement
     [SerializeField] protected float movementSpeed;
@@ -50,7 +50,7 @@ public class CombatCharacter : Character, IDamagable
 
         Health = new Health(characterData.health);
         attacks = new List<Attack>();
-        foreach (AttackScriptableObject scriptableObject in attackScriptableObjects)
+        foreach (AttackSO scriptableObject in attackScriptableObjects)
         {
             Attack attack = scriptableObject.GetAttack(this);
             if (attack != null) attacks.Add(attack);

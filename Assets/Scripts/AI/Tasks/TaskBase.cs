@@ -5,6 +5,9 @@ using UnityEngine;
 using BehaviourTree;
 using UnityEngine.Events;
 
+/// <summary>
+/// Base class for all tasks. Tasks update the character's animation, physics, etc.
+/// </summary>
 public abstract class TaskBase : Leaf
 {
     protected CharacterTreeBase bt;
@@ -18,6 +21,8 @@ public abstract class TaskBase : Leaf
 
     public override NodeStatus Update()
     {
+        Debug.LogWarning("Update in task node " + this);
+
         if (!taskInProgress)
         {
             taskInProgress = true;

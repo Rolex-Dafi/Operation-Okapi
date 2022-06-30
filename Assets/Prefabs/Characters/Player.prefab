@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 9151058441287977325}
   - component: {fileID: 7714186783531316490}
   - component: {fileID: 9018899980597586612}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -403,7 +403,7 @@ GameObject:
   - component: {fileID: 8931725011576954588}
   - component: {fileID: 5499290636287591757}
   - component: {fileID: 7769353094002565041}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MeleeHitBox
   m_TagString: Player
   m_Icon: {fileID: 0}

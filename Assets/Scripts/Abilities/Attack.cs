@@ -9,11 +9,11 @@ public class Attack
 {
     protected CombatCharacter character;
 
-    protected AttackScriptableObject data;
+    protected AttackSO data;
 
-    public AttackScriptableObject Data { get => data; protected set => data = value; }
+    public AttackSO Data { get => data; protected set => data = value; }
 
-    public Attack(CombatCharacter character, AttackScriptableObject data)
+    public Attack(CombatCharacter character, AttackSO data)
     {
         this.character = character;
         this.data = data;

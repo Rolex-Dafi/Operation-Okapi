@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class RangedAttackTarget : TaskBase
 {
-    private Vector3 target;
+    private Transform target;
     private float reloadTime;
 
     private float timeOfAttack;
 
-    public RangedAttackTarget(CharacterTreeBase characterBT, Vector3 target, float reloadTime) : base(characterBT)
+    public RangedAttackTarget(CharacterTreeBase characterBT, Transform target, float reloadTime) : base(characterBT)
     {
         this.target = target;
         this.reloadTime = reloadTime;
@@ -18,7 +18,7 @@ public class RangedAttackTarget : TaskBase
     protected override void OnBegin()
     {
         // direct the character towards the target
-        bt.Character.Rotate((target - bt.Character.transform.position).normalized);
+        bt.Character.Rotate((target.position - bt.Character.transform.position).normalized);
 
         // attack
         if (!bt.Character.RangedAttack())
@@ -31,7 +31,10 @@ public class RangedAttackTarget : TaskBase
 
     protected override void OnContinue()
     {
-        // reload and call on end after some time
+        // reload -> make sure the character stays in place
+        bt.Character.Move(Vector2.zero);
+
+        // call on end after reload finished time
         if (Time.time - timeOfAttack > reloadTime) OnEnd(true);
     }
 }

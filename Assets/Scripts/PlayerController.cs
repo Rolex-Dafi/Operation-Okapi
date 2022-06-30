@@ -12,10 +12,8 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
 
     private bool aiming;
-    private Vector2 targetPosition;
 
     public bool Aiming { get => aiming; set => aiming = value; }
-    public Vector2 TargetPosition { get => targetPosition; private set => targetPosition = value; }
 
     private void Start()
     {
@@ -60,17 +58,11 @@ public class PlayerController : MonoBehaviour
         {
             // when using gamepad get direction from movement input - already set in playerCharacter
             direction = playerCharacter.Facing;
-
-            // set target in front of the player in the direction they're facing
-            targetPosition = transform.position.ToVector2() + direction;
         }
         else
         {
-            // get world mouse position
-            targetPosition = Camera.main.ScreenToWorldPoint(playerInput.mousePosition);
-
             // player faces in the direction of the mouse
-            direction = (targetPosition - transform.position.ToVector2());
+            direction = (Camera.main.ScreenToWorldPoint(playerInput.mousePosition).ToVector2() - transform.position.ToVector2());
         }
 
         // rotate the character

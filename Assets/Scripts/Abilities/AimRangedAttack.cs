@@ -8,7 +8,7 @@ public class AimRangedAttack : RangedAttack
     // only player can perform aim attacks
     private new PlayerCharacter character;
 
-    public AimRangedAttack(CombatCharacter character, AttackScriptableObject data) : base(character, data)
+    public AimRangedAttack(CombatCharacter character, AttackSO data) : base(character, data)
     {
         this.character = (PlayerCharacter)character;
     }

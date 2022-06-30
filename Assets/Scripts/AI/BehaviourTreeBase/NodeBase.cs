@@ -52,10 +52,6 @@ namespace BehaviourTree
                 child.Parent = this;
                 this.children.Add(child);
             }
-            foreach (var c in this.children)
-            {
-                Debug.LogWarning(c.ToString());
-            }
         }
     }
 
@@ -71,12 +67,12 @@ namespace BehaviourTree
         public override NodeStatus Update()
         {
             NodeStatus childStatus = children[lastProcessedChild].Update();
-
+            
             if (childStatus == NodeStatus.Success)
             {
                 ++lastProcessedChild;
 
-                // if all children processed and returned success, return success
+                // if all children processed and returned success, return success and reset
                 if (lastProcessedChild == children.Count)
                 {
                     lastProcessedChild = 0;
@@ -92,6 +88,9 @@ namespace BehaviourTree
             // if child failed or is running, report it upwards
             else
             {
+                // if a child failed, reset the sequence for subsequent calls
+                if (childStatus == NodeStatus.Failure) lastProcessedChild = 0;
+
                 status = childStatus;
                 return status;
             }
@@ -109,13 +108,32 @@ namespace BehaviourTree
 
         public override NodeStatus Update()
         {
-            NodeStatus childStatus = children[lastProcessedChild].Update();
+            foreach (var child in children)
+            {
+                NodeStatus childStatus = child.Update();
+
+                // a child succeeded or is running, report
+                if (childStatus != NodeStatus.Failure)
+                {
+                    status = childStatus;
+                    return status;
+                }
+            }
+
+            // all children failed
+            status = NodeStatus.Failure;
+            return status;
+
+            /*NodeStatus childStatus = children[lastProcessedChild].Update();
+
+            Debug.Log("update in selector, child status = " + childStatus);
+
 
             if (childStatus == NodeStatus.Failure)
             {
                 ++lastProcessedChild;
 
-                // if all children processed and returned failure, return failure
+                // if all children processed and returned failure, return failure and reset
                 if (lastProcessedChild == children.Count)
                 {
                     lastProcessedChild = 0;
@@ -131,9 +149,16 @@ namespace BehaviourTree
             // if child succeded or is running, report it upwards
             else
             {
+                // if a child succeeded, reset the sequence for subsequent calls
+                if (childStatus == NodeStatus.Success)
+                {
+                    Debug.LogWarning("child succeeded, resetting");
+                    lastProcessedChild = 0;
+                }
+
                 status = childStatus;
                 return status;
-            }
+            }*/
         }
     }
 

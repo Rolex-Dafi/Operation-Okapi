@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Handles player movement and combat - both animation and physics.
@@ -66,9 +67,6 @@ public class PlayerCharacter : CombatCharacter
         playerController.Aiming = false;
         // hide aiming gfx
         aimingGFX.SetActive(false);
-        // set the target !
-        Vector2 target = playerController.TargetPosition;
-        ((RangedAttack)currentAttacks[EAttackButton.Ranged]).Target = target;
     }
 
     public void Attack(EAttackButton attackButton, EAttackCommand command)
@@ -99,6 +97,9 @@ public class PlayerCharacter : CombatCharacter
     private void OnDestroy()
     {
         respect.CleanUp();
+        // TODO change this
+        // reload the scene after player dies
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
 
