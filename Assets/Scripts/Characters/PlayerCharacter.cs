@@ -97,9 +97,6 @@ public class PlayerCharacter : CombatCharacter
     private void OnDestroy()
     {
         respect.CleanUp();
-        // TODO change this
-        // reload the scene after player dies
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
 

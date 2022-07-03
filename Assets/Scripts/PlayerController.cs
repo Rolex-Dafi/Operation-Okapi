@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     public bool Aiming { get => aiming; set => aiming = value; }
 
-    private void Start()
+    public void Init()
     {
         // player character
         playerCharacter = GetComponent<PlayerCharacter>();

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    public UnityEvent sceneLoaded = new UnityEvent();
+    [HideInInspector] public UnityEvent sceneLoaded = new UnityEvent();
 
     // 0 is the index of the scene base - i.e. the one containint this, the game manager, etc.
     private int currentScene = 0;

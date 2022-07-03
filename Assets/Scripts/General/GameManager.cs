@@ -22,17 +22,39 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         // spawn player after scene loaded
-        sceneLoader.sceneLoaded.AddListener(SpawnPlayer);
+        sceneLoader.sceneLoaded.AddListener(FinishLevelLoad);
 
         sceneLoader.LoadScene(Utility.firstLevelIndex);
     }
 
-    private void SpawnPlayer()
+    private void FinishLevelLoad()
     {
-        // spawn player after scene loaded
+        // try to spawn player after scene loaded
+        PlayerSpawner spawner = FindObjectOfType<PlayerSpawner>();
+        if (spawner != null)
+        {
+            playerCharacterCurrent = spawner.SpawnPlayer(playerCharacterPrefab);
+
+            // set up HUD
+            HUDManager hud = FindObjectOfType<HUDManager>();
+            if (hud != null) hud.Init(playerCharacterCurrent);
+
+            // let the enemy spawner (if present) know it can spawn enemies
+            // can only happen after the player is present
+            EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
+            if (enemySpawner != null) enemySpawner.Init();
+
+            // handle player death event
+            playerCharacterCurrent.onDeath.AddListener(RestartLevel);
+        }
 
         // remove itself after loaded
-        sceneLoader.sceneLoaded.RemoveListener(SpawnPlayer);
+        sceneLoader.sceneLoaded.RemoveListener(FinishLevelLoad);
+    }
+
+    private void RestartLevel()
+    {
+        StartGame();
     }
 
 }

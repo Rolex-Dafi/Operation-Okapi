@@ -15,16 +15,22 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Transform[] patrollPoints;
 
+    private bool canSpawn = false;
     private bool enemyAlive = false;
+
+    public void Init()
+    {
+        canSpawn = true;
+    }
 
     void Update()
     {
-        if (!enemyAlive) SpawnEnemy();
+        if (canSpawn && !enemyAlive) SpawnEnemy();
     }
 
     private void SpawnEnemy()
     {
-        EnemyCharacter enemyInstance = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+        EnemyCharacter enemyInstance = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity, transform);
         enemyInstance.Init();
         enemyInstance.onDeath.AddListener(CleanUpEnemy);
 
