@@ -25,7 +25,6 @@ public class TargetInLineOfSight : CheckBase
         // we hit something other than this collider
         if (numHits > 1)
         {
-            Debug.Log("We hit an object: " + hits[1].collider.name);
             // ignore the first collider (bc it's this one)
             // check whether the second collider belongs to the target
             if (hits[1].collider.CompareTag(targetTag)) return true;

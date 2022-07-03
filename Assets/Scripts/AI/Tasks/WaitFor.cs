@@ -18,7 +18,7 @@ public class WaitFor : TaskBase
     protected override void OnBegin()
     {
         timePassed = 0;
-        // play idle animation
+        // ensure we play idle animation, not movement
         bt.Character.Move(Vector2.zero);
     }
 

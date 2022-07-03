@@ -74,7 +74,13 @@ public class GFXSetUpWindow : EditorWindow
 
             if (GUILayout.Button("DELETE sprites"))
             {
-                ConfirmPopup popup = new ConfirmPopup();
+                new SpriteOrganizer().Delete(
+                        GFXUtility.resourcesDirectory + "/" + GFXUtility.spritesDirectory + (folderName == "" ? "" : "/" + folderName),
+                        toRemove
+                        );
+                Debug.Log("DELETING finished");
+
+                /*ConfirmPopup popup = new ConfirmPopup();
                 PopupWindow.Show(new Rect(), popup);
                 if (popup.Confirmed)
                 {
@@ -83,7 +89,7 @@ public class GFXSetUpWindow : EditorWindow
                         toRemove
                         );
                     Debug.Log("DELETING finished");
-                }
+                }*/
             }
         }
         #endregion Sprite organization

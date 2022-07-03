@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace BehaviourTree
 {
@@ -123,42 +122,6 @@ namespace BehaviourTree
             // all children failed
             status = NodeStatus.Failure;
             return status;
-
-            /*NodeStatus childStatus = children[lastProcessedChild].Update();
-
-            Debug.Log("update in selector, child status = " + childStatus);
-
-
-            if (childStatus == NodeStatus.Failure)
-            {
-                ++lastProcessedChild;
-
-                // if all children processed and returned failure, return failure and reset
-                if (lastProcessedChild == children.Count)
-                {
-                    lastProcessedChild = 0;
-                    status = NodeStatus.Failure;
-                }
-                // else keep running the selector
-                else
-                {
-                    status = NodeStatus.Running;
-                }
-                return status;
-            }
-            // if child succeded or is running, report it upwards
-            else
-            {
-                // if a child succeeded, reset the sequence for subsequent calls
-                if (childStatus == NodeStatus.Success)
-                {
-                    Debug.LogWarning("child succeeded, resetting");
-                    lastProcessedChild = 0;
-                }
-
-                status = childStatus;
-                return status;
-            }*/
         }
     }
 
