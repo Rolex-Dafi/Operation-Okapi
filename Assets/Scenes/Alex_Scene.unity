@@ -850,7 +850,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb46381eee46bd9429ccaf880369ae43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 744881628516905296, guid: aa7cd9470c388b046a193c7f7ed00552, type: 3}
+  enemyPrefab: {fileID: 744881628516905296, guid: 27b1a80dd1953e14cba1157982e00f76, type: 3}
   worldSpaceCanvas: {fileID: 1476287086}
   healthBarPrefab: {fileID: 4593451816082154621, guid: 244f58c0f9d5f1b44960c1faeabd2fb0, type: 3}
   spawnPoint: {fileID: 1408169832}
