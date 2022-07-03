@@ -1,4 +1,3 @@
-using BehaviourTree;
 using Pathfinding;
 using UnityEngine;
 
@@ -29,7 +28,6 @@ public class WalkToTarget : TaskBase
             return;
         }
 
-        Debug.Log("starting path to position " + target);
         currentlyMoving = true;
         currentPath = path;
         nextWaypoint = 0;
@@ -74,7 +72,6 @@ public class WalkToTarget : TaskBase
     {
         currentlyMoving = false;
         bt.Character.Move(Vector2.zero);
-        Debug.Log("End of path reached");
         // end task with success
         OnEnd(true);
     }

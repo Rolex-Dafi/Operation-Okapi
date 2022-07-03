@@ -8,6 +8,10 @@ public static class Utility
 
     public const string playerTag = "Player";
     public const string enemyTag = "Enemy";
+
+    // scenes
+    public const int mainMenuIndex = 1;
+    public const int firstLevelIndex = 2;
 }
 
 // Enums
@@ -43,8 +47,6 @@ public enum EAnimationParameter
 {
     directionX, directionY, speed, dashing, hit, death, attack, attackReleased, attackID
 }
-
-// Structs
 
 /// <summary>
 /// Specifies the frame count per each attack phase - startup, active, recovery.

@@ -34,7 +34,7 @@ public class RangedAttackTarget : TaskBase
         // reload -> make sure the character stays in place
         bt.Character.Move(Vector2.zero);
 
-        // call on end after reload finished time
+        // call on end after reload finished
         if (Time.time - timeOfAttack > reloadTime) OnEnd(true);
     }
 }

@@ -1,7 +1,4 @@
 using BehaviourTree;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 /// <summary>
 /// Base class for all checks. Checks only check whether this branch is valid.
@@ -17,8 +14,7 @@ public abstract class CheckBase : Leaf
 
     public override NodeStatus Update()
     {
-        Debug.LogWarning("Update in check node " + this);
-
+        // ! assumes check is fast enough to be performed in a single frame !
         status = Check() ? NodeStatus.Success : NodeStatus.Failure;
 
         return status;
