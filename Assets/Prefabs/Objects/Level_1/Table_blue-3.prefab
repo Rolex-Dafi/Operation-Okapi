@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3617033061571486169, guid: c60f982a61ef8404bb179b2de34adf8f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f3ef40a143712684abd032c34fd2e2ff, type: 3}
+    - target: {fileID: 8513450688288993759, guid: c60f982a61ef8404bb179b2de34adf8f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5e35439107f2ac04c80bf97e95eeac50, type: 3}
     - target: {fileID: 8515112284680159074, guid: c60f982a61ef8404bb179b2de34adf8f, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -86,6 +94,45 @@ PrefabInstance:
     - target: {fileID: 8515112285150643166, guid: c60f982a61ef8404bb179b2de34adf8f, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 0a3291545b91a7e40a9c2877c29f5ddb, type: 3}
-    m_RemovedComponents: []
+      objectReference: {fileID: 21300000, guid: ebd0dfa0dc81e3f4c8b027c7bb4ec1b7, type: 3}
+    - target: {fileID: 8515112285150643166, guid: c60f982a61ef8404bb179b2de34adf8f, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1985417756809578165, guid: c60f982a61ef8404bb179b2de34adf8f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c60f982a61ef8404bb179b2de34adf8f, type: 3}
+--- !u!1 &3701502423428693540 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8515112285150643164, guid: c60f982a61ef8404bb179b2de34adf8f, type: 3}
+  m_PrefabInstance: {fileID: 5005083949908557304}
+  m_PrefabAsset: {fileID: 0}
+--- !u!60 &5400088680943257008
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3701502423428693540}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.14}
+    oldSize: {x: 1.5222223, y: 0.9962963}
+    newSize: {x: 1.5222223, y: 0.9962963}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.49814814, y: 0.2605185}
+      - {x: 0.28148147, y: -0.13022223}
+      - {x: 0.5574074, y: 0.004962949}
+      - {x: -0.23703703, y: 0.39755553}
