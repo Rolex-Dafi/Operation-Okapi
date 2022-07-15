@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     // components
     private SceneLoader sceneLoader;
+    [SerializeField] private AudioManager audioManager;
 
     private void Start()
     {
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
 
         // load the first scene
         // for now the main menu
+        audioManager.StartAmbience(Utility.mainMenuIndex);
         sceneLoader.LoadScene(Utility.mainMenuIndex);
     }
 
@@ -24,6 +26,7 @@ public class GameManager : MonoBehaviour
         // spawn player after scene loaded
         sceneLoader.sceneLoaded.AddListener(FinishLevelLoad);
 
+        audioManager.StartAmbience(Utility.firstLevelIndex);
         sceneLoader.LoadScene(Utility.firstLevelIndex);
     }
 

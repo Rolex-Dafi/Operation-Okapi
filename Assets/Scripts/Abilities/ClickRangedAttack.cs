@@ -8,6 +8,7 @@ public class ClickRangedAttack : RangedAttack
 
     public override void OnBegin()
     {
+        base.OnBegin();
         SpawnProjectile();
     }
 

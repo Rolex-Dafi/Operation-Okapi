@@ -28,6 +28,7 @@ public class CombatCharacter : Character, IDamagable
     [SerializeField] private Transform projectileSpawnerTransform;
 
     // events
+    [HideInInspector] public UnityEvent onHit = new UnityEvent();
     [HideInInspector] public UnityEvent onDeath = new UnityEvent();
 
     // components

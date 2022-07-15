@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e64b9df5068ba247a2d408399dba8c8, type: 3}
   m_Name: RangedAttackData
   m_EditorClassIdentifier: 
+  sound:
+    Guid:
+      Data1: 1309615839
+      Data2: 1091186619
+      Data3: 752058784
+      Data4: 670533798
+    Path: event:/SFX/Ranged
   attackName: Ranged
   id: 1
   button: 1

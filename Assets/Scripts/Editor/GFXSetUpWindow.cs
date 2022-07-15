@@ -16,7 +16,7 @@ public class GFXSetUpWindow : EditorWindow
 
     // Animations creation
     private string characterName = "";
-    private EAbility animationType = EAbility.NDEF;
+    private EAbilityType animationType = EAbilityType.NDEF;
     private AttackFrames attackFrames;
     private EAttackEffect attackEffect = EAttackEffect.Click;
     private int startup = 0;
@@ -133,11 +133,11 @@ public class GFXSetUpWindow : EditorWindow
             "Looks for this character's directory in \"Assets/Resources/Sprites/Characters\", saves clips in \"Assets/Animation/Characters/char_name\"."
             ), characterName);
         GUILayout.Label("Animation clip settings", EditorStyles.miniBoldLabel);
-        animationType = (EAbility)EditorGUILayout.EnumPopup(new GUIContent(
+        animationType = (EAbilityType)EditorGUILayout.EnumPopup(new GUIContent(
             "Animation type",
             "If not defined generates all possible animation clips given the contents of the character's directory."
             ), animationType);
-        if (animationType == EAbility.melee || animationType == EAbility.ranged)
+        if (animationType == EAbilityType.melee || animationType == EAbilityType.ranged)
         {
             attackEffect = (EAttackEffect)EditorGUILayout.EnumPopup(new GUIContent(
             "Attack effect",
@@ -165,7 +165,7 @@ public class GFXSetUpWindow : EditorWindow
         if (GUILayout.Button("Generate animation clips"))
         {
             int numClips = 0;
-            if (animationType == EAbility.NDEF) numClips = new AnimationClipGenerator(characterName).GenerateAllAnimations();
+            if (animationType == EAbilityType.NDEF) numClips = new AnimationClipGenerator(characterName).GenerateAllAnimations();
             else numClips = new AnimationClipGenerator(characterName, animationClipProperties).GenerateAnimations(animationType, attackFrames);
 
             Debug.Log("Number of animation clips generated = " + numClips);

@@ -47,7 +47,7 @@ public class AnimationClipGenerator
     /// </summary>
     /// <param name="characterName"></param>
     /// <returns>Number of clips generated.</returns>
-    public int GenerateAnimations(EAbility ability, AttackFrames attackFrames = null)
+    public int GenerateAnimations(EAbilityType ability, AttackFrames attackFrames = null)
     {
         string dir = string.Join("/", new string[] {
             GFXUtility.resourcesDirectory,
@@ -100,7 +100,7 @@ public class AnimationClipGenerator
         int numClips = 0;
         foreach (DirectoryInfo subInfo in dirInfo.GetDirectories())
         {
-            if (GFXUtility.IsFolderRelevant(subInfo.Name, typeof(EAbility)))
+            if (GFXUtility.IsFolderRelevant(subInfo.Name, typeof(EAbilityType)))
             {
                 numClips += FindDirectionFolders(subInfo);
             }

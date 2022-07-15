@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DashData", menuName = "ScriptableObjects/Dash")]
-public class DashSO : ScriptableObject
+public class DashSO : AbilitySO
 {
     // maximum distance of the dash - in Unity units
     public float distance;

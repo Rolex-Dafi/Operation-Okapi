@@ -2,39 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dash
+public class Dash : Ability
 {
-    private CombatCharacter character;
-
-    private DashSO data;
-
     private float lastTimeUsed;
     private int numUsedInChain;
     private bool currentlyDashing;
     public bool CurrentlyDashing { get => currentlyDashing; private set => currentlyDashing = value; }
 
-    public Dash(CombatCharacter character, DashSO data)
-    {
-        this.character = character;
-        this.data = data;
+    public DashSO Data { get => (DashSO)data; protected set => data = value; }
 
+    public Dash(CombatCharacter character, DashSO data) : base(character, data, EAbilityType.dash)
+    {
         lastTimeUsed = 0;
         numUsedInChain = 0;
         CurrentlyDashing = false;
     }
 
 
-    public void OnBegin()
+    public override void OnBegin()
     {
         if (CurrentlyDashing) return;
 
         // are we currently chaining dashes?
-        bool inChain = (numUsedInChain < data.maxNumChained);
-        float delta = inChain ? data.deltaBeforeMax : data.deltaAfterMax;
+        bool inChain = (numUsedInChain < Data.maxNumChained);
+        float delta = inChain ? Data.deltaBeforeMax : Data.deltaAfterMax;
 
         if (Time.time - lastTimeUsed > delta)
         {
             CurrentlyDashing = true;
+
+            base.OnBegin();
 
             // play animation
             // TODO change anim parameter for dash from trigger to bool
@@ -50,7 +47,7 @@ public class Dash
 
     }
 
-    public IEnumerator OnContinue()
+    public override IEnumerator OnContinue()
     {
         // dash in isometric coordinates !
         Vector2 direction = character.Facing.CartesianToIsometric().normalized;
@@ -61,12 +58,12 @@ public class Dash
             // TODO call OnEnd() after colliding with a wall as well!
             // for some reason this already seems to be working ??
 
-            if (distanceTravelled > data.distance) { 
+            if (distanceTravelled > Data.distance) { 
                 OnEnd();
                 break;
             }
 
-            Vector2 step = direction * Time.fixedDeltaTime * data.speed;
+            Vector2 step = direction * Time.fixedDeltaTime * Data.speed;
             character.RB.MovePosition(character.RB.position + step);
 
             distanceTravelled += step.magnitude;
@@ -76,7 +73,7 @@ public class Dash
     }
 
 
-    public void OnEnd()
+    public override void OnEnd()
     {
         // stop playing the animation
         character.Animator.SetBool(EAnimationParameter.dashing.ToString(), false);

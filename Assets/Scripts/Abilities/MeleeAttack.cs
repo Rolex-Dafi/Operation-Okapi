@@ -6,7 +6,7 @@ public class MeleeAttack : Attack
 {
     private HitBoxController hitBoxController;
 
-    public MeleeAttack(CombatCharacter character, AttackSO data) : base(character, data) 
+    public MeleeAttack(CombatCharacter character, AttackSO data) : base(character, data, EAbilityType.melee) 
     {
         hitBoxController = character.GetComponentInChildren<HitBoxController>();
     }
@@ -14,7 +14,7 @@ public class MeleeAttack : Attack
     public override void OnBegin()
     {
         base.OnBegin();
-        hitBoxController.Init(data.damage);
+        hitBoxController.Init(Data.damage);
     }
 
 }

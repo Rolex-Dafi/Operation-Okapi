@@ -27,7 +27,7 @@ public static class GFXUtility
 
     public static bool IsFolderRelevant(string folderName, Type t)
     {
-        if (t.Equals(typeof(EAbility)) || t.Equals(typeof(EDirection)))
+        if (t.Equals(typeof(EAbilityType)) || t.Equals(typeof(EDirection)))
         {
             foreach (var value in Enum.GetValues(t))
             {

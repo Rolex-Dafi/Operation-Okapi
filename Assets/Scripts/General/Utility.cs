@@ -10,13 +10,14 @@ public static class Utility
     public const string enemyTag = "Enemy";
 
     // scenes
+
     public const int mainMenuIndex = 1;
     public const int firstLevelIndex = 2;
 }
 
 // Enums
 
-public enum EAbility
+public enum EAbilityType
 {
     idle, walk, dash, melee, ranged, hit, death, NDEF
 }
@@ -122,15 +123,15 @@ public static class Extenstions
         }
     }
 
-    public static EStateMachine ToEStateMachine(this EAbility ability)
+    public static EStateMachine ToEStateMachine(this EAbilityType ability)
     {
         switch (ability)
         {
-            case EAbility.idle:
-            case EAbility.walk:
+            case EAbilityType.idle:
+            case EAbilityType.walk:
                 return EStateMachine.move;
-            case EAbility.melee:
-            case EAbility.ranged:
+            case EAbilityType.melee:
+            case EAbilityType.ranged:
                 return EStateMachine.attack;
             default:
                 return EStateMachine.root;

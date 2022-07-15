@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "AttackData", menuName = "ScriptableObjects/Attack")]
-public class AttackSO : ScriptableObject
+public class AttackSO : AbilitySO
 {
     public string attackName;
     public int id;
@@ -18,6 +18,7 @@ public class AttackSO : ScriptableObject
     // TODO actually use this somewhere
     public float delta;
 
+    // how much is the character slown during the attack (0..completely, 1..full speed)
     [Range(0, 1)] public float movementSpeedFactor = 0;
 
     // for ranged only
