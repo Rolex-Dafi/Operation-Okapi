@@ -167,7 +167,7 @@ public class AnimatorGenerator
         SetUpTransitionProperties(transition);
         transition = to.AddTransition(returnTo);
         transition.AddCondition(AnimatorConditionMode.IfNot, 0, boolean);
-        SetUpTransitionProperties(transition, true);
+        SetUpTransitionProperties(transition);
     }
 
     private void AddTriggerTransition(AnimatorState from, AnimatorState to, AnimatorStateMachine returnTo, string trigger)

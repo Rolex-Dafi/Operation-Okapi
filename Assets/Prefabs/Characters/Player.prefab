@@ -168,6 +168,9 @@ MonoBehaviour:
   dashScriptableObject: {fileID: 11400000, guid: 4c560f02b7fcc884697340bbfbcb18e0, type: 2}
   movementSpeed: 2
   projectileSpawnerTransform: {fileID: 1354588313482233939}
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
   onDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -219,7 +222,7 @@ Animator:
   m_GameObject: {fileID: 2929782994530680387}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b19d154f6d5ced740bd47797bd299bd5, type: 2}
+  m_Controller: {fileID: 9100000, guid: 49ab1c9a7d5e11a4c9bbbfc14b5eb4cd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
