@@ -7,10 +7,10 @@ public class RangedAttackBT : CharacterTreeBase
 {
     protected override void Init()
     {
-        Node findTarget = new TargetInLineOfSight(rootTree, playerCharacter, (Character.CharacterData as EnemyCharacterSO).lineOfSightRange);
+        Node findTarget = new TargetInLineOfSight(rootTree, playerCharacter, (Character.Data as EnemyCharacterSO).lineOfSightRange);
 
         // TODO replace reload time with attack reference later ?
-        Node attackTarget = new RangedAttackTarget(rootTree, playerCharacter, (Character.CharacterData as EnemyCharacterSO).reloadTime);
+        Node attackTarget = new RangedAttackTarget(rootTree, playerCharacter, (Character.Data as EnemyCharacterSO).reloadTime);
 
         Root = new Sequence(new List<Node> { findTarget, attackTarget });
     }

@@ -19,30 +19,20 @@ public class PlayerInput : MonoBehaviour
 
     public void Init()
     {
-        InitEvents(ref buttonDownEvents);
-        InitEvents(ref buttonUpEvents);
+        InputUtility.InitEvents(ref buttonDownEvents);
+        InputUtility.InitEvents(ref buttonUpEvents);
 
         StartCoroutine(DetectGamepadInput());
     }
-
-    private void InitEvents<T>(ref Dictionary<T, UnityEvent<T>> eventDictionary)
-    {
-        eventDictionary = new Dictionary<T, UnityEvent<T>>();
-        foreach (T interaction in Enum.GetValues(typeof(T)))
-        {
-            eventDictionary.Add(interaction, new UnityEvent<T>());
-        }
-    }
-
+    
     private void Update()
     {
         movement = new Vector2(Input.GetAxis(EAxis.Horizontal.ToString()), Input.GetAxis(EAxis.Vertical.ToString()));
 
         mousePosition = Input.mousePosition;
 
-        GetInput(ref buttonDownEvents);
-        GetInput(ref buttonUpEvents);
-        
+        InputUtility.GetInput(ref buttonDownEvents);
+        InputUtility.GetInput(ref buttonUpEvents);        
     }
 
     private IEnumerator DetectGamepadInput()
@@ -63,11 +53,5 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    private void GetInput<T>(ref Dictionary<T, UnityEvent<T>> eventDictionary)
-    {
-        foreach (T interaction in Enum.GetValues(typeof(T)))
-        {
-            if (interaction.GetInput()) eventDictionary[interaction].Invoke(interaction);
-        }
-    }
+    
 }

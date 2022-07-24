@@ -8,7 +8,7 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     // scriptable objects
-    [SerializeField] protected CharacterSO characterData;
+    [SerializeField] protected CharacterSO data;
 
     // resources
     protected Money money;
@@ -21,12 +21,12 @@ public class Character : MonoBehaviour
     // exposed vars
     public Animator Animator { get => animator; set => animator = value; }
     public Money Money { get => money; protected set => money = value; }
-    public CharacterSO CharacterData { get => characterData; protected set => characterData = value; }
+    public CharacterSO Data { get => data; protected set => data = value; }
 
 
     public virtual void Init()
     {
-        Money = new Money(characterData.money);
+        Money = new Money(data.money);
         Animator = GetComponent<Animator>();
     }
 

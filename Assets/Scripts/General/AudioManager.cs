@@ -16,8 +16,8 @@ public class AudioManager : MonoBehaviour
         ambientEmitters[sceneIndex - 1].Play();
     }
 
-    public void PlaySound(string path)
+    public void PlaySound(FMOD.GUID id)
     {
-        RuntimeManager.PlayOneShot(path);
+        RuntimeManager.PlayOneShot(id);
     }
 }

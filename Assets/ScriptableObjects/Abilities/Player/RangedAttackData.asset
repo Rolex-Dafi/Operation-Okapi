@@ -12,7 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e64b9df5068ba247a2d408399dba8c8, type: 3}
   m_Name: RangedAttackData
   m_EditorClassIdentifier: 
-  sound:
+  onBeginSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  onEndSound:
     Guid:
       Data1: 1309615839
       Data2: 1091186619

@@ -96,6 +96,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e9a967f9fd0c94098a2ab854f1613f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onCollectSound:
+    Guid:
+      Data1: 455272924
+      Data2: 1090481632
+      Data3: 1405105847
+      Data4: 1044651084
+    Path: event:/SFX/Collect
 --- !u!58 &2072101289599095820
 CircleCollider2D:
   m_ObjectHideFlags: 0

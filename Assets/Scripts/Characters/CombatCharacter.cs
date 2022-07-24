@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ using UnityEngine.Events;
 public class CombatCharacter : Character, IDamagable
 {
     // scriptable objects
-    [SerializeField] protected AttackSO[] attackScriptableObjects;
-    [SerializeField] protected DashSO dashScriptableObject;
+    [SerializeField] protected AttackSO[] attacksData;
+    [SerializeField] protected DashSO dashData;
 
     // movement
     [SerializeField] protected float movementSpeed;
@@ -28,7 +29,6 @@ public class CombatCharacter : Character, IDamagable
     [SerializeField] private Transform projectileSpawnerTransform;
 
     // events
-    [HideInInspector] public UnityEvent onHit = new UnityEvent();
     [HideInInspector] public UnityEvent onDeath = new UnityEvent();
 
     // components
@@ -49,14 +49,14 @@ public class CombatCharacter : Character, IDamagable
         currentSpeed = movementSpeed;
         Facing = Vector2.down;
 
-        Health = new Health(characterData.health);
+        Health = new Health(data.health);
         attacks = new List<Attack>();
-        foreach (AttackSO scriptableObject in attackScriptableObjects)
+        foreach (AttackSO attackSO in attacksData)
         {
-            Attack attack = scriptableObject.GetAttack(this);
+            Attack attack = attackSO.GetAttack(this);
             if (attack != null) attacks.Add(attack);
         }
-        dash = dashScriptableObject.GetDash(this);
+        dash = dashData.GetDash(this);
 
         RB = GetComponent<Rigidbody2D>();
         col = GetComponent<CircleCollider2D>();
@@ -155,11 +155,16 @@ public class CombatCharacter : Character, IDamagable
         Animator.SetTrigger(EAnimationParameter.hit.ToString());
         int current = Health.AddToCurrent(-amount);
         if (current == 0) Die();
+        else
+        {
+            RuntimeManager.PlayOneShot(data.onHitSound.Guid);
+        }
     }
 
     public virtual void Die()
     {
         Animator.SetTrigger(EAnimationParameter.death.ToString());
+        RuntimeManager.PlayOneShot(data.onDeathSound.Guid);
         onDeath.Invoke();
         Destroy(gameObject);
     }

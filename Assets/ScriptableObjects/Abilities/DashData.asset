@@ -12,13 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0efddb6c2cd2a3044a0826efcacbfc91, type: 3}
   m_Name: DashData
   m_EditorClassIdentifier: 
-  sound:
+  onBeginSound:
     Guid:
-      Data1: 1309615839
-      Data2: 1091186619
-      Data3: 752058784
-      Data4: 670533798
-    Path: event:/SFX/Ranged
+      Data1: -1478492587
+      Data2: 1274930920
+      Data3: -1193148023
+      Data4: 1903742650
+    Path: event:/SFX/Dash
+  onEndSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   distance: 0.7
   speed: 5
   deltaBeforeMax: 0.1

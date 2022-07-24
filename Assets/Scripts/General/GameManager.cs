@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(SceneLoader))]
+[RequireComponent(typeof(SceneLoader), typeof(UIInput))]
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private PlayerCharacter playerCharacterPrefab;
@@ -9,11 +9,20 @@ public class GameManager : MonoBehaviour
 
     // components
     private SceneLoader sceneLoader;
+    private UIInput uiInput;
     [SerializeField] private AudioManager audioManager;
+
+    // game specific
+    private bool gameInProgress = false;
+    private bool gamePaused = false;
 
     private void Start()
     {
         sceneLoader = GetComponent<SceneLoader>();
+        sceneLoader.Init();
+        uiInput = GetComponent<UIInput>();
+        uiInput.Init();
+        uiInput.buttonEvents[EUIButton.Escape].AddListener(OpenClosePauseMenu);
 
         // load the first scene
         // for now the main menu
@@ -24,10 +33,8 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         // spawn player after scene loaded
-        sceneLoader.sceneLoaded.AddListener(FinishLevelLoad);
-
         audioManager.StartAmbience(Utility.firstLevelIndex);
-        sceneLoader.LoadScene(Utility.firstLevelIndex);
+        sceneLoader.LoadScene(Utility.firstLevelIndex, FinishLevelLoad);
     }
 
     private void FinishLevelLoad()
@@ -51,9 +58,31 @@ public class GameManager : MonoBehaviour
             playerCharacterCurrent.onDeath.AddListener(RestartLevel);
         }
 
-        // remove itself after loaded
-        sceneLoader.sceneLoaded.RemoveListener(FinishLevelLoad);
+        // set game in progress
+        gameInProgress = true;
     }
+
+    private void OpenClosePauseMenu<T>(T interaction)
+    {
+        if (!gameInProgress) return;
+
+        Debug.Log("in openclosepausemenu");
+
+        if (!gamePaused)
+        {
+            sceneLoader.AddScene(Utility.mainMenuIndex, () => gamePaused = true);
+        }
+        else
+        {
+            sceneLoader.TryRemoveScene(Utility.mainMenuIndex, () => gamePaused = false);
+        }
+    }
+
+    private void PauseGame(bool pause)
+    {
+
+    }
+
 
     private void RestartLevel()
     {

@@ -5,5 +5,6 @@ using UnityEngine;
 public class AbilitySO : ScriptableObject
 {
     // sound
-    public FMODUnity.EventReference sound;
+    public FMODUnity.EventReference onBeginSound;
+    public FMODUnity.EventReference onEndSound;
 }
