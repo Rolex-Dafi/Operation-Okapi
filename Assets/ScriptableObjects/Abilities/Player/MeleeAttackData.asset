@@ -12,21 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e64b9df5068ba247a2d408399dba8c8, type: 3}
   m_Name: MeleeAttackData
   m_EditorClassIdentifier: 
-  sound:
+  onBeginSound:
     Guid:
       Data1: 1600317305
       Data2: 1223787421
       Data3: -592736086
       Data4: -1472659454
     Path: event:/SFX/Melee
+  onEndSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   attackName: Melee
   id: 0
   button: 0
   effect: 0
   damage: 2
   cost: 0
-  delta: 0
+  reloadTime: 0.5
+  attackRange: 0
   movementSpeedFactor: 0.2
   projectilePrefab: {fileID: 0}
   projectileSpeed: 100
-  projectileRange: 5

@@ -21,7 +21,7 @@ public class PlayerCharacter : CombatCharacter
     public override void Init()
     {
         base.Init();
-        Respect = new Respect(characterData.respect);
+        Respect = new Respect(data.respect);
 
         // init attacks
         MeleeAttack melee = attacks.OfType<MeleeAttack>().ToArray()[0];

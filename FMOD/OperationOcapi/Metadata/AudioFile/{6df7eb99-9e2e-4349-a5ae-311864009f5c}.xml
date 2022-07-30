@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{6df7eb99-9e2e-4349-a5ae-311864009f5c}">
+		<property name="assetPath">
+			<value>75540__ra-gun__swish-bamboo-pole-w-insect-net-08.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.43812499999999999</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{153e4516-e241-4fb0-a4a9-78df614b083a}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class DroppedItem : MonoBehaviour
 {
     // so far only money
     private int amount;
+    [SerializeField] private EventReference onCollectSound;
 
     public void Init(int amount)
     {
@@ -21,6 +23,7 @@ public class DroppedItem : MonoBehaviour
             if (collision.TryGetComponent<PlayerCharacter>(out var character))
             {
                 character.Collect(amount);
+                RuntimeManager.PlayOneShot(onCollectSound.Guid);
                 Destroy(gameObject);
             }
         }

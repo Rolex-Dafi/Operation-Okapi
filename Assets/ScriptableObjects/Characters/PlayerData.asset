@@ -15,3 +15,21 @@ MonoBehaviour:
   money: 100
   health: 5
   respect: 10
+  attacks:
+  - {fileID: 11400000, guid: cbd89847babe681479fc676aa8b37823, type: 2}
+  - {fileID: 11400000, guid: 5329dc980c59b8948bed671ec6720e39, type: 2}
+  dash: {fileID: 11400000, guid: 4c560f02b7fcc884697340bbfbcb18e0, type: 2}
+  onHitSound:
+    Guid:
+      Data1: -9599751
+      Data2: 1199392618
+      Data3: -548353148
+      Data4: -275185102
+    Path: event:/SFX/Hit
+  onDeathSound:
+    Guid:
+      Data1: -1390615421
+      Data2: 1264603658
+      Data3: -2117765502
+      Data4: 1660216290
+    Path: event:/SFX/Death

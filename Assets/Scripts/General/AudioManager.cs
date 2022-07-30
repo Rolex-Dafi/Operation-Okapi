@@ -6,6 +6,7 @@ using FMODUnity;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private StudioEventEmitter[] ambientEmitters;
+    [SerializeField] private EventReference buttonClick;
 
     public void StartAmbience(int sceneIndex)
     {
@@ -16,8 +17,13 @@ public class AudioManager : MonoBehaviour
         ambientEmitters[sceneIndex - 1].Play();
     }
 
-    public void PlaySound(string path)
+    public void PlayButtonClick()
     {
-        RuntimeManager.PlayOneShot(path);
+        PlaySound(buttonClick.Guid);
+    }
+
+    public void PlaySound(FMOD.GUID id)
+    {
+        RuntimeManager.PlayOneShot(id);
     }
 }

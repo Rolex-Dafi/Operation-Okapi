@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,6 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
 public class CombatCharacter : Character, IDamagable
 {
-    // scriptable objects
-    [SerializeField] protected AttackSO[] attackScriptableObjects;
-    [SerializeField] protected DashSO dashScriptableObject;
-
     // movement
     [SerializeField] protected float movementSpeed;
     protected float currentSpeed;
@@ -28,7 +25,6 @@ public class CombatCharacter : Character, IDamagable
     [SerializeField] private Transform projectileSpawnerTransform;
 
     // events
-    [HideInInspector] public UnityEvent onHit = new UnityEvent();
     [HideInInspector] public UnityEvent onDeath = new UnityEvent();
 
     // components
@@ -43,20 +39,22 @@ public class CombatCharacter : Character, IDamagable
     public Rigidbody2D RB { get => rb; protected set => rb = value; }
     public Health Health { get => health; protected set => health = value; }
 
+    public Attack GetAttackByID(int id) => attacks.Find(x => x.Data.id == id);
+
     public override void Init()
     {
         base.Init();
         currentSpeed = movementSpeed;
         Facing = Vector2.down;
 
-        Health = new Health(characterData.health);
+        Health = new Health(data.health);
         attacks = new List<Attack>();
-        foreach (AttackSO scriptableObject in attackScriptableObjects)
+        foreach (AttackSO attackSO in data.attacks)
         {
-            Attack attack = scriptableObject.GetAttack(this);
+            Attack attack = attackSO.GetAttack(this);
             if (attack != null) attacks.Add(attack);
         }
-        dash = dashScriptableObject.GetDash(this);
+        dash = data.dash.GetDash(this);
 
         RB = GetComponent<Rigidbody2D>();
         col = GetComponent<CircleCollider2D>();
@@ -101,17 +99,20 @@ public class CombatCharacter : Character, IDamagable
     }
 
 
-    public void Attack(Attack attack, EAttackCommand attackCommand)
+    public bool Attack(Attack attack, EAttackCommand attackCommand = EAttackCommand.Begin)
     {
+        if (attack == null) return false;
+
         switch (attackCommand)
         {
             case EAttackCommand.Begin:
                 attack.OnBegin();
-                break;
+                return true;
             case EAttackCommand.End:
                 attack.OnEnd();
-                break;
+                return true;
         }
+        return false;
     }
 
     /// <summary>
@@ -155,11 +156,16 @@ public class CombatCharacter : Character, IDamagable
         Animator.SetTrigger(EAnimationParameter.hit.ToString());
         int current = Health.AddToCurrent(-amount);
         if (current == 0) Die();
+        else
+        {
+            RuntimeManager.PlayOneShot(data.onHitSound.Guid);
+        }
     }
 
     public virtual void Die()
     {
         Animator.SetTrigger(EAnimationParameter.death.ToString());
+        RuntimeManager.PlayOneShot(data.onDeathSound.Guid);
         onDeath.Invoke();
         Destroy(gameObject);
     }

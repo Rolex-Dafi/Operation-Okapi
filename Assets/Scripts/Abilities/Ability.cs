@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,8 +20,8 @@ public abstract class Ability
 
     public virtual void OnBegin() 
     {
-        // play sound from the scriptable object for this ability
-        FMODUnity.RuntimeManager.PlayOneShot(data.sound.Path);
+        // play on begin sound from SO if assigned
+        if (!data.onBeginSound.IsNull) RuntimeManager.PlayOneShot(data.onBeginSound.Guid);
     }
 
     public virtual IEnumerator OnContinue() 

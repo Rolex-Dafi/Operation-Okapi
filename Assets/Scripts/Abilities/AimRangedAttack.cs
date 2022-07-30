@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 /// <summary>
@@ -24,6 +25,8 @@ public class AimRangedAttack : RangedAttack
         character.Animator.SetTrigger(EAnimationParameter.attackReleased.ToString());
         character.StopAiming();
 
+        // play sound after releasing the attack
+        if (!data.onEndSound.IsNull) RuntimeManager.PlayOneShot(data.onEndSound.Guid);
         SpawnProjectile();
     }
 }

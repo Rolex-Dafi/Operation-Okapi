@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class RangedAttackBT : CharacterTreeBase
 {
+    [SerializeField] protected int rangedAttackId = 1;
+
     protected override void Init()
     {
-        Node findTarget = new TargetInLineOfSight(rootTree, playerCharacter, (Character.CharacterData as EnemyCharacterSO).lineOfSightRange);
+        Node findTarget = new TargetInLineOfSight(rootTree, playerCharacter, (Character.Data as EnemyCharacterSO).lineOfSightRange);
 
-        // TODO replace reload time with attack reference later ?
-        Node attackTarget = new RangedAttackTarget(rootTree, playerCharacter, (Character.CharacterData as EnemyCharacterSO).reloadTime);
+        // TODO add if trgt in attack range - if not, move or dash tw it
+
+        Node attackTarget = new AttackTarget(rootTree, playerCharacter, Character.GetAttackByID(rangedAttackId));
 
         Root = new Sequence(new List<Node> { findTarget, attackTarget });
     }

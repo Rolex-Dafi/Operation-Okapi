@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class MainMenuManager : MonoBehaviour
+public class MenuManager : MonoBehaviour
 {
     private GameManager gameManager;
 
-    private void Start()
+    public void Init(GameManager gameManager)
     {
-        gameManager = FindObjectOfType<GameManager>();
+        this.gameManager = gameManager;
     }
 
     public void StartGame()

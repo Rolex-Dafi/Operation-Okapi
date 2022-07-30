@@ -9,4 +9,12 @@ public class CharacterSO : ScriptableObject
     public int health;
     public int respect; // only applicable to player character
 
+    // combat
+    public AttackSO[] attacks;
+    public DashSO dash;
+
+    // sound
+    public FMODUnity.EventReference onHitSound;
+    public FMODUnity.EventReference onDeathSound;
+
 }
