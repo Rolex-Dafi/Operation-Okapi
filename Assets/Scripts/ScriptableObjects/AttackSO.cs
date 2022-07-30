@@ -15,8 +15,10 @@ public class AttackSO : AbilitySO
     [Range(0, 10)] public int cost; // for player attacks only, enemies should (?) have unlimited attacks
     
     // min wait time between attacks
-    // TODO actually use this somewhere
-    public float delta;
+    // TODO actually use this somewhere for player (enemies already use it)
+    public float reloadTime;
+
+    [Range(0, 10)] public float attackRange = 3; // in Unity units
 
     // how much is the character slown during the attack (0..completely, 1..full speed)
     [Range(0, 1)] public float movementSpeedFactor = 0;
@@ -24,7 +26,6 @@ public class AttackSO : AbilitySO
     // for ranged only
     public ProjectileController projectilePrefab;
     public float projectileSpeed = 100;
-    [Range(1, 10)] public float projectileRange = 5; // in Unity units
 
     // TODO - return more attack classes, after they're designed and I create them
     public Attack GetAttack(CombatCharacter character)

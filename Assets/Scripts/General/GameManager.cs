@@ -10,7 +10,10 @@ public class GameManager : MonoBehaviour
     // components
     private SceneLoader sceneLoader;
     private UIInput uiInput;
-    [SerializeField] private AudioManager audioManager;
+    public AudioManager audioManager;
+
+    // Menu
+    private MenuManager menuManager;
 
     // game specific
     private bool gameInProgress = false;
@@ -26,8 +29,19 @@ public class GameManager : MonoBehaviour
 
         // load the first scene
         // for now the main menu
+        OpenMenu();
+    }
+
+    private void OpenMenu()
+    {
         audioManager.StartAmbience(Utility.mainMenuIndex);
-        sceneLoader.LoadScene(Utility.mainMenuIndex);
+        sceneLoader.LoadScene(Utility.mainMenuIndex, FinishMenuLoad);
+    }
+
+    private void FinishMenuLoad()
+    {
+        menuManager = FindObjectOfType<MenuManager>();
+        menuManager.Init(this);
     }
 
     public void StartGame()

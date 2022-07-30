@@ -32,8 +32,8 @@ MonoBehaviour:
   effect: 0
   damage: 2
   cost: 0
-  delta: 0
+  reloadTime: 0.5
+  attackRange: 0
   movementSpeedFactor: 0.2
   projectilePrefab: {fileID: 0}
   projectileSpeed: 100
-  projectileRange: 5

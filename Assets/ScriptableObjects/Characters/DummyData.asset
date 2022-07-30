@@ -15,6 +15,9 @@ MonoBehaviour:
   money: 10
   health: 5
   respect: 0
+  attacks:
+  - {fileID: 11400000, guid: cade32bdd81854543960936e1bfdfadd, type: 2}
+  dash: {fileID: 11400000, guid: 4c560f02b7fcc884697340bbfbcb18e0, type: 2}
   onHitSound:
     Guid:
       Data1: -9599751
