@@ -6,17 +6,18 @@ using BehaviourTree;
 
 public class PatrollBT : CharacterTreeBase
 {
-    public Transform[] patrollPoints;
+    public Transform[] patrollPointsOld;
     public float waitBetweenWalks = 2f;
 
     protected override void Init()
     {
+        Debug.Log("PatrollBT initiated");
         List<Node> patrollTasks = new List<Node>();
-        for (int i = 0; i < patrollPoints.Length; i++)
+        for (int i = 0; i < patrollPointsOld.Length; i++)
         {
-            patrollTasks.Add(new WalkToTarget(rootTree, patrollPoints[i].position));
+            patrollTasks.Add(new WalkToTarget(rootTree, patrollPointsOld[i].position));
 
-            if (i < patrollPoints.Length - 1) patrollTasks.Add(new WaitFor(rootTree, waitBetweenWalks));
+            if (i < patrollPointsOld.Length - 1) patrollTasks.Add(new WaitFor(rootTree, waitBetweenWalks));
         }
 
         Root = new Sequence(patrollTasks);

@@ -16,7 +16,7 @@ public class AttackSO : AbilitySO
     
     // min wait time between attacks
     // TODO actually use this somewhere for player (enemies already use it)
-    public float reloadTime;
+    public float recoveryTime = 1f;
 
     [Range(0, 10)] public float attackRange = 3; // in Unity units
 

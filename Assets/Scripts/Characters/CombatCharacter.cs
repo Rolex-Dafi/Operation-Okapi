@@ -39,6 +39,7 @@ public class CombatCharacter : Character, IDamagable
     public Rigidbody2D RB { get => rb; protected set => rb = value; }
     public Health Health { get => health; protected set => health = value; }
 
+    public Dash GetDash() => dash; 
     public Attack GetAttackByID(int id) => attacks.Find(x => x.Data.id == id);
 
     public override void Init()

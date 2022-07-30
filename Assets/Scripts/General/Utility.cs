@@ -6,8 +6,9 @@ public static class Utility
     // we're using 2:1 isometry, computed from dot product, in degrees
     public static float isometricAngle = Mathf.Acos(2 / Mathf.Sqrt(5)) * Mathf.Rad2Deg;
 
-    public const string playerTag = "Player";
-    public const string enemyTag = "Enemy";
+    public const string playerTagAndLayer = "Player";
+    public const string enemyTagAndLayer = "Enemy";
+    public const string obstacleLayer = "Obstacle";
 
     // scenes
 
@@ -19,7 +20,7 @@ public static class Utility
 
 public enum EAbilityType
 {
-    idle, walk, dash, melee, ranged, hit, death, NDEF
+    idle, walk, dash, melee, ranged, special, hit, death, NDEF  
 }
 
 public enum EAttackCommand 
@@ -132,6 +133,7 @@ public static class Extenstions
                 return EStateMachine.move;
             case EAbilityType.melee:
             case EAbilityType.ranged:
+            case EAbilityType.special:
                 return EStateMachine.attack;
             default:
                 return EStateMachine.root;

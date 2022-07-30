@@ -89,7 +89,7 @@ public class AnimatorGenerator
         // redirection state for attacks
         AnimatorState redirectionState = stateMachines[EStateMachine.attack].AddState(redirection);
         // startup state for aimed ranged attack
-        AnimatorState rangedStartupState = CreateBlendTree(controller, stateMachines[EAbilityType.ranged.ToEStateMachine()], EAbilityType.ranged.ToString(), "startup");
+        //AnimatorState rangedStartupState = CreateBlendTree(controller, stateMachines[EAbilityType.ranged.ToEStateMachine()], EAbilityType.ranged.ToString(), "startup");  // only for aimed rng atk
         // set default states for each sm
         stateMachines[EStateMachine.root].defaultState = states[EAbilityType.idle];
         stateMachines[EStateMachine.move].defaultState = states[EAbilityType.idle];
@@ -112,10 +112,12 @@ public class AnimatorGenerator
         // TODO change this to a loop for more attacks later !!
         // TODO also take into account different attack effects (i.e. for click, aim and spray attacks there'll be different states !!
         AddAttackTransition(redirectionState, states[EAbilityType.melee], stateMachines[EStateMachine.move], 0);
-        AddAttackTransition(redirectionState, states[EAbilityType.ranged], stateMachines[EStateMachine.move], 1, EAttackEffect.Aim, rangedStartupState);
+        AddAttackTransition(redirectionState, states[EAbilityType.special], stateMachines[EStateMachine.move], 2);
+        //AddAttackTransition(redirectionState, states[EAbilityType.ranged], stateMachines[EStateMachine.move], 1, EAttackEffect.Aim, rangedStartupState);  // only for aimed rng atk
         // add behaviours
         states[EAbilityType.melee].AddStateMachineBehaviour<AttackStateMachine>();
-        rangedStartupState.AddStateMachineBehaviour<AttackStateMachine>();
+        states[EAbilityType.special].AddStateMachineBehaviour<AttackStateMachine>();
+        //rangedStartupState.AddStateMachineBehaviour<AttackStateMachine>();  // only for aimed rng atk
 
         // dash
         AddBoolTransition(states[EAbilityType.idle], states[EAbilityType.dash], stateMachines[EStateMachine.move], EAnimationParameter.dashing.ToString());

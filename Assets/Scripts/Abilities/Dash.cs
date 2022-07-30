@@ -34,10 +34,9 @@ public class Dash : Ability
             base.OnBegin();
 
             // play animation
-            // TODO change anim parameter for dash from trigger to bool
             character.Animator.SetBool(EAnimationParameter.dashing.ToString(), true);
 
-            // TODO allow to dash through enemies (maybe objects even)
+            // TODO allow to dash through enemies and objects
 
             // start moving
             character.StartCoroutine(OnContinue());
@@ -57,6 +56,7 @@ public class Dash : Ability
         {
             // TODO call OnEnd() after colliding with a wall as well!
             // for some reason this already seems to be working ??
+            // it'll probably stop working after disabling the collider to dash through enemies though
 
             if (distanceTravelled > Data.distance) { 
                 OnEnd();

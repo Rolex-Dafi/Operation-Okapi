@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1678117210744168495}
   - component: {fileID: 1678117210744168494}
   - component: {fileID: 1586935579521748317}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Chairs_brown-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6204516057195747712}
   - component: {fileID: 5382831857089604123}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

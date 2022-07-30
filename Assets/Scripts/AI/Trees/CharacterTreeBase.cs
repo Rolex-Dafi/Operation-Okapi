@@ -13,11 +13,16 @@ public abstract class CharacterTreeBase : TreeBase
     private CombatCharacter character;
     private Seeker seeker; // for pathfinding
 
+    // pathfinding
+    public Transform[] patrollPoints;
+
     // will be needed in subtrees (ex. see if player is in range)
     protected Transform playerCharacter;
 
     public CombatCharacter Character { get => character; private set => character = value; }
     public Seeker Seeker { get => seeker; private set => seeker = value; }
+
+    private Dictionary<string, object> data;
 
     private void Start()
     {
@@ -30,6 +35,8 @@ public abstract class CharacterTreeBase : TreeBase
         Character = GetComponent<CombatCharacter>();
         Seeker = GetComponent<Seeker>();
 
+        data = new Dictionary<string, object>();
+
         Init();
     }
 
@@ -40,5 +47,34 @@ public abstract class CharacterTreeBase : TreeBase
         {
             Root.Update();
         }
+    }
+
+    public void AddItem(string name, object item)
+    {
+        if (data.ContainsKey(name))
+        {
+            data[name] = item;
+        }
+        else
+        {
+            data.Add(name, item);
+        }
+    }
+
+    public object GetItem(string name)
+    {
+        if (data.ContainsKey(name))
+        {
+            return data[name];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public void RemoveItem(string name)
+    {
+        data.Remove(name);
     }
 }

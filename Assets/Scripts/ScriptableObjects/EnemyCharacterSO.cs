@@ -7,6 +7,7 @@ public class EnemyCharacterSO : CharacterSO
 {
     [Range(1, 10)] public float lineOfSightRange;
 
-    [Range(1, 10)] public float reloadTime;
+    [Range(1, 10)] public float patrollWaitTime = 1f;
+
 
 }

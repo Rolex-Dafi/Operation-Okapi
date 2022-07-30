@@ -40,7 +40,7 @@ public class EnemySpawner : MonoBehaviour
         healthBarInstance.GetComponent<FollowTarget>().Init(enemyInstance.transform);
 
         // Navigation
-        enemyInstance.GetComponent<PatrollBT>().patrollPoints = patrollPoints;
+        enemyInstance.GetComponent<CharacterTreeBase>().patrollPoints = patrollPoints;
 
         enemyAlive = true;
     }
