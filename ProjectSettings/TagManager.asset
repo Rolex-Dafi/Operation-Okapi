@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - FloorMap
+  - WallXMap
+  - WallYMap
+  - WallObjectsMap
+  - ColliderMap
   layers:
   - Default
   - TransparentFX

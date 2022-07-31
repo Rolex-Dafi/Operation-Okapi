@@ -1,34 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 /// <summary>
 /// Base class for map generation
 /// </summary>
 public class MapGenerator : MonoBehaviour
 {
-    private Transform roomHolder;
-    private Transform gridHolder;
-    private Transform obstaclesHolder;
+    protected Transform _roomHolder;
+    protected Transform _gridHolder;
+    protected Transform _obstaclesHolder;
 
-    public void Generate()
+    [Header("Empty prefab of grid setup.")]
+    public GameObject mapPrefab;
+
+    public virtual void Generate()
     {
+        Restart();
         SetUp();
     }
 
     private void SetUp()
     {
-        roomHolder = new GameObject("Room").transform;
-        gridHolder = new GameObject("Grid").transform;
-        obstaclesHolder = new GameObject("Obstacles").transform;
+        Restart();
+        
+        _roomHolder = Instantiate(mapPrefab).transform;
+        _gridHolder = _roomHolder.GetChild(0);
+        _obstaclesHolder = _roomHolder.GetChild(1);
+    }
 
-        gridHolder.parent = roomHolder;
-        obstaclesHolder.parent = roomHolder;
-
-        Grid g = gridHolder.gameObject.AddComponent(typeof(Grid)) as Grid;
-        g.cellSize = new Vector3(1.0f, 0.5f, 1);
-        g.cellLayout = GridLayout.CellLayout.IsometricZAsY;
-
-        obstaclesHolder.gameObject.layer = 6;
+    private void Restart()
+    {
+        if (_roomHolder == null) return;
+        
+        Destroy(_roomHolder.gameObject);
+        _roomHolder = null;
+        _gridHolder = null;
+        _obstaclesHolder = null;
     }
 }
