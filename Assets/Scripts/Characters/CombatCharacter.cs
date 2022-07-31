@@ -83,13 +83,20 @@ public class CombatCharacter : Character, IDamagable
     {
         if (move != Vector2.zero) Facing = move;
 
-        if (!canMove || dash.CurrentlyDashing) return;
+        if (!canMove || dash.InUse) return;
 
         // moving in isometric coordinates !
         RB.MovePosition(RB.position + move.CartesianToIsometric().normalized * Time.fixedDeltaTime * currentSpeed);
 
         // animator in cartesian
-        Animator.SetFloat(EAnimationParameter.speed.ToString(), move.sqrMagnitude);
+        float speed = move.magnitude * currentSpeed;
+        speed = speed < .1f ? 0 : speed;
+        Animator.SetFloat(EAnimationParameter.speed.ToString(), speed);
+    }
+
+    public void ForceUpdateSpeed(Vector2 move)
+    {
+        Animator.SetFloat(EAnimationParameter.speed.ToString(), move.sqrMagnitude * currentSpeed);
     }
 
     public void Dash()
@@ -175,6 +182,14 @@ public class CombatCharacter : Character, IDamagable
     {
         canMove = movementSpeed == 0 ? false : true;
         currentSpeed = movementSpeed * movementSpeed;
+    }
+
+    public void ResetAttacks()
+    {
+        foreach (var attack in attacks)
+        {
+            attack.InUse = false;
+        }
     }
 
     public void ResetMovementSpeed() 

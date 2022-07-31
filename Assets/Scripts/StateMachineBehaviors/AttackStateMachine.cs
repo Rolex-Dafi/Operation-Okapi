@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class AttackStateMachine : StateMachineBehaviour
 {
-    private CombatCharacter aggressiveCharacter;
+    private CombatCharacter combatCharacter;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!aggressiveCharacter) aggressiveCharacter = animator.GetComponent<CombatCharacter>();
+        if (!combatCharacter) combatCharacter = animator.GetComponent<CombatCharacter>();
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateinfo, int layerindex)
     {
-        aggressiveCharacter.ResetMovementSpeed();
+        combatCharacter.ResetAttacks();
+        combatCharacter.ResetMovementSpeed();
     }
 
 }

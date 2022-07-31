@@ -23,6 +23,7 @@ public class DashSO : AbilitySO
 
     public Dash GetDash(CombatCharacter character)
     {
+        coolDown = deltaAfterMax;
         return new Dash(character, this);
     }
 }

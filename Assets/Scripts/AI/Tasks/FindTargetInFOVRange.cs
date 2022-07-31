@@ -7,7 +7,7 @@ public class FindTargetInFOVRange : CheckBase
     private string targetTag;
     private string myTag;
 
-    public FindTargetInFOVRange(CharacterTreeBase characterBT, string targetName, float range, string targetTag = Utility.playerTagAndLayer) : base(characterBT)
+    public FindTargetInFOVRange(CharacterTreeBase characterBT, string targetName, float range, string targetTag = Utility.playerTagAndLayer, string debugName = "") : base(characterBT, debugName)
     {
         this.range = range;
         this.targetName = targetName;
@@ -17,6 +17,9 @@ public class FindTargetInFOVRange : CheckBase
 
     protected override bool Check()
     {
+        // clear target
+        bt.RemoveItem(targetName);
+
         // check all colliders within range
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(bt.transform.position, range);
 
@@ -37,7 +40,7 @@ public class FindTargetInFOVRange : CheckBase
                     // save the found target to shared data
                     bt.AddItem(targetName, collider.transform.position);
 
-                    Debug.Log("found target at " + collider.transform.position);
+                    Debug.LogWarning("found target at " + collider.transform.position);
 
                     // report success
                     return true;

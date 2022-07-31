@@ -9,7 +9,12 @@ public abstract class Ability
     protected CombatCharacter character;
     protected AbilitySO data;
 
+    protected float _lastUsed;
+
     public EAbilityType type;
+
+    public bool InUse { get; set; }
+    public bool OnCoolDown { get => Time.time - _lastUsed < data.coolDown; }
 
     protected Ability(CombatCharacter character, AbilitySO data, EAbilityType type)
     {
@@ -22,6 +27,9 @@ public abstract class Ability
     {
         // play on begin sound from SO if assigned
         if (!data.onBeginSound.IsNull) RuntimeManager.PlayOneShot(data.onBeginSound.Guid);
+
+        _lastUsed = Time.time;
+        InUse = true;
     }
 
     public virtual IEnumerator OnContinue() 

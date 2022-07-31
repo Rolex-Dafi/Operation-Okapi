@@ -1,9 +1,10 @@
 using BehaviourTree;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class NickBT : CharacterTreeBase
 {
+    private int baseAttackID = 0;
+
     protected override void Init()
     {
         // PATROLLING
@@ -15,40 +16,56 @@ public class NickBT : CharacterTreeBase
 
             if (i < patrollPoints.Length - 1) patrollTasks.Add(new WaitFor(rootTree, (Character.Data as EnemyCharacterSO).patrollWaitTime));
         }
-        Node patrollBT = new Sequence(patrollTasks);
+        Node patrollBT = new SequenceWithCachedLastChild(patrollTasks);
 
         // ATTACKING  
-        MeleeAttack meleeAttack = Character.GetAttackByID(0) as MeleeAttack;
+        MeleeAttack meleeAttack = Character.GetAttackByID(baseAttackID) as MeleeAttack;
         // PC in LOS ?
-        // TODO currently only checks range, not whether the target is obstructed
-        Node pcInRange = new FindTargetInRange(this, AIUtility.PCPositionName, (Character.Data as EnemyCharacterSO).lineOfSightRange);
+        // TODO currently only checks range, not whether the target is unobstructed
+        Node pcInRange = new FindTargetInRange(this, AIUtility.PCPositionName, (Character.Data as EnemyCharacterSO).lineOfSightRange, debugName: "pc in (FOV) range");
+
         // In Melee Range ?
-        Node meleeRange = new Sequence(
-            new List<Node>() 
-            {
-                new TargetInRange(this, AIUtility.PCPositionName, meleeAttack.Data.attackRange),
-                new AttackTarget(this, meleeAttack, AIUtility.PCPositionName),
-                new WaitFor(this, meleeAttack.Data.recoveryTime)
-            }
-        );
-        // In Dash Range ?
-        Node dashRange = new Sequence(
+        Node meleeTask = new SequenceWithCachedLastChild(
             new List<Node>()
             {
-                new TargetInRange(this, AIUtility.PCPositionName, Character.GetDash().Data.distance),
-                new DashToTarget(this, AIUtility.PCPositionName),
-                new AttackTarget(this, meleeAttack, AIUtility.PCPositionName),
-                new WaitFor(this, meleeAttack.Data.recoveryTime)
+                new AttackTarget(this, meleeAttack, AIUtility.PCPositionName, debugName:"attack pc"),                            // attack pc THEN
+                new WaitFor(this, meleeAttack.Data.recoveryTime, debugName:"attack recovery")                                    // attack recovery 
             }
         );
-        // Walk 
-        Node walk = new WalkToTarget(this, AIUtility.PCPositionName);
+        Node meleeSequence = new Sequence(
+            new List<Node>()
+            {
+                new TargetInRange(this, AIUtility.PCPositionName, meleeAttack.Data.attackRange, debugName:"pc in atk range"),     // pc in attack range AND
+                meleeTask                                                                                                         // perform atk task
+            }
+        );
+
+        // In Dash Range ?
+        Node dashTask = new SequenceWithCachedLastChild(
+            new List<Node>()
+            {
+                //new DashToTarget(this, AIUtility.PCPositionName, debugName:"dash to pc"),                                         //// dash to pc THEN
+                new DashAttackTarget(this, meleeAttack, AIUtility.PCPositionName, debugName:"attack pc"),                           // dash attack pc THEN
+                new WaitFor(this, meleeAttack.Data.recoveryTime, debugName:"attack recovery")                                     // attack recovery 
+            }
+        );
+        Node dashSequence = new Sequence(
+            new List<Node>()
+            {
+                new Inverter(new AbilityOnCD(this, Character.GetDash(), debugName:"dash on cd")),                                   // dash not on cd AND
+                new TargetInRange(this, AIUtility.PCPositionName, Character.GetDash().Data.distance, debugName:"pc in dash range"), // pc at dash range AND
+                dashTask                                                                                                            // perform dash
+            }
+        );
+
+        // Walk if not in melee range
+        Node walk = new WalkToTarget(this, AIUtility.PCPositionName, debugName: "walk to pc");
 
         // Attack tree
         Node attackSelector = new Selector(
             new List<Node>()
             {
-                meleeRange, dashRange, walk
+                meleeSequence, dashSequence, walk
             }
         );
 
@@ -66,6 +83,8 @@ public class NickBT : CharacterTreeBase
                 attackBT, patrollBT
             }
         );
+
+        //Root = attackBT;
 
 
     }

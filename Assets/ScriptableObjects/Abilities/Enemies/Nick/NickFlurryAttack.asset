@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e64b9df5068ba247a2d408399dba8c8, type: 3}
   m_Name: NickFlurryAttack
   m_EditorClassIdentifier: 
+  coolDown: 2
   onBeginSound:
     Guid:
       Data1: 1600317305
@@ -28,12 +29,12 @@ MonoBehaviour:
     Path: 
   attackName: Special
   id: 2
-  button: 2
+  button: 0
   effect: 0
   damage: 1
   cost: 0
   recoveryTime: 2
-  attackRange: 0.1
+  attackRange: 0.45
   movementSpeedFactor: 0
   projectilePrefab: {fileID: 0}
   projectileSpeed: 100

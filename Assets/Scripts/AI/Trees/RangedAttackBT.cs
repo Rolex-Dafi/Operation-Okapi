@@ -16,6 +16,6 @@ public class RangedAttackBT : CharacterTreeBase
 
         Node attackTarget = new AttackEntity(rootTree, playerCharacter, Character.GetAttackByID(rangedAttackId));
 
-        Root = new Sequence(new List<Node> { findTarget, attackTarget });
+        Root = new SequenceWithCachedLastChild(new List<Node> { findTarget, attackTarget });
     }
 }

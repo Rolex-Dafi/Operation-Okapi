@@ -1,4 +1,5 @@
 using BehaviourTree;
+using UnityEngine;
 
 /// <summary>
 /// Base class for all tasks. Tasks update the character's animation, physics, etc.
@@ -9,7 +10,7 @@ public abstract class TaskBase : Leaf
 
     private bool taskInProgress = false;
 
-    protected TaskBase(CharacterTreeBase characterBT) : base()
+    protected TaskBase(CharacterTreeBase characterBT, string debugName = "") : base(debugName)
     {
         bt = characterBT;
     }
@@ -43,5 +44,7 @@ public abstract class TaskBase : Leaf
     {
         taskInProgress = false;
         status = taskSuccess ? NodeStatus.Success : NodeStatus.Failure;
+
+        //Debug.Log("Finished task " + ToString() + ", task status: " + status);
     }
 }

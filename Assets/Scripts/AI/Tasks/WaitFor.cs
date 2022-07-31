@@ -10,7 +10,7 @@ public class WaitFor : TaskBase
 
     private float timePassed;
 
-    public WaitFor(CharacterTreeBase characterBT, float waitFor) : base(characterBT)
+    public WaitFor(CharacterTreeBase characterBT, float waitFor, string debugName = "") : base(characterBT, debugName)
     {
         this.waitFor = waitFor;
     }
@@ -19,7 +19,7 @@ public class WaitFor : TaskBase
     {
         timePassed = 0;
         // ensure we play idle animation, not movement
-        bt.Character.Move(Vector2.zero);
+        bt.Character.ForceUpdateSpeed(Vector2.zero);
     }
 
     protected override void OnContinue()

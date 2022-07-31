@@ -162,10 +162,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 8641d6f11f584264d81eed7bc0e4c627, type: 2}
-  attacksData:
-  - {fileID: 11400000, guid: cbd89847babe681479fc676aa8b37823, type: 2}
-  - {fileID: 11400000, guid: 5329dc980c59b8948bed671ec6720e39, type: 2}
-  dashData: {fileID: 11400000, guid: 4c560f02b7fcc884697340bbfbcb18e0, type: 2}
   movementSpeed: 2
   projectileSpawnerTransform: {fileID: 1354588313482233939}
   onDeath:

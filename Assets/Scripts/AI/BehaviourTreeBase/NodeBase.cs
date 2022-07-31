@@ -57,11 +57,12 @@ namespace BehaviourTree
     /// <summary>
     /// A composite node which will process all its children in order - it proceeds to the next child
     /// when the previous one reports success. Equivalent to an AND operation - returns success only
-    /// if all of its children returned success.
+    /// if all of its children returned success. When entering the sequence proceeds from the child
+    /// processed in the previous tick - useful for a sequence of tasks that need to be completed one after another.
     /// </summary>
-    public class Sequence : Composite
+    public class SequenceWithCachedLastChild : Composite
     {
-        public Sequence(List<Node> children) : base(children) { }
+        public SequenceWithCachedLastChild(List<Node> children) : base(children) { }
 
         public override NodeStatus Update()
         {
@@ -93,6 +94,35 @@ namespace BehaviourTree
                 status = childStatus;
                 return status;
             }
+        }
+    }
+    
+     /// <summary>
+     /// A composite node which will process all its children in order - it proceeds to the next child
+     /// when the previous one reports success. Equivalent to an AND operation - returns success only
+     /// if all of its children returned success.
+     /// </summary>
+    public class Sequence : Composite
+    {
+        public Sequence(List<Node> children) : base(children) { }
+
+        public override NodeStatus Update()
+        {
+            foreach (var child in children)
+            {
+                NodeStatus childStatus = child.Update();
+
+                // a child failed or is running, report
+                if (childStatus != NodeStatus.Success)
+                {
+                    status = childStatus;
+                    return status;
+                }
+            }
+
+            // all children succeeded
+            status = NodeStatus.Success;
+            return status;
         }
     }
 
@@ -212,7 +242,17 @@ namespace BehaviourTree
     /// </summary>
     public abstract class Leaf : Node
     {
+        protected string debugName;
 
+        protected Leaf(string debugName = "") : base()
+        {
+            this.debugName = debugName;
+        }
+
+        public override string ToString()
+        {
+            return debugName == "" ? base.ToString() : debugName;
+        }
     }
 
 }

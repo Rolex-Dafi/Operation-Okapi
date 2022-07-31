@@ -20,7 +20,7 @@ public class PatrollBT : CharacterTreeBase
             if (i < patrollPointsOld.Length - 1) patrollTasks.Add(new WaitFor(rootTree, waitBetweenWalks));
         }
 
-        Root = new Sequence(patrollTasks);
+        Root = new SequenceWithCachedLastChild(patrollTasks);
     }
 
 }

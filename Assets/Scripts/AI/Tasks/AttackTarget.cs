@@ -11,9 +11,7 @@ public class AttackTarget : TaskBase
     private Vector3? target;
     private Attack attack;
 
-    //private float timeOfAttack;
-
-    public AttackTarget(CharacterTreeBase characterBT, Attack attack, string targetName) : base(characterBT)
+    public AttackTarget(CharacterTreeBase characterBT, Attack attack, string targetName, string debugName = "") : base(characterBT, debugName)
     {
         this.targetName = targetName;
         this.attack = attack;
@@ -22,18 +20,16 @@ public class AttackTarget : TaskBase
     protected override void OnBegin()
     {
         // get the taget from shared data
+        target = bt.GetItem(targetName) as Vector3?;
+        // if it's not in shared data -> report failure
         if (target == null)
         {
-            target = bt.GetItem(targetName) as Vector3?;
-            // if it's not in shared data -> report failure
-            if (target == null)
-            {
-                OnEnd(false);
-            }
-        }
+            OnEnd(false);
+            return;
+        }        
 
         // direct the character towards the target
-        bt.Character.Rotate(((Vector3)target - bt.Character.transform.position).normalized);
+        bt.Character.Rotate((target.GetValueOrDefault() - bt.Character.transform.position).normalized);
 
         // try to attack
         if (!bt.Character.Attack(attack))
@@ -41,14 +37,18 @@ public class AttackTarget : TaskBase
             OnEnd(false);
             return;
         }
-
-        // TODO wait for attack to finish - might not be neccessary if this is used correctly though
-        // (i.e. a wait task is called after this, for the attack's recovery duration set in attack data)
-        OnEnd(true);
     }
 
     protected override void OnContinue()
     {
+        // ensure we're not playing move anim while attacking
+        bt.Character.ForceUpdateSpeed(Vector2.zero);
+
+        // call onEnd with success after attack finishes
+        if (!attack.InUse)
+        {
+            OnEnd(true);
+        }
 
     }
 }

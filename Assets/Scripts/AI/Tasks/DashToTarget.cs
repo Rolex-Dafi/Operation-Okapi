@@ -10,29 +10,21 @@ public class DashToTarget : TaskBase
     private Vector3? target;
     private string targetName;
 
-    // for targets known at the time this character's bt is initialized
-    public DashToTarget(CharacterTreeBase characterBT, Vector3 target) : base(characterBT)
-    {
-        this.target = target;
-    }
-
     // for targets set at runtime by other tasks in this character's bt
-    public DashToTarget(CharacterTreeBase characterBT, string targetName) : base(characterBT)
+    public DashToTarget(CharacterTreeBase characterBT, string targetName, string debugName = "") : base(characterBT, debugName)
     {
         this.targetName = targetName;
     }
 
     protected override void OnBegin()
     {
-        // if target not set at the beginning, try to get it from shared data
+        // try to get it from shared data
+        target = bt.GetItem(targetName) as Vector3?;        
+        // if it's not in shared data -> report failure
         if (target == null)
         {
-            target = bt.GetItem(targetName) as Vector3?;
-            // if it's not in shared data either -> report failure
-            if (target == null)
-            {
-                OnEnd(false);
-            }
+            OnEnd(false);
+            return;
         }
 
         // rotate char tw target
@@ -45,7 +37,7 @@ public class DashToTarget : TaskBase
     protected override void OnContinue()
     {
         // call onEnd with success after dash finishes
-        if (!bt.Character.GetDash().CurrentlyDashing)
+        if (!bt.Character.GetDash().InUse)
         {
             OnEnd(true);
         }

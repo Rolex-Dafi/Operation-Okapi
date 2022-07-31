@@ -38,6 +38,8 @@ public abstract class CharacterTreeBase : TreeBase
         data = new Dictionary<string, object>();
 
         Init();
+
+        //StartCoroutine(BTLoop());
     }
 
     private void Update()
@@ -46,6 +48,19 @@ public abstract class CharacterTreeBase : TreeBase
         if (rootTree.Equals(this))
         {
             Root.Update();
+        }
+    }
+
+    private IEnumerator BTLoop()
+    {
+        while (true)
+        {
+            // only update the root tree, not any subtrees
+            if (rootTree.Equals(this))
+            {
+                Root.Update();
+            }
+            yield return new WaitForSeconds(.5f);
         }
     }
 

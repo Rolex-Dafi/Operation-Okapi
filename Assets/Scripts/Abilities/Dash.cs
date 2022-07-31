@@ -6,22 +6,18 @@ public class Dash : Ability
 {
     private float lastTimeUsed;
     private int numUsedInChain;
-    private bool currentlyDashing;
-    public bool CurrentlyDashing { get => currentlyDashing; private set => currentlyDashing = value; }
-
     public DashSO Data { get => (DashSO)data; protected set => data = value; }
 
     public Dash(CombatCharacter character, DashSO data) : base(character, data, EAbilityType.dash)
     {
         lastTimeUsed = 0;
         numUsedInChain = 0;
-        CurrentlyDashing = false;
     }
 
 
     public override void OnBegin()
     {
-        if (CurrentlyDashing) return;
+        if (InUse) return;
 
         // are we currently chaining dashes?
         bool inChain = (numUsedInChain < Data.maxNumChained);
@@ -29,8 +25,6 @@ public class Dash : Ability
 
         if (Time.time - lastTimeUsed > delta)
         {
-            CurrentlyDashing = true;
-
             base.OnBegin();
 
             // play animation
@@ -52,7 +46,7 @@ public class Dash : Ability
         Vector2 direction = character.Facing.CartesianToIsometric().normalized;
         float distanceTravelled = 0;
 
-        while (CurrentlyDashing)
+        while (InUse)
         {
             // TODO call OnEnd() after colliding with a wall as well!
             // for some reason this already seems to be working ??
@@ -79,7 +73,7 @@ public class Dash : Ability
         character.Animator.SetBool(EAnimationParameter.dashing.ToString(), false);
 
         // stop moving
-        CurrentlyDashing = false;
+        InUse = false;
         lastTimeUsed = Time.time;
     }
 }

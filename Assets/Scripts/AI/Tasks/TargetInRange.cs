@@ -10,7 +10,7 @@ public class TargetInRange : CheckBase
     private string targetName;
     private float range;
 
-    public TargetInRange(CharacterTreeBase characterBT, string targetName, float range) : base(characterBT)
+    public TargetInRange(CharacterTreeBase characterBT, string targetName, float range, string debugName = "") : base(characterBT, debugName)
     {
         this.targetName = targetName;
         this.range = range;
@@ -28,9 +28,6 @@ public class TargetInRange : CheckBase
         // else return if it's in range
         else
         {
-            Debug.Log("target in range ? " + (Vector3.Distance((Vector3)target, bt.transform.position) <= range) + ", range = " + range);
-            Debug.Log("I'm at " + bt.transform.position + ", target is at " + target);
-
             return Vector3.Distance((Vector3)target, bt.transform.position) <= range;
         }
     }
