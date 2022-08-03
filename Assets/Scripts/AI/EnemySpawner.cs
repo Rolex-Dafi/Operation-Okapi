@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private EnemyCharacter enemyPrefab;
+    [SerializeField] private EnemyCharacter[] enemyPrefabs;
 
     // UI
     [SerializeField] private Canvas worldSpaceCanvas;
@@ -18,6 +18,8 @@ public class EnemySpawner : MonoBehaviour
     private bool canSpawn = false;
     private bool enemyAlive = false;
 
+    private int lastEnemyIdx = 0;
+
     public void Init()
     {
         canSpawn = true;
@@ -25,12 +27,12 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
-        if (canSpawn && !enemyAlive) SpawnEnemy();
+        if (canSpawn && !enemyAlive) SpawnEnemy(lastEnemyIdx);
     }
 
-    private void SpawnEnemy()
+    private void SpawnEnemy(int i)
     {
-        EnemyCharacter enemyInstance = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity, transform);
+        EnemyCharacter enemyInstance = Instantiate(enemyPrefabs[i], spawnPoint.position, Quaternion.identity, transform);
         enemyInstance.Init();
         enemyInstance.onDeath.AddListener(CleanUpEnemy);
 
@@ -43,6 +45,9 @@ public class EnemySpawner : MonoBehaviour
         enemyInstance.GetComponent<CharacterTreeBase>().patrollPoints = patrollPoints;
 
         enemyAlive = true;
+
+        ++lastEnemyIdx;
+        lastEnemyIdx = lastEnemyIdx > enemyPrefabs.Length - 1 ? 0 : lastEnemyIdx;
     }
 
     private void CleanUpEnemy()

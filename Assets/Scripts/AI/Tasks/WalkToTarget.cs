@@ -109,6 +109,7 @@ public class WalkToTarget : TaskBase
                 }
                 else
                 {
+                    Debug.LogWarning("ending walk");
                     EndWalk();
                     return;
                 }
@@ -119,8 +120,7 @@ public class WalkToTarget : TaskBase
             }
         }
 
-        Vector2 movementDir = (currentPath.vectorPath[nextWaypoint] - bt.transform.position);
-        movementDir = movementDir.magnitude < .1f ? Vector2.zero : movementDir.normalized;
+        Vector2 movementDir = (currentPath.vectorPath[nextWaypoint] - bt.transform.position).normalized;
         bt.Character.Move(movementDir);
     }
 

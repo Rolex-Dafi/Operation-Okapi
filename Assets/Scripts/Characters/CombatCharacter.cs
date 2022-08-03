@@ -55,7 +55,10 @@ public class CombatCharacter : Character, IDamagable
             Attack attack = attackSO.GetAttack(this);
             if (attack != null) attacks.Add(attack);
         }
-        dash = data.dash.GetDash(this);
+        if (data.dash != null)
+        {
+            dash = data.dash.GetDash(this);
+        }
 
         RB = GetComponent<Rigidbody2D>();
         col = GetComponent<CircleCollider2D>();
@@ -83,7 +86,7 @@ public class CombatCharacter : Character, IDamagable
     {
         if (move != Vector2.zero) Facing = move;
 
-        if (!canMove || dash.InUse) return;
+        if (!canMove || (dash != null && dash.InUse)) return;
 
         // moving in isometric coordinates !
         RB.MovePosition(RB.position + move.CartesianToIsometric().normalized * Time.fixedDeltaTime * currentSpeed);

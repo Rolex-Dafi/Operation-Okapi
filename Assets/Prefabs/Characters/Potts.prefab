@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 1045408381992066637}
   - component: {fileID: 1045408381992066636}
   - component: {fileID: 744881628516905296}
+  - component: {fileID: 7336341286134266426}
   - component: {fileID: 3078057376987710060}
   - component: {fileID: 2446276194769548967}
   m_Layer: 7
@@ -249,7 +250,7 @@ Animator:
   m_GameObject: {fileID: 1045408381992066639}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f1455eea7460f674982a6d60ffa8f51c, type: 2}
+  m_Controller: {fileID: 9100000, guid: 45e58937359e109469c6592c9cb40eb9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -270,13 +271,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64961dfd19ddfd4428302b334644e4c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 2343fa0ef0455e14caf0490bc6a0f4ea, type: 2}
+  data: {fileID: 11400000, guid: ac07ad6af016a864ba7572b957a9e782, type: 2}
   movementSpeed: 0.5
   projectileSpawnerTransform: {fileID: 1045408380506308069}
   onDeath:
     m_PersistentCalls:
       m_Calls: []
   droppedItemPrefab: {fileID: 6960007355078632573, guid: b64975f22ce087d46b5dcde3f01bb378, type: 3}
+--- !u!114 &7336341286134266426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045408381992066639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52ce7b6db8f0e8a4391e9d08ae577640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootTree: {fileID: 0}
+  patrollPoints: []
 --- !u!114 &3078057376987710060
 MonoBehaviour:
   m_ObjectHideFlags: 0

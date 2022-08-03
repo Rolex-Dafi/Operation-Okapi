@@ -82,9 +82,9 @@ public class AnimatorGenerator
             if (ability == EAbilityType.NDEF) continue;
 
             // TODO change this to be less hacky later
-            string attackFramesName = ability == EAbilityType.ranged ? "active" : "";
+            //string attackFramesName = ability == EAbilityType.ranged ? "active" : "";
 
-            states.Add(ability, CreateBlendTree(controller, stateMachines[ability.ToEStateMachine()], ability.ToString(), attackFramesName));
+            states.Add(ability, CreateBlendTree(controller, stateMachines[ability.ToEStateMachine()], ability.ToString()));
         }
         // redirection state for attacks
         AnimatorState redirectionState = stateMachines[EStateMachine.attack].AddState(redirection);
@@ -122,8 +122,8 @@ public class AnimatorGenerator
         //rangedStartupState.AddStateMachineBehaviour<AttackStateMachine>();  // only for aimed rng atk
 
         // dash
-        AddBoolTransition(states[EAbilityType.idle], states[EAbilityType.dash], stateMachines[EStateMachine.move], EAnimationParameter.dashing.ToString());
-        AddBoolTransition(states[EAbilityType.walk], states[EAbilityType.dash], stateMachines[EStateMachine.move], EAnimationParameter.dashing.ToString());
+        //AddBoolTransition(states[EAbilityType.idle], states[EAbilityType.dash], stateMachines[EStateMachine.move], EAnimationParameter.dashing.ToString());
+        //AddBoolTransition(states[EAbilityType.walk], states[EAbilityType.dash], stateMachines[EStateMachine.move], EAnimationParameter.dashing.ToString());
 
         // hit and death
         AddAnyTriggerTransition(stateMachines[EStateMachine.root], states[EAbilityType.hit], 
