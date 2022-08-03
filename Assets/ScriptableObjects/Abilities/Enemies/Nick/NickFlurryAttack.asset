@@ -15,11 +15,11 @@ MonoBehaviour:
   coolDown: 2
   onBeginSound:
     Guid:
-      Data1: 1600317305
-      Data2: 1223787421
-      Data3: -592736086
-      Data4: -1472659454
-    Path: event:/SFX/Melee
+      Data1: -2007829842
+      Data2: 1117246399
+      Data3: 1148285104
+      Data4: -1278512048
+    Path: event:/SFX/Melee 2
   onEndSound:
     Guid:
       Data1: 0

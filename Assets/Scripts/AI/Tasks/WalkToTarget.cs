@@ -119,7 +119,8 @@ public class WalkToTarget : TaskBase
             }
         }
 
-        Vector2 movementDir = (currentPath.vectorPath[nextWaypoint] - bt.transform.position).normalized;
+        Vector2 movementDir = (currentPath.vectorPath[nextWaypoint] - bt.transform.position);
+        movementDir = movementDir.magnitude < .1f ? Vector2.zero : movementDir.normalized;
         bt.Character.Move(movementDir);
     }
 

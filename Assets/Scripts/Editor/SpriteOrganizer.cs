@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 public class SpriteOrganizer
@@ -15,6 +16,8 @@ public class SpriteOrganizer
         }
 
         DeleteRec(dirInfo, nameContains);
+
+        AssetDatabase.Refresh();
     }
 
     private void DeleteRec(DirectoryInfo dirInfo, string nameContains)
@@ -40,6 +43,8 @@ public class SpriteOrganizer
         }
 
         RenameRec(dirInfo, renameFrom, renameTo);
+
+        AssetDatabase.Refresh();
     }
 
     private void RenameRec(DirectoryInfo dirInfo, string renameFrom, string renameTo)

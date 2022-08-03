@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 1045408381992066637}
   - component: {fileID: 1045408381992066636}
   - component: {fileID: 744881628516905296}
-  - component: {fileID: 6722359363133071970}
+  - component: {fileID: 3011678705757961704}
   - component: {fileID: 3078057376987710060}
   - component: {fileID: 2446276194769548967}
   m_Layer: 7
@@ -272,14 +272,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64961dfd19ddfd4428302b334644e4c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 9d86bbfc01c92fb4098fc9636ec8a6a3, type: 2}
+  data: {fileID: 11400000, guid: 83b04af7c4cf3824e8d1f3f8b9fe05c0, type: 2}
   movementSpeed: 0.5
   projectileSpawnerTransform: {fileID: 1045408380506308069}
   onDeath:
     m_PersistentCalls:
       m_Calls: []
   droppedItemPrefab: {fileID: 6960007355078632573, guid: b64975f22ce087d46b5dcde3f01bb378, type: 3}
---- !u!114 &6722359363133071970
+--- !u!114 &3011678705757961704
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -288,7 +288,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1045408381992066639}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d4cfc9dbf1cc934b89880972e47bf0c, type: 3}
+  m_Script: {fileID: 11500000, guid: 64ffd950ce8c05e45ad4ba013c1a4d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rootTree: {fileID: 0}
@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 7859164022934153874}
   m_Layer: 7
   m_Name: MeleeHitBox
-  m_TagString: Player
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
