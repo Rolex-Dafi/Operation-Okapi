@@ -92,4 +92,68 @@ public abstract class CharacterTreeBase : TreeBase
     {
         data.Remove(name);
     }
+
+    // subtrees
+
+    protected Node GetPatrollBT()
+    {
+        List<Node> patrollTasks = new List<Node>();
+        for (int i = 0; i < patrollPoints.Length; i++)
+        {
+            patrollTasks.Add(new WalkToTarget(rootTree, patrollPoints[i].position));
+
+            if (i < patrollPoints.Length - 1) patrollTasks.Add(new WaitFor(rootTree, (Character.Data as EnemyCharacterSO).patrollWaitTime));
+        }
+        return new SequenceWithCachedLastChild(patrollTasks);
+    }
+
+    protected Node GetAttackBT(Attack attack, bool checkCD = false)
+    {
+        // if the attack range is less than minimum obstacle size -> no need to check for obstacles
+        EObstacleFilter obstacleFilter = attack.Data.attackRange < Utility.minObstacleSize ? EObstacleFilter.None : EObstacleFilter.Obstacles;
+
+        // the attack task itself
+        Node attackTask = new SequenceWithCachedLastChild(
+            new List<Node>()
+            {
+                new AttackTarget(this, attack, AIUtility.PCPositionName, debugName:"attack pc"),                            // attack pc THEN
+                new WaitFor(this, attack.Data.recoveryTime, debugName:"attack recovery")                                    // attack recovery 
+            }
+        );
+
+        // check if in attack range
+        List<Node> attackSequence = new List<Node>();
+        if (checkCD)
+        {
+            attackSequence.Add(new Inverter(new AbilityOnCD(this, attack, debugName: "attack on cd")));                                               // attack not on cd AND 
+        }
+        attackSequence.Add(new TargetInRange(this, AIUtility.PCPositionName, attack.Data.attackRange, obstacleFilter, debugName: "pc in atk range")); // pc in attack range AND
+        attackSequence.Add(attackTask);                                                                                                               // perform atk task
+
+        return new Sequence(attackSequence);
+    }
+
+    protected Node GetDashAttackBT(Attack attack, bool checkCD = true)
+    {
+        // dash attack
+        Node dashTask = new SequenceWithCachedLastChild(
+            new List<Node>()
+            {
+                new DashToTarget(this, AIUtility.PCPositionName, debugName:"dash to pc"),                                         // dash to pc THEN
+                new AttackTarget(this, attack, AIUtility.PCPositionName, debugName:"attack pc"),                                  // dash attack pc THEN
+                new WaitFor(this, attack.Data.recoveryTime, debugName:"attack recovery")                                          // attack recovery 
+            }
+        );
+
+        // check if in dash range
+        List<Node> dashSequence = new List<Node>();
+        if (checkCD)
+        {
+            dashSequence.Add(new Inverter(new AbilityOnCD(this, Character.GetDash(), debugName: "dash on cd")));                                   // dash not on cd AND
+        }
+        dashSequence.Add(new TargetInRange(this, AIUtility.PCPositionName, Character.GetDash().Data.distance, EObstacleFilter.Obstacles));         // pc at dash range AND
+        dashSequence.Add(dashTask);                                                                                                                // perform dash    
+
+        return new Sequence(dashSequence);
+    }
 }

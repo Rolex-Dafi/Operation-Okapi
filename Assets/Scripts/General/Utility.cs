@@ -9,6 +9,10 @@ public static class Utility
     public const string playerTagAndLayer = "Player";
     public const string enemyTagAndLayer = "Enemy";
     public const string obstacleLayer = "Obstacle";
+    public const string wallLayer = "Wall";
+
+    // TODO actually look this size up
+    public const float minObstacleSize = .6f;
 
     // scenes
 

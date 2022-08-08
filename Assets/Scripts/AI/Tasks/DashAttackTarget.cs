@@ -45,6 +45,9 @@ public class DashAttackTarget : TaskBase
             // try to attack if hasn't attacked yet
             if (!alreadyAttacked)
             {
+                // rotate char tw target
+                bt.Character.Rotate(((Vector3)target - bt.Character.transform.position).normalized);
+
                 alreadyAttacked = true;
                 if (!bt.Character.Attack(attack))
                 {

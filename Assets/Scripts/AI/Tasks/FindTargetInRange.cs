@@ -5,11 +5,14 @@ public class FindTargetInRange : CheckBase
     private string targetName;
     private float range;
     private string targetTag;
+    private EObstacleFilter obstacleFilter;
 
-    public FindTargetInRange(CharacterTreeBase characterBT, string targetName, float range, string targetTag = Utility.playerTagAndLayer, string debugName = "") : base(characterBT, debugName)
+    public FindTargetInRange(CharacterTreeBase characterBT, string targetName, float range, EObstacleFilter obstacleFilter = EObstacleFilter.None, 
+        string targetTag = Utility.playerTagAndLayer, string debugName = "") : base(characterBT, debugName)
     {
         this.range = range;
         this.targetName = targetName;
+        this.obstacleFilter = obstacleFilter;
         this.targetTag = targetTag;
     }
 
@@ -26,13 +29,33 @@ public class FindTargetInRange : CheckBase
         {
             if (collider.CompareTag(targetTag))
             {
-                // save the found target to shared data
-                bt.AddItem(targetName, collider.transform.position);
+                if (obstacleFilter.ShouldFilter())
+                {
+                    // is there an obstacle between this and the target ?
+                    RaycastHit2D hit = Physics2D.Linecast(bt.transform.position, collider.transform.position, obstacleFilter.ToLayerMask());
 
-                //Debug.LogWarning("found target at " + collider.transform.position);
+                    // if there is no obstacle
+                    if (hit.collider == null)
+                    {
+                        // save the found target to shared data
+                        bt.AddItem(targetName, collider.transform.position);
 
-                // report success
-                return true;
+                        //Debug.LogWarning("found unobstructed target at " + collider.transform.position);
+
+                        // report success
+                        return true;
+                    }
+                }
+                else
+                {
+                    // save the found target to shared data
+                    bt.AddItem(targetName, collider.transform.position);
+
+                    //Debug.LogWarning("found target at " + collider.transform.position);
+
+                    // report success
+                    return true;
+                }
             }
         }
 

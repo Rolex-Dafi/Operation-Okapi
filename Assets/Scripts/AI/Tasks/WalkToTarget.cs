@@ -109,7 +109,7 @@ public class WalkToTarget : TaskBase
                 }
                 else
                 {
-                    Debug.LogWarning("ending walk");
+                    //Debug.LogWarning("ending walk");
                     EndWalk();
                     return;
                 }

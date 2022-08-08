@@ -30,9 +30,9 @@ public class FindTargetInFOVRange : CheckBase
 
             if (collider.CompareTag(targetTag))
             {
-                // TODO make this more modular ?
+                // is there an obstacle between this and the target ?
                 LayerMask layerMask = LayerMask.NameToLayer(Utility.obstacleLayer);
-                RaycastHit2D hit = Physics2D.Raycast(bt.transform.position, collider.transform.position - bt.transform.position, layerMask);
+                RaycastHit2D hit = Physics2D.Linecast(bt.transform.position, collider.transform.position, layerMask);
 
                 // if there is no obstacle
                 if (hit.collider == null)
@@ -40,7 +40,7 @@ public class FindTargetInFOVRange : CheckBase
                     // save the found target to shared data
                     bt.AddItem(targetName, collider.transform.position);
 
-                    Debug.LogWarning("found target at " + collider.transform.position);
+                    Debug.LogWarning("found unobstructed target at " + collider.transform.position);
 
                     // report success
                     return true;
