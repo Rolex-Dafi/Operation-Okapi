@@ -24,6 +24,8 @@ public class GFXSetUpWindow : EditorWindow
     private int recovery = 0;
     private AnimationClipProperties animationClipProperties = GFXUtility.defaultAnimationClipProperties;
 
+    private AnimationClip debugClip;
+
     [MenuItem("Custom/GFX Set-up")]
     static void Init()
     {
@@ -154,6 +156,10 @@ public class GFXSetUpWindow : EditorWindow
             }
             attackFrames = new AttackFrames(attackEffect, startup, active, recovery);
         }
+        animationClipProperties.meleeHitBoxOnFrame = animationType == EAbilityType.melee ?
+            EditorGUILayout.IntField("Melee hit box on frame", animationClipProperties.meleeHitBoxOnFrame) :
+            -1;
+        animationClipProperties.characterName = characterName;
         animationClipProperties.frameRate = EditorGUILayout.FloatField("Frame rate", animationClipProperties.frameRate);
         animationClipProperties.loop = EditorGUILayout.Toggle("Loop", animationClipProperties.loop);
         animationClipProperties.spriteColor = EditorGUILayout.ColorField("Sprite tint", animationClipProperties.spriteColor);
@@ -191,6 +197,25 @@ public class GFXSetUpWindow : EditorWindow
 
 
         #endregion Animator generation
+
+
+        // debug help
+        debugClip = EditorGUILayout.ObjectField("Clip", debugClip, typeof(AnimationClip), false) as AnimationClip;
+
+        EditorGUILayout.LabelField("Object reference curves:");
+        if (debugClip != null)
+        {
+            foreach (var binding in AnimationUtility.GetObjectReferenceCurveBindings(debugClip))
+            {
+                ObjectReferenceKeyframe[] keyframes = AnimationUtility.GetObjectReferenceCurve(debugClip, binding);
+                EditorGUILayout.LabelField(binding.path + "/" + binding.propertyName + ", Keys: " + keyframes.Length);
+            }
+            foreach (var binding in AnimationUtility.GetCurveBindings(debugClip))
+            {
+                var keyframes = AnimationUtility.GetEditorCurve(debugClip, binding);
+                EditorGUILayout.LabelField(binding.path + "/" + binding.propertyName + ", Key 1: " + keyframes[0].value);
+            }
+        }
     }
 }
 

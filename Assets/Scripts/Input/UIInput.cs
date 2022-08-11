@@ -10,6 +10,8 @@ public class UIInput : MonoBehaviour
     public void Init()
     {
         InputUtility.InitEvents(ref buttonEvents);
+
+        // sounds
     }
 
     private void Update()

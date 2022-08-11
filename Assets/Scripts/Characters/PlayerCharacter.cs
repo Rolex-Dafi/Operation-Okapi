@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Handles player movement and combat - both animation and physics.
 /// </summary>
-public class PlayerCharacter : CombatCharacter
+public class PlayerCharacter : CombatCharacter, IPushable
 {
     private Respect respect;
 
@@ -99,5 +99,9 @@ public class PlayerCharacter : CombatCharacter
         respect.CleanUp();
     }
 
-
+    public void Push(Vector2 direction, float distance, float speed)
+    {
+        Debug.Log("pushing in dir " + direction + ", distance " + distance + ", speed " + speed);
+        StartCoroutine(RB.AddForceCustom(direction, distance, speed));
+    }
 }

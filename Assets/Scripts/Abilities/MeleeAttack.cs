@@ -14,7 +14,7 @@ public class MeleeAttack : Attack
     public override void OnBegin()
     {
         base.OnBegin();
-        hitBoxController.Init(Data.damage);
+        hitBoxController.Init(Data);
     }
 
 }

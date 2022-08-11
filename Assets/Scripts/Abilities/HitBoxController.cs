@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class HitBoxController : MonoBehaviour
 {
-    private int damage;
+    private AttackSO data;
 
-    public void Init(int damage)
+    public void Init(AttackSO data)
     {
-        this.damage = damage;
+        this.data = data;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -17,10 +17,21 @@ public class HitBoxController : MonoBehaviour
         if (!collision.CompareTag(tag))
         {
             // if object with which we collided is damageable, damage it
-            IDamagable other = collision.gameObject.GetComponent<IDamagable>();
-            if (other != null)
+            if (collision.gameObject.TryGetComponent<IDamagable>(out var damagable))
             {
-                other.TakeDamage(damage);
+                damagable.TakeDamage(data.damage);
+            }
+
+            // if attack has pushaback
+            if (data.enemyPushbackDistance > 0)
+            {
+                // and object with which we collided is pushable, push it away from this
+                if (collision.gameObject.TryGetComponent<IPushable>(out var pushable))
+                {
+                    Vector2 direction = collision.transform.position - transform.position;
+                    pushable.Push(direction, data.enemyPushbackDistance, data.enemyPushbackSpeed);
+                }
+
             }
         }
 

@@ -27,7 +27,7 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
-        if (canSpawn && !enemyAlive) SpawnEnemy(lastEnemyIdx);
+        if (canSpawn && !enemyAlive) SpawnEnemy(3);
     }
 
     private void SpawnEnemy(int i)

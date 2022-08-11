@@ -31,17 +31,18 @@ public class ProjectileController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (distanceTravelled > range) Destroy(gameObject);
+        /*if (distanceTravelled > range) Destroy(gameObject);
 
         Vector2 step = force.normalized * Time.fixedDeltaTime * speed;
         rb.MovePosition(rb.position + step);
 
-        distanceTravelled += step.magnitude; 
+        distanceTravelled += step.magnitude; */
     }
 
     public void Shoot(Vector2 force)
     {
         this.force = force;
+        StartCoroutine(rb.AddForceCustom(force, range, speed, OnEnd));
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -57,8 +58,13 @@ public class ProjectileController : MonoBehaviour
             }
 
             // TODO add animation/particle effect
-            Destroy(gameObject);
+            OnEnd();
         }
 
+    }
+
+    private void OnEnd()
+    {
+        Destroy(gameObject);
     }
 }

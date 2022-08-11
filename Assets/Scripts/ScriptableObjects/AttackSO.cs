@@ -10,7 +10,7 @@ public class AttackSO : AbilitySO
     public EAttackButton button; // for player attacks only
     public EAttackEffect effect;
 
-    [Range(1, 10)] public int damage;
+    [Range(0, 10)] public int damage;
 
     [Range(0, 10)] public int cost; // for player attacks only, enemies should (?) have unlimited attacks
     
@@ -22,6 +22,9 @@ public class AttackSO : AbilitySO
 
     // how much is the character slown during the attack (0..completely, 1..full speed)
     [Range(0, 1)] public float movementSpeedFactor = 0;
+
+    public float enemyPushbackDistance = 0;
+    public float enemyPushbackSpeed = 40;
 
     // for ranged only
     public ProjectileController projectilePrefab;

@@ -52,7 +52,7 @@ public class Dash : Ability
             // for some reason this already seems to be working ??
             // it'll probably stop working after disabling the collider to dash through enemies though
 
-            if (distanceTravelled > Data.distance) { 
+            /*if (distanceTravelled > Data.distance) { 
                 OnEnd();
                 break;
             }
@@ -62,7 +62,8 @@ public class Dash : Ability
 
             distanceTravelled += step.magnitude;
 
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForFixedUpdate();*/
+            yield return character.RB.AddForceCustom(direction, Data.distance, Data.speed, OnEnd);
         }
     }
 

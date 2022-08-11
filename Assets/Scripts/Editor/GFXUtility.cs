@@ -8,6 +8,9 @@ public static class GFXUtility
     public static readonly string characterSritesDirectory = "Sprites/Characters";
     public static readonly string characterAnimationsDirectory = "Assets/Animation/Characters";
 
+    public static readonly float defaultAttackHitboxRange = .3f;
+    public static readonly string hitboxObjectName = "MeleeHitBox";
+
     public static readonly SpriteImportSettings defaultSpriteImportSettings =
         new SpriteImportSettings
         {
@@ -22,7 +25,9 @@ public static class GFXUtility
             frameRate = defaultAnimationFrameRate, 
             loop = false, 
             spriteColor = Color.white, 
-            duplicateSingleFrame = false 
+            duplicateSingleFrame = false,
+            characterName = "Ms-Cups",
+            meleeHitBoxOnFrame = -1
         };
 
     public static bool IsFolderRelevant(string folderName, Type t)
@@ -35,6 +40,19 @@ public static class GFXUtility
             }
         }
         return false;
+    }
+}
+
+public static class GFXExtensions
+{
+    public static EDirection GetDirection(this string direction)
+    {
+        foreach (var value in Enum.GetValues(typeof(EDirection)))
+        {
+            if (direction.Equals(value.ToString(), StringComparison.CurrentCultureIgnoreCase)) return (EDirection)value;
+        }
+
+        return EDirection.NDEF;
     }
 }
 

@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public static class Utility
 {
@@ -110,7 +112,28 @@ public class AttackFrames
 }
 
 public static class Extenstions
-{   
+{
+    public static IEnumerator AddForceCustom(this Rigidbody2D rb, Vector2 direction, float distance, float speed, UnityAction onEnd = null)
+    {
+        float distanceTravelled = 0;
+        while (true)
+        {
+            if (distanceTravelled > distance)
+            {
+                onEnd?.Invoke();
+                break;
+            }
+
+            Vector2 step = speed * Time.fixedDeltaTime * direction;
+            rb.MovePosition(rb.position + step);
+
+            distanceTravelled += step.magnitude;
+
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+
     public static AnimatorControllerParameterType ToAnimatorParameterType(this EAnimationParameter parameter)
     {
         switch (parameter)
@@ -146,7 +169,7 @@ public static class Extenstions
 
     public static Vector2 CartesianToIsometric(this Vector2 vector)
     {
-        return new Vector2(vector.x * 2, vector.y);
+        return new Vector2(vector.x, vector.y / 2);
     }
 
     public static Vector2 ToVector2(this Vector3 vector)

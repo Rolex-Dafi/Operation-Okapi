@@ -152,6 +152,7 @@ MonoBehaviour:
   - {fileID: 744881628516905296, guid: aa7cd9470c388b046a193c7f7ed00552, type: 3}
   - {fileID: 744881628516905296, guid: 2caa2ab88814cba43a3b84ec5af2fad9, type: 3}
   - {fileID: 744881628516905296, guid: 27b1a80dd1953e14cba1157982e00f76, type: 3}
+  - {fileID: 744881628516905296, guid: fd9cd61acbaca944b9a204b54237debe, type: 3}
   worldSpaceCanvas: {fileID: 1476287086}
   healthBarPrefab: {fileID: 4593451816082154621, guid: 244f58c0f9d5f1b44960c1faeabd2fb0, type: 3}
   spawnPoint: {fileID: 6141249033725158607}

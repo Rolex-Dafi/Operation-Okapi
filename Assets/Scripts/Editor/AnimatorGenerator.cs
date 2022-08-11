@@ -111,12 +111,12 @@ public class AnimatorGenerator
         // from redirection state -
         // TODO change this to a loop for more attacks later !!
         // TODO also take into account different attack effects (i.e. for click, aim and spray attacks there'll be different states !!
-        //AddAttackTransition(redirectionState, states[EAbilityType.melee], stateMachines[EStateMachine.move], 0);
+        AddAttackTransition(redirectionState, states[EAbilityType.melee], stateMachines[EStateMachine.move], 0);
         AddAttackTransition(redirectionState, states[EAbilityType.ranged], stateMachines[EStateMachine.move], 1);  
         //AddAttackTransition(redirectionState, states[EAbilityType.special], stateMachines[EStateMachine.move], 2);
         //AddAttackTransition(redirectionState, states[EAbilityType.ranged], stateMachines[EStateMachine.move], 1, EAttackEffect.Aim, rangedStartupState);  // only for aimed rng atk
         // add behaviours
-        //states[EAbilityType.melee].AddStateMachineBehaviour<AttackStateMachine>();
+        states[EAbilityType.melee].AddStateMachineBehaviour<AttackStateMachine>();
         states[EAbilityType.ranged].AddStateMachineBehaviour<AttackStateMachine>();
         //states[EAbilityType.special].AddStateMachineBehaviour<AttackStateMachine>();
         //rangedStartupState.AddStateMachineBehaviour<AttackStateMachine>();  // only for aimed rng atk

@@ -11,12 +11,18 @@ public struct AnimationClipProperties
     public Color spriteColor;            // for debug
     public bool duplicateSingleFrame;    // for debug
 
-    public AnimationClipProperties(float frameRate, bool loop, Color spriteColor, bool duplicateSingleFrame)
+    // for hitbox curves
+    public string characterName;
+    public int meleeHitBoxOnFrame;
+
+    public AnimationClipProperties(float frameRate, bool loop, Color spriteColor, bool duplicateSingleFrame, string characterName, int meleeHitBoxOnFrame = -1)
     {
         this.frameRate = frameRate;
         this.loop = loop;
         this.spriteColor = spriteColor;
         this.duplicateSingleFrame = duplicateSingleFrame;
+        this.characterName = characterName;
+        this.meleeHitBoxOnFrame = meleeHitBoxOnFrame;
     }
 }
 
@@ -127,13 +133,13 @@ public class AnimationClipGenerator
 
                 if (attackFrames != null)
                 {
-                    if (GenerateAnimationClip(loadFrom, saveTo + "/startup", saveAs + "_startup", attackFrames.GetStartupIndexes())) ++numClips;
-                    if (GenerateAnimationClip(loadFrom, saveTo + "/active", saveAs + "_active", attackFrames.GetActiveIndexes())) ++numClips;
-                    if (GenerateAnimationClip(loadFrom, saveTo + "/recovery", saveAs + "_recovery", attackFrames.GetRecoveryIndexes())) ++numClips;
+                    if (GenerateAnimationClip(loadFrom, saveTo + "/startup", saveAs + "_startup", attackFrames.GetStartupIndexes(), subInfo.Name.GetDirection())) ++numClips;
+                    if (GenerateAnimationClip(loadFrom, saveTo + "/active", saveAs + "_active", attackFrames.GetActiveIndexes(), subInfo.Name.GetDirection())) ++numClips;
+                    if (GenerateAnimationClip(loadFrom, saveTo + "/recovery", saveAs + "_recovery", attackFrames.GetRecoveryIndexes(), subInfo.Name.GetDirection())) ++numClips;
                 }
                 else
                 {
-                    if (GenerateAnimationClip(loadFrom, saveTo, saveAs)) ++numClips;
+                    if (GenerateAnimationClip(loadFrom, saveTo, saveAs, null, subInfo.Name.GetDirection())) ++numClips;
                 }
             }
         }
@@ -152,7 +158,7 @@ public class AnimationClipGenerator
     /// <param name="saveAs">The name of the clip.</param>
     /// <param name="fromToFrames">Which frames to take from the loadFrom folder (only relevant for attack animations).</param>
     /// <returns>Whether the clip was generated.</returns>
-    private bool GenerateAnimationClip(string loadFrom, string saveTo, string saveAs, Tuple<int, int> fromToFrames = null)
+    private bool GenerateAnimationClip(string loadFrom, string saveTo, string saveAs, Tuple<int, int> fromToFrames = null, EDirection direction = EDirection.NDEF)
     {
         Debug.Log("Processing sprites at path " + loadFrom);
 
@@ -180,6 +186,13 @@ public class AnimationClipGenerator
         {
             Debug.Log("coloring sprite with " + animationProperties.spriteColor + " color");
             ret = ret && AddColorAnimationCurve(clip, animationProperties.spriteColor);
+        }
+
+        // add hitbox anim if relevant
+        if (animationProperties.meleeHitBoxOnFrame > -1)
+        {
+            Debug.Log("adding hitbox to anim");
+            ret = ret && AddHitBoxAnimationCurves(clip, direction);
         }
 
         // save the clip
@@ -210,7 +223,7 @@ public class AnimationClipGenerator
         }
         if (fromToFrames != null)
         {
-            sprites = sprites.SubArray<Sprite>(fromToFrames.Item1, fromToFrames.Item2);
+            sprites = sprites.SubArray(fromToFrames.Item1, fromToFrames.Item2);
         }
 
         // add keyframes
@@ -282,7 +295,60 @@ public class AnimationClipGenerator
         return true;
     }
 
+    private bool AddHitBoxAnimationCurves(AnimationClip clip, EDirection direction)
+    {
+        Vector2 offset = (direction.ToVector2() * GFXUtility.defaultAttackHitboxRange).CartesianToIsometric();
 
+        string hitboxPath = GFXUtility.hitboxObjectName;
+
+        // set hitbox active on given frame in clip settings
+        EditorCurveBinding activeCurveBind = new EditorCurveBinding
+        {
+            type = typeof(CircleCollider2D),
+            path = hitboxPath,
+            propertyName = "m_Enabled"
+        };
+        int enabledLength = animationProperties.meleeHitBoxOnFrame > 0 ? 2 : 1;
+        Keyframe[] enabledFrames = new Keyframe[enabledLength];
+        for (int i = 0; i < enabledLength; i++)
+        {
+            enabledFrames[i] = new Keyframe
+            {
+                time = i * animationProperties.meleeHitBoxOnFrame / clip.frameRate,
+                value = enabledLength > 1 && i == 0 ? 0 : 1 // true = 1, false = 0
+            };
+        }
+        AnimationUtility.SetEditorCurve(clip, activeCurveBind, new AnimationCurve(enabledFrames));
+
+        // set the offset for the hitbox according to the direction
+        string[] propertyNames = { "m_Offset.x", "m_Offset.y" };
+        // create the bindings
+        EditorCurveBinding[] bindings = new EditorCurveBinding[propertyNames.Length];
+        for (int i = 0; i < propertyNames.Length; i++)
+        {
+            bindings[i] = new EditorCurveBinding
+            {
+                type = typeof(CircleCollider2D),
+                path = hitboxPath,
+                propertyName = propertyNames[i]
+            };
+        }
+        Keyframe[] frames = new Keyframe[propertyNames.Length];
+        for (int i = 0; i < propertyNames.Length; i++)
+        {
+            frames[i] = new Keyframe
+            {
+                time = 0, 
+                value = offset[i]
+            };
+        }
+        for (int i = 0; i < propertyNames.Length; i++)
+        {
+            AnimationUtility.SetEditorCurve(clip, bindings[i], new AnimationCurve(frames[i]));
+        }
+
+        return true;
+    }
 }
 
 public static class AnimationClipGeneratorExtensions
