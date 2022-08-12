@@ -18,7 +18,7 @@ public class RangedAttack : Attack
             character.ProjectileSpawnerTransform
         );
         // Player and enemies have to be tagged correctly for this to work !
-        instance.Init(Data.damage, Data.projectileSpeed, Data.attackRange, character.tag);
+        instance.Init(Data, character.tag);
         instance.Shoot(character.Facing);
     }
 }

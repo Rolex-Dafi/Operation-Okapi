@@ -27,6 +27,9 @@ public class CupsBT : CharacterTreeBase
         // Walk if not in ranged range
         Node walk = new WalkToTarget(this, AIUtility.PCPositionName, debugName: "walk to pc");
 
+        // TODO walk away from pc to a safe distance if too close
+        // make a new task node for this - keep distance from target
+
         // Attack tree
         Node attackSelector = new Selector(
             new List<Node>()

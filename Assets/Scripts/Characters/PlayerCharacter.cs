@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -101,7 +102,9 @@ public class PlayerCharacter : CombatCharacter, IPushable
 
     public void Push(Vector2 direction, float distance, float speed)
     {
-        Debug.Log("pushing in dir " + direction + ", distance " + distance + ", speed " + speed);
-        StartCoroutine(RB.AddForceCustom(direction, distance, speed));
+        // interupt movement
+        canMove = false;
+        StartCoroutine(rb.AddForceCustom(direction, distance, speed, () => canMove = true));
     }
+
 }

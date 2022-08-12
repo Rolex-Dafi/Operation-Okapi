@@ -111,7 +111,7 @@ public class AttackFrames
     }
 }
 
-public static class Extenstions
+public static class Extentions
 {
     public static IEnumerator AddForceCustom(this Rigidbody2D rb, Vector2 direction, float distance, float speed, UnityAction onEnd = null)
     {

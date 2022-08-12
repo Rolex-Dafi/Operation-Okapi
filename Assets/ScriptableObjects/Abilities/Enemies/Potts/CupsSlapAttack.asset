@@ -36,7 +36,7 @@ MonoBehaviour:
   recoveryTime: 2
   attackRange: 0.5
   movementSpeedFactor: 0
-  enemyPushbackDistance: 50
-  enemyPushbackSpeed: 40
+  enemyPushbackDistance: 1
+  enemyPushbackSpeed: 15
   projectilePrefab: {fileID: 4754095188408049542, guid: 5c61aeab842b3c545a391ffb9482a26b, type: 3}
   projectileSpeed: 10

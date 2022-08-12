@@ -4,67 +4,35 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class ProjectileController : MonoBehaviour
 {
-    private int damage;
-    private float range;
-    private float speed;
+    private AttackSO data;
 
     private Rigidbody2D rb;
-    private Vector2 force;
 
     private string friendlyTag;
 
-    private float distanceTravelled = 0;
-
-    public void Init(int damage, float speed, float range, string friendlyTag)
+    public void Init(AttackSO data, string friendlyTag)
     {
-        this.damage = damage;
-        this.speed = speed;
-        this.range = range;
+        this.data = data;
 
         this.friendlyTag = friendlyTag;
         gameObject.tag = friendlyTag;
 
         rb = GetComponent<Rigidbody2D>();
-
-        force = Vector2.zero;
-    }
-
-    private void FixedUpdate()
-    {
-        /*if (distanceTravelled > range) Destroy(gameObject);
-
-        Vector2 step = force.normalized * Time.fixedDeltaTime * speed;
-        rb.MovePosition(rb.position + step);
-
-        distanceTravelled += step.magnitude; */
     }
 
     public void Shoot(Vector2 force)
     {
-        this.force = force;
-        StartCoroutine(rb.AddForceCustom(force, range, speed, OnEnd));
+        StartCoroutine(rb.AddForceCustom(force, data.attackRange, data.projectileSpeed, OnEnd));
+    }
+
+    // TODO add animation/particle effect
+    private void OnEnd()
+    {
+        Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // check for friendly fire
-        if (!collision.CompareTag(friendlyTag))
-        {
-            // if object with which we collided is damageable, damage it
-            IDamagable other = collision.gameObject.GetComponent<IDamagable>();
-            if (other != null)
-            {
-                other.TakeDamage(damage);
-            }
-
-            // TODO add animation/particle effect
-            OnEnd();
-        }
-
-    }
-
-    private void OnEnd()
-    {
-        Destroy(gameObject);
+        HitBoxController.HandleCollision(transform, collision, data, friendlyTag);
     }
 }

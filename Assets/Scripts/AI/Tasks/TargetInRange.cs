@@ -40,9 +40,6 @@ public class TargetInRange : CheckBase
                 // is there an obstacle between this and the target ?
                 RaycastHit2D hit = Physics2D.Linecast(bt.transform.position, (Vector3)target, obstacleFilter.ToLayerMask());
 
-                if (hit.collider != null)
-                    Debug.LogWarning("in should filter, hit collider: " + hit.collider.name);
-
                 // if no collider found -> no obstacles -> target in FOV range
                 return hit.collider == null;
             }
