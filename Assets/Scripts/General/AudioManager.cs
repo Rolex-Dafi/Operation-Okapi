@@ -2,11 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private StudioEventEmitter[] ambientEmitters;
     [SerializeField] private EventReference buttonClick;
+
+    public void InitScene()
+    {
+        FindButtons();
+    }
+
+    private void FindButtons()
+    {
+        var uiButtons = FindObjectsOfType<Button>(true);
+        foreach (var button in uiButtons)
+        {
+            button.onClick.AddListener(PlayButtonClick);
+        }
+    }
 
     public void StartAmbience(int sceneIndex)
     {

@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     {
         menuManager = FindObjectOfType<MenuManager>();
         menuManager.Init(this);
+        audioManager.InitScene();
     }
 
     public void StartGame()
@@ -84,17 +85,19 @@ public class GameManager : MonoBehaviour
 
         if (!gamePaused)
         {
-            sceneLoader.AddScene(Utility.mainMenuIndex, () => gamePaused = true);
+            PauseGame(true);
+            sceneLoader.AddScene(Utility.mainMenuIndex, audioManager.InitScene);
         }
         else
         {
-            sceneLoader.TryRemoveScene(Utility.mainMenuIndex, () => gamePaused = false);
+            sceneLoader.TryRemoveScene(Utility.mainMenuIndex, () => PauseGame(false));
         }
     }
 
+    // TODO implement pause mechanic
     private void PauseGame(bool pause)
     {
-
+        gamePaused = pause;
     }
 
 

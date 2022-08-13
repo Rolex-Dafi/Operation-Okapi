@@ -48,6 +48,13 @@ MonoBehaviour:
   ambientEmitters:
   - {fileID: 5007803071707276540}
   - {fileID: 6902178719482327427}
+  buttonClick:
+    Guid:
+      Data1: -1955791566
+      Data2: 1196210648
+      Data3: 96319387
+      Data4: -2123086926
+    Path: event:/SFX/ButtonClick
 --- !u!114 &5007803071707276540
 MonoBehaviour:
   m_ObjectHideFlags: 0
