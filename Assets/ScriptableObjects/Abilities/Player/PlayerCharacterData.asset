@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39d4d306b287ed846bac0eb2d5537aa7, type: 3}
-  m_Name: PlayerData
+  m_Script: {fileID: 11500000, guid: d2ed895a3f3740a41a645751c8c27cb4, type: 3}
+  m_Name: PlayerCharacterData
   m_EditorClassIdentifier: 
   money: 100
   health: 5
-  respect: 10
   attacks:
   - {fileID: 11400000, guid: cbd89847babe681479fc676aa8b37823, type: 2}
   - {fileID: 11400000, guid: 5329dc980c59b8948bed671ec6720e39, type: 2}
@@ -33,3 +32,6 @@ MonoBehaviour:
       Data3: -2117765502
       Data4: 1660216290
     Path: event:/SFX/Death
+  respect: 0
+  startingItems:
+  - {fileID: 11400000, guid: 20da11f16aee6574cb24d8f63c1dad9c, type: 2}

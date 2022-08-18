@@ -162,10 +162,10 @@ public class CombatCharacter : Character, IDamagable
         return false;
     }
 
-    public void TakeDamage(int amount)
+    public virtual void TakeDamage(int amount)
     {
         Animator.SetTrigger(EAnimationParameter.hit.ToString());
-        int current = Health.AddToCurrent(-amount);
+        int current = Health.ChangeCurrent(-amount);
         if (current == 0) Die();
         else
         {

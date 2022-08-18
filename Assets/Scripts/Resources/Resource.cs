@@ -33,7 +33,7 @@ public class Resource
     /// </summary>
     /// <param name="value">The value to add.</param>
     /// <returns></returns>
-    public int AddToCurrent(int value)
+    public int ChangeCurrent(int value)
     {
         currentValue += value;
         currentValue = currentValue < 0 ? 0 : currentValue > maxValue ? maxValue : currentValue;
@@ -41,7 +41,7 @@ public class Resource
         return currentValue;
     }
 
-    public int ChangeMax(int value)
+    public int SetMax(int value)
     {
         maxValue = value >= 0 ? value : 0;
         onChangedMax.Invoke(maxValue);

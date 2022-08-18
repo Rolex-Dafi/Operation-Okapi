@@ -17,3 +17,4 @@ MonoBehaviour:
   ItemEffects: []
   UISprite: {fileID: 21300000, guid: a2f1801021ef02842804245c6e4ee8cb, type: 3}
   WorldSprite: {fileID: 21300000, guid: e3a738558365aef4a9fb0cf971b46133, type: 3}
+  Health: 2

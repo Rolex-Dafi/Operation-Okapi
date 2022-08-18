@@ -7,7 +7,6 @@ public class CharacterSO : ScriptableObject
 {
     public int money;
     public int health;
-    public int respect; // only applicable to player character
 
     // combat
     public AttackSO[] attacks;

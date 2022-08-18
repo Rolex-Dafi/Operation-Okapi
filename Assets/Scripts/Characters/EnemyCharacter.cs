@@ -13,6 +13,8 @@ public class EnemyCharacter : CombatCharacter
         DroppedItem instance = Instantiate(droppedItemPrefab, transform.position, Quaternion.identity);
         instance.Init(money.GetCurrent());
 
+        // TODO add item drops here + acc. for drop chances
+
         base.Die();
     }
 }

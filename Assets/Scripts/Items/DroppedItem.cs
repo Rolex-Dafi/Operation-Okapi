@@ -6,13 +6,22 @@ using UnityEngine;
 [RequireComponent(typeof(CircleCollider2D))]
 public class DroppedItem : MonoBehaviour
 {
-    // so far only money
-    private int amount;
+    // only one or the other
+    private int money;
+    private ItemSO item;
+
     [SerializeField] private EventReference onCollectSound;
 
     public void Init(int amount)
     {
-        this.amount = amount;
+        money = amount;
+        item = null;
+    }
+
+    public void Init(ItemSO item)
+    {
+        this.item = item;
+        money = 0;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -22,7 +31,9 @@ public class DroppedItem : MonoBehaviour
             // check if we're colliding with the player character specifically (not the hit box or a projectile)
             if (collision.TryGetComponent<PlayerCharacter>(out var character))
             {
-                character.Collect(amount);
+                if (money > 0) character.CollectMoney(money);
+                else if (item != null) character.CollectItem(item);
+
                 RuntimeManager.PlayOneShot(onCollectSound.Guid);
                 Destroy(gameObject);
             }

@@ -17,12 +17,25 @@ public class PlayerCharacter : CombatCharacter, IPushable
 
     [SerializeField] private GameObject aimingGFX;
 
+    private PlayerInventory inventory;
+
     public Respect Respect { get => respect; private set => respect = value; }
+
+    public new PlayerCharacterSO Data {  
+        get {
+            if (data.GetType() == typeof(PlayerCharacterSO)) return data as PlayerCharacterSO;
+            else
+            {
+                Debug.LogError("Player data not of correct type. Expected type: PlayerCharacterSO.");
+                return null; 
+            }
+        } 
+    }
 
     public override void Init()
     {
         base.Init();
-        Respect = new Respect(data.respect);
+        Respect = new Respect(Data.respect);
 
         // init attacks
         MeleeAttack melee = attacks.OfType<MeleeAttack>().ToArray()[0];
@@ -36,6 +49,9 @@ public class PlayerCharacter : CombatCharacter, IPushable
             { EAttackButton.Melee, melee },
             { EAttackButton.Ranged, ranged },
         };
+
+        // inventory
+        inventory.Init(Data);
 
         playerController = GetComponent<PlayerController>();
     }
@@ -82,17 +98,28 @@ public class PlayerCharacter : CombatCharacter, IPushable
             // only decrease money when ending the attack
             if (command == EAttackCommand.End)
             {
-                money.AddToCurrent(-attackCost);
+                money.ChangeCurrent(-attackCost);
             }
 
             Attack(currentAttacks[attackButton], command);
         }
     }
 
-    public void Collect(int amount)
+    public void CollectMoney(int amount)
     {
-        // so far only money
-        money.AddToCurrent(amount);
+        money.ChangeCurrent(amount);
+    }
+
+    public void CollectItem(ItemSO item)
+    {
+
+    }
+
+    public override void TakeDamage(int amount)
+    {
+        base.TakeDamage(amount);
+
+        // change inventory if applicable
     }
 
     private void OnDestroy()
