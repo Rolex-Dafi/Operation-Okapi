@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = System.Random;
@@ -11,7 +12,7 @@ public class OfficeRoomGenerator : MapGenerator
     public int maxWidth = 25;
     public int maxHeight = 25;
 
-    [Header("Objects")] public GameObject test;
+    [Header("Objects")] public List<GameObject> extraItems;
 
     private int _minWidth = 4;
     private int _minHeight = 4;
@@ -37,7 +38,7 @@ public class OfficeRoomGenerator : MapGenerator
             YCoord = y;
             this.Empty = empty;
         }
-    };
+    }; 
 
     private Room _leftRoom;
     private Room _rightRoom;
@@ -54,6 +55,7 @@ public class OfficeRoomGenerator : MapGenerator
 
     private List<Wall> _walls;
     private List<Wall> _cols;
+    private Wall overlap;
 
     [Header("Tile sets to use for generation.")]
     public List<Tile> tileLst;
@@ -173,54 +175,46 @@ public class OfficeRoomGenerator : MapGenerator
     private void GenerateOfficeWalls()
     {
         _walls = new List<Wall>();
-        switch (_leftRoom.Type)
+        overlap = new Wall();
+        if (_leftRoom.Type == RoomType.LONG_HALL_VER)
         {
-            /*case RoomType.LONG_HALL_HOR:
-                // long horizontal hall, add two walls
-                AddWallToLst(true, _leftRoom.StartX, _rightRoom.StartX + _rightRoom.Width, 
+            // long vertical wall
+            AddWallToLst(_walls, HallType.HORIZONTAL, _leftRoom.StartX, _leftRoom.StartX + _leftRoom.Width,
+                _rightRoom.Height);
+            AddWallToLst(_walls, HallType.VERTICAL, _leftRoom.StartY, _rightRoom.Height,
+                _rightRoom.StartX + _rightRoom.Width);
+        }
+        else
+        {
+            // handle all other cases
+            if (_leftRoom.StartY + _leftRoom.Height == _rightRoom.StartY + _rightRoom.Height)
+            {
+                // only two walls
+                AddWallToLst(_walls, HallType.HORIZONTAL, _leftRoom.StartX, _rightRoom.Width,
                     _leftRoom.StartY + _leftRoom.Height);
-                AddWallToLst(false, _leftRoom.StartY, _leftRoom.StartY + _leftRoom.Height, 
+                AddWallToLst(_walls, HallType.VERTICAL, _rightRoom.StartY, _rightRoom.StartY + _rightRoom.Height,
                     _rightRoom.StartX + _rightRoom.Width);
-                break;*/
-            case RoomType.LONG_HALL_VER:
-                // long vertical wall
-                AddWallToLst(_walls, true, _leftRoom.StartX, _leftRoom.StartX + _leftRoom.Width, 
-                    _rightRoom.Height);
-                AddWallToLst(_walls, false, _leftRoom.StartY, _rightRoom.Height, 
-                    _rightRoom.StartX + _rightRoom.Width );
-                break;
-            /*case RoomType.BIG_ROOM:
-                // big room
-                AddWallToLst(true, _leftRoom.StartX, _rightRoom.StartX + _rightRoom.Width, 
-                    _leftRoom.StartY + _leftRoom.Height);
-                AddWallToLst(false, _leftRoom.StartY, _leftRoom.StartY + _leftRoom.Height ,
+            }
+            else
+            {
+                // four walls
+                AddWallToLst(_walls, HallType.HORIZONTAL, _leftRoom.StartX, _leftRoom.StartX + _leftRoom.Width,
+                    _leftRoom.Height);
+                AddWallToLst(_walls, HallType.VERTICAL, _rightRoom.StartY + _rightRoom.Height,
+                    _leftRoom.StartY + _leftRoom.Height,
+                    _leftRoom.StartX + _leftRoom.Width);
+                AddWallToLst(_walls, HallType.HORIZONTAL, _rightRoom.StartX, _rightRoom.StartX + _rightRoom.Width,
+                    _rightRoom.StartY + _rightRoom.Height);
+                AddWallToLst(_walls, HallType.VERTICAL, _rightRoom.StartY, _rightRoom.StartY + _rightRoom.Height,
                     _rightRoom.StartX + _rightRoom.Width);
-                break;*/
-            default:
-                // handle all other cases
-                if (_leftRoom.StartY + _leftRoom.Height == _rightRoom.StartY + _rightRoom.Height)
-                {
-                    // only two walls
-                    AddWallToLst(_walls, true, _leftRoom.StartX, _rightRoom.Width, 
-                        _leftRoom.StartY + _leftRoom.Height);
-                    AddWallToLst(_walls, false, _rightRoom.StartY, _rightRoom.StartY + _rightRoom.Height,
-                        _rightRoom.StartX + _rightRoom.Width);
-                }
-                else
-                {
-                    // four walls
-                    AddWallToLst(_walls, true, _leftRoom.StartX, _leftRoom.StartX + _leftRoom.Width,
-                        _leftRoom.Height);
-                    AddWallToLst(_walls, false, _rightRoom.StartY + _rightRoom.Height, _leftRoom.StartY + _leftRoom.Height,
-                        _leftRoom.StartX + _leftRoom.Width);
-                    AddWallToLst(_walls, true, _rightRoom.StartX, _rightRoom.StartX + _rightRoom.Width,
-                        _rightRoom.StartY + _rightRoom.Height);
-                    AddWallToLst(_walls, false, _rightRoom.StartY, _rightRoom.StartY + _rightRoom.Height,
-                        _rightRoom.StartX + _rightRoom.Width);
-                }
-                break;
+            }
         }
 
+        if (_leftRoom.Type == RoomType.BIG_ROOM || _leftRoom.Type == RoomType.LONG_HALL_HOR ||
+            _leftRoom.Type == RoomType.LONG_HALL_VER)
+            overlap.SetValues(HallType.HORIZONTAL, 0, 0, 0);
+        else
+            overlap.SetValues(HallType.VERTICAL, _leftRoom.StartY, _rightRoom.StartY + _rightRoom.Height, -1);
         // finally set office walls to map
         PutDownWallTiles();
     }
@@ -243,14 +237,14 @@ public class OfficeRoomGenerator : MapGenerator
         {
             if (wall.End - wall.Start < 2)
             {
-                if(wall.Horizontal)
+                if(wall.Orientation == HallType.HORIZONTAL)
                     horWalls.SetTile(new Vector3Int(wall.Start, wall.Height, 0), horWallLst[3]);
                 else
                     verWalls.SetTile(new Vector3Int(wall.Height, wall.Start, 0), verWallLst[3]);
             }
             else
             {
-                if (wall.Horizontal)
+                if (wall.Orientation == HallType.HORIZONTAL)
                 {
                     SetTilesToMap(horWallLst[0], horWalls, wall.Start, wall.Height, wall.End, wall.Height + 1);
                     horWalls.SetTile(new Vector3Int(wall.End - 1, wall.Height, 0), horWallLst[1]);
@@ -278,10 +272,10 @@ public class OfficeRoomGenerator : MapGenerator
         
     }
 
-    private void AddWallToLst(List<Wall> walls, bool horizontal, int start, int end, int height)
+    private void AddWallToLst(List<Wall> walls, HallType orientation, int start, int end, int height)
     {
         Wall newWall = new Wall();
-        newWall.setValues(horizontal, start, end, height);
+        newWall.SetValues(orientation, start, end, height);
         walls.Add(newWall);
     }
 
@@ -294,35 +288,48 @@ public class OfficeRoomGenerator : MapGenerator
     private void GenerateColliders()
     {
         _cols = new List<Wall>();
-        
-        if (_leftRoom.Type == RoomType.LONG_HALL_HOR)
+
+        if (_leftRoom.Type == RoomType.LONG_HALL_VER)
         {
             // special case
-            AddWallToLst(_cols, true, _leftRoom.StartY-1, _rightRoom.StartY + _rightRoom.Height + 1, _leftRoom.StartX - 1);
-            AddWallToLst(_cols, true, _leftRoom.StartY-1, _rightRoom.StartY + _rightRoom.Height + 1, _leftRoom.StartX + _leftRoom.Width);
-            
-            AddWallToLst(_cols, false, _leftRoom.StartX - 1, _leftRoom.StartX + _leftRoom.Width + 1, _leftRoom.StartY - 1);
-            AddWallToLst(_cols, false, _leftRoom.StartX - 1, _leftRoom.StartX + _leftRoom.Width + 1, _rightRoom.StartY + _rightRoom.Height);
+            AddWallToLst(_cols, HallType.VERTICAL, _leftRoom.StartY - 1, _rightRoom.StartY + _rightRoom.Height + 1,
+                _rightRoom.StartX - 1);
+            AddWallToLst(_cols, HallType.VERTICAL, _leftRoom.StartY - 1, _rightRoom.StartY + _rightRoom.Height + 1,
+                _rightRoom.StartX + _rightRoom.Width);
+
+            AddWallToLst(_cols, HallType.HORIZONTAL, _leftRoom.StartX - 1, _leftRoom.StartX + _leftRoom.Width + 1,
+                _rightRoom.StartY + _rightRoom.Height);
+            AddWallToLst(_cols, HallType.HORIZONTAL, _leftRoom.StartX - 1, _leftRoom.StartX + _leftRoom.Width + 1,
+                _leftRoom.StartY - 1);
         }
         else
         {
             // first add collider walls, that are always present fully
-            AddWallToLst(_cols, false, _leftRoom.StartY - 1, _leftRoom.StartY + _leftRoom.Height + 1, _leftRoom.StartX - 1);
-            AddWallToLst(_cols, true, _leftRoom.StartX - 1, _leftRoom.StartX + _leftRoom.Width + 1, _leftRoom.StartY + _leftRoom.Height);
-            
-            AddWallToLst(_cols, false, _rightRoom.StartY - 1, _rightRoom.StartY + _rightRoom.Height + 1, _rightRoom.StartX + _rightRoom.Width);
-            AddWallToLst(_cols, true, _rightRoom.StartX - 1, _rightRoom.StartX + _rightRoom.Width + 1, _rightRoom.StartY - 1);
-            
+            AddWallToLst(_cols, HallType.VERTICAL, _leftRoom.StartY - 1, _leftRoom.StartY + _leftRoom.Height + 1,
+                _leftRoom.StartX - 1);
+            AddWallToLst(_cols, HallType.HORIZONTAL, _leftRoom.StartX - 1, _leftRoom.StartX + _leftRoom.Width + 1,
+                _leftRoom.StartY + _leftRoom.Height);
+
+            AddWallToLst(_cols, HallType.VERTICAL, _rightRoom.StartY - 1, _rightRoom.StartY + _rightRoom.Height + 1,
+                _rightRoom.StartX + _rightRoom.Width);
+            AddWallToLst(_cols, HallType.HORIZONTAL, _rightRoom.StartX - 1, _rightRoom.StartX + _rightRoom.Width + 1,
+                _rightRoom.StartY - 1);
+
             // now walls, that dont extend on inner side
-            AddWallToLst(_cols, true, _leftRoom.StartX - 1, _leftRoom.StartX + _leftRoom.Width, _leftRoom.StartY - 1);
-            AddWallToLst(_cols, true, _rightRoom.StartX, _rightRoom.StartX + _rightRoom.Width + 1, _rightRoom.StartY + _rightRoom.Height);
-            
+            AddWallToLst(_cols, HallType.HORIZONTAL, _leftRoom.StartX - 1, _leftRoom.StartX + _leftRoom.Width,
+                _leftRoom.StartY - 1);
+            AddWallToLst(_cols, HallType.HORIZONTAL, _rightRoom.StartX, _rightRoom.StartX + _rightRoom.Width + 1,
+                _rightRoom.StartY + _rightRoom.Height);
+
             // now walls, that may not be present at all
             if (_leftRoom.StartY + _leftRoom.Height > _rightRoom.StartY + _rightRoom.Height)
-                AddWallToLst(_cols, false, _rightRoom.StartY + _rightRoom.Height + 1, _leftRoom.StartY + _leftRoom.Height + 1, _rightRoom.StartX);
+                AddWallToLst(_cols, HallType.VERTICAL, _rightRoom.StartY + _rightRoom.Height + 1,
+                    _leftRoom.StartY + _leftRoom.Height + 1, _rightRoom.StartX);
             if (_leftRoom.StartY > _rightRoom.StartY)
-                AddWallToLst(_cols, false, _rightRoom.StartY-1, _leftRoom.StartY-1, _rightRoom.StartX - 1);
+                AddWallToLst(_cols, HallType.VERTICAL, _rightRoom.StartY - 1, _leftRoom.StartY - 1,
+                    _rightRoom.StartX - 1);
         }
+
         PutDownColliders(_cols);
     }
 
@@ -342,21 +349,142 @@ public class OfficeRoomGenerator : MapGenerator
         {
             for (int x = 0; x < gridWidth; x++)
             {
-                _grid[y, x] = new GridTile(gridStartX + x, gridStartY + y);
+                if((x < _leftRoom.Width*2 && gridStartY + y < _leftRoom.StartY*2) ||
+                   (x >= _leftRoom.Width*2 && gridStartY+y >= _rightRoom.StartY*2 + _rightRoom.Height*2))
+                    _grid[y, x] = new GridTile(gridStartX + x, gridStartY + y, false);
+                else
+                    _grid[y, x] = new GridTile(gridStartX + x, gridStartY + y);
             }
         }
     }
 
     private void GenerateObjects()
     {
-        for (int y = 0; y < _grid.GetLength(0); y++)
+        if (extraItems.Count <= 0)
         {
-            for (int x = 0; x < _grid.GetLength(1); x++)
+            Debug.LogError("No extra items to put in the room!!");
+            return;
+        }
+        Wall leftOverlap = new Wall();
+        Wall rightOverlap = new Wall();
+        leftOverlap.SetValues(overlap.Orientation, overlap.Start * 2, overlap.End * 2, -1);
+        rightOverlap.SetValues(overlap.Orientation, overlap.Start * 2, overlap.End * 2, 0);
+        switch (_leftRoom.Type)
+        {
+            case RoomType.ROOM:
+                GenerateRoom();
+                GenerateExtraObjects(_leftRoom.StartX*2, _leftRoom.StartY*2, _leftRoom.Width*2-1, _leftRoom.Height*2-1, leftOverlap, false);
+                break;
+            case RoomType.BIG_ROOM:
+                GenerateRoom();
+                GenerateExtraObjects(_leftRoom.StartX*2, _leftRoom.StartY*2, (_leftRoom.Width + _rightRoom.Width)*2-1, _leftRoom.Height*2-1, overlap, false);
+                break;
+            case RoomType.LONG_HALL_HOR:
+                GenerateExtraObjects(_leftRoom.StartX*2, _leftRoom.StartY*2, (_leftRoom.Width + _rightRoom.Width)*2-1, _leftRoom.Height*2-1, leftOverlap);
+                break;
+            case RoomType.LONG_HALL_VER:
+                GenerateExtraObjects(_leftRoom.StartX*2, _leftRoom.StartY*2, _leftRoom.Width*2-1, (_leftRoom.Height + _rightRoom.Height)*2-1, leftOverlap);
+                break;
+            default:
+                GenerateExtraObjects(_leftRoom.StartX*2, _leftRoom.StartY*2, _leftRoom.Width*2-1, _leftRoom.Height*2-1, leftOverlap);
+                break;
+        }
+
+        if (_rightRoom.Type == RoomType.ROOM)
+        {
+            GenerateExtraObjects(_rightRoom.StartX * 2, _rightRoom.StartY * 2, _rightRoom.Width * 2 - 1,
+                _rightRoom.Height * 2 - 1, rightOverlap, false);
+            GenerateRoom();
+        }
+        else if(_rightRoom.Type == RoomType.HOR_HALL || _rightRoom.Type == RoomType.VER_HALL)
+            GenerateExtraObjects(_rightRoom.StartX*2, _rightRoom.StartY*2, _rightRoom.Width*2-1, _rightRoom.Height*2-1, rightOverlap);
+    }
+
+    private void GenerateRoom()
+    {
+        
+    }
+
+    private void GenerateExtraObjects(int startX, int startY, int width, int height, Wall blocked, bool hall = true, bool longHall = false)
+    {
+        Wall[] longWalls = new Wall[2];
+        Wall[] shortWalls = new Wall[2];
+        longWalls[0] = new Wall();
+        longWalls[1] = new Wall();
+        shortWalls[0] = new Wall();
+        shortWalls[1] = new Wall();
+
+        Wall horWallDown = new Wall();
+        Wall horWallUp = new Wall();
+        Wall vertWallLeft = new Wall();
+        Wall vertWallRight = new Wall();
+        
+        horWallDown.SetValues(HallType.HORIZONTAL,startX, startX + width+1, startY);
+        horWallUp.SetValues(HallType.HORIZONTAL, startX, startX + width+1, startY+height);
+
+        if (blocked.Height == startX && blocked.Orientation == HallType.VERTICAL) // left wall overlap
+        {
+            vertWallLeft.SetValues(HallType.VERTICAL, startY+1, blocked.Start, startX);
+            vertWallRight.SetValues(HallType.VERTICAL, startY+1, startY + height, startX + width);
+        }
+        else if(blocked.Orientation == HallType.VERTICAL)
+        {
+            vertWallLeft.SetValues(HallType.VERTICAL, startY+1, startY + height, startX);
+            vertWallRight.SetValues(HallType.VERTICAL, blocked.End, startY + height, startX + width);
+        }
+        else
+        {
+            vertWallLeft.SetValues(HallType.VERTICAL, startY+1, startY + height, startX);
+            vertWallRight.SetValues(HallType.VERTICAL, startY+1, startY + height, startX + width);
+        }
+        
+        if (height > width)
+        {
+            longWalls[0] = vertWallLeft;
+            longWalls[1] = vertWallRight;
+            shortWalls[0] = horWallDown;
+            shortWalls[1] = horWallUp;
+        }
+        else
+        {
+            shortWalls[0] = vertWallLeft;
+            shortWalls[1] = vertWallRight;
+            longWalls[0] = horWallDown;
+            longWalls[1] = horWallUp;
+        }
+
+        foreach (var wall in longWalls)
+        {
+            if (wall.Orientation == HallType.VERTICAL)
+                PutDownExtraObjects(0, wall.Height, wall.Start, 1, wall.End-wall.Start);
+            else
+                PutDownExtraObjects(0, wall.Start, wall.Height, wall.End-wall.Start, 1);
+        }
+        foreach (var wall in shortWalls)
+        {
+            if (wall.Orientation == HallType.VERTICAL)
+                PutDownExtraObjects(1, wall.Height, wall.Start, 1, wall.End-wall.Start);
+            else
+                PutDownExtraObjects(1, wall.Start, wall.Height, wall.End-wall.Start, 1);
+        }
+    }
+
+    private void PutDownExtraObjects(int n, int xCoord, int yCoord, int width, int height)
+    {
+        //Random rnd = new Random();
+        for (var y = yCoord; y < yCoord + height; y++)
+        {
+            for (var x = xCoord; x < xCoord + width; x++)
             {
-                Vector3 pos = _obstaclesHolder.GetComponent<Tilemap>()
-                    .GetCellCenterWorld(new Vector3Int(_grid[y, x].XCoord, _grid[y, x].YCoord, 0));
-                Instantiate(test, pos, Quaternion.identity, _obstaclesHolder);
+                InstantiateObjectInWorld(extraItems[n], x, y);
             }
         }
+    }
+
+    private void InstantiateObjectInWorld(GameObject obj, int x, int y)
+    {
+        Vector3 pos = _obstaclesHolder.GetComponent<Tilemap>()
+            .GetCellCenterWorld(new Vector3Int(x, y, 0));
+        Instantiate(obj, pos, Quaternion.identity, _obstaclesHolder);
     }
 }

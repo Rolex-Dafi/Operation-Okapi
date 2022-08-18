@@ -14,17 +14,22 @@ public class MapGenerator : MonoBehaviour
     protected Transform _obstaclesHolder;
 
     public Tile collTile;
+
+    protected enum HallType
+    {
+        HORIZONTAL, VERTICAL
+    }
     
     protected struct Wall
     {
-        internal bool Horizontal;
+        internal HallType Orientation;
         internal int Start;
         internal int End;
         internal int Height;
 
-        internal void setValues(bool b, int s, int e, int h)
+        internal void SetValues(HallType b, int s, int e, int h)
         {
-            Horizontal = b;
+            Orientation = b;
             Start = s;
             End = e;
             Height = h;
@@ -76,7 +81,7 @@ public class MapGenerator : MonoBehaviour
 
         foreach (var col in  cols)
         {
-            if (col.Horizontal)
+            if (col.Orientation == HallType.HORIZONTAL)
                 SetTilesToMap(collTile, tm, col.Start, col.Height, col.End, col.Height + 1);
             else
                 SetTilesToMap(collTile, tm, col.Height, col.Start, col.Height + 1, col.End);
