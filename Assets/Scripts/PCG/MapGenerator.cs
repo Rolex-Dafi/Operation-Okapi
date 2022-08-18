@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -11,6 +12,24 @@ public class MapGenerator : MonoBehaviour
     protected Transform _roomHolder;
     protected Transform _gridHolder;
     protected Transform _obstaclesHolder;
+
+    public Tile collTile;
+    
+    protected struct Wall
+    {
+        internal bool Horizontal;
+        internal int Start;
+        internal int End;
+        internal int Height;
+
+        internal void setValues(bool b, int s, int e, int h)
+        {
+            Horizontal = b;
+            Start = s;
+            End = e;
+            Height = h;
+        }
+    }
 
     [Header("Empty prefab of grid setup.")]
     public GameObject mapPrefab;
@@ -38,5 +57,29 @@ public class MapGenerator : MonoBehaviour
         _roomHolder = null;
         _gridHolder = null;
         _obstaclesHolder = null;
+    }
+
+    protected void SetTilesToMap(Tile tile, Tilemap tileMap, int startX, int startY, int finX, int finY)
+    {
+        for (int x = startX; x < finX; x++)
+        {
+            for (int y = startY; y < finY; y++)
+            {
+                tileMap.SetTile(new Vector3Int(x, y, 0), tile);
+            }
+        }
+    }
+
+    protected void PutDownColliders(List<Wall> cols)
+    {
+        var tm = _gridHolder.transform.GetChild(4).GetComponent<Tilemap>();
+
+        foreach (var col in  cols)
+        {
+            if (col.Horizontal)
+                SetTilesToMap(collTile, tm, col.Start, col.Height, col.End, col.Height + 1);
+            else
+                SetTilesToMap(collTile, tm, col.Height, col.Start, col.Height + 1, col.End);
+        }
     }
 }
