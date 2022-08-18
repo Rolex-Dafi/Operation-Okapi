@@ -413,9 +413,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d6a9d129eab164e8336dbc9853fb00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collTile: {fileID: 11400000, guid: 0c1b975e7de6e2e4ea19adea04a09bbc, type: 2}
   mapPrefab: {fileID: 986615358494160932, guid: 0d2717c6bf3f01841a3be72c6dfaf2fd, type: 3}
   maxWidth: 20
   maxHeight: 20
+  test: {fileID: 1996176334013064548, guid: 7af0c33c933e8d84e83b28b6930652f6, type: 3}
   tileLst:
   - {fileID: 11400000, guid: 63e5a5d54e762b44e8f4383c64a6751d, type: 2}
   - {fileID: 11400000, guid: 50c2684dc580f4d409ec73a24a9cd0dd, type: 2}
