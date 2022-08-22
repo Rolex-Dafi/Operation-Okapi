@@ -417,7 +417,10 @@ MonoBehaviour:
   mapPrefab: {fileID: 986615358494160932, guid: 0d2717c6bf3f01841a3be72c6dfaf2fd, type: 3}
   maxWidth: 20
   maxHeight: 20
-  test: {fileID: 1996176334013064548, guid: 7af0c33c933e8d84e83b28b6930652f6, type: 3}
+  extraItems:
+  - {fileID: 1996176334013064548, guid: 7af0c33c933e8d84e83b28b6930652f6, type: 3}
+  - {fileID: 8651410544557257693, guid: dcd00184999e9c64696c91da690bfc21, type: 3}
+  - {fileID: 2513191871734563090, guid: 0c561e82725abd14fbbfa52f11c78f6f, type: 3}
   tileLst:
   - {fileID: 11400000, guid: 63e5a5d54e762b44e8f4383c64a6751d, type: 2}
   - {fileID: 11400000, guid: 50c2684dc580f4d409ec73a24a9cd0dd, type: 2}

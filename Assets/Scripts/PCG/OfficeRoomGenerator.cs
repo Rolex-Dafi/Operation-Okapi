@@ -26,7 +26,7 @@ public class OfficeRoomGenerator : MapGenerator
         internal RoomType Type;
     };
 
-    private struct GridTile
+    public struct GridTile
     {
         internal int XCoord;
         internal int YCoord;
@@ -418,7 +418,7 @@ public class OfficeRoomGenerator : MapGenerator
         Wall horWallUp = new Wall();
         Wall vertWallLeft = new Wall();
         Wall vertWallRight = new Wall();
-        
+
         horWallDown.SetValues(HallType.HORIZONTAL,startX, startX + width+1, startY);
         horWallUp.SetValues(HallType.HORIZONTAL, startX, startX + width+1, startY+height);
 
@@ -467,6 +467,8 @@ public class OfficeRoomGenerator : MapGenerator
             else
                 PutDownExtraObjects(1, wall.Start, wall.Height, wall.End-wall.Start, 1);
         }
+        
+        Debug.Log("look at this " + GetGrid()[0,0].XCoord + "x" + GetGrid()[0,0].YCoord);
     }
 
     private void PutDownExtraObjects(int n, int xCoord, int yCoord, int width, int height)
@@ -483,8 +485,34 @@ public class OfficeRoomGenerator : MapGenerator
 
     private void InstantiateObjectInWorld(GameObject obj, int x, int y)
     {
+        Vector2Int gridCoors = UnityToScriptCoord(x, y);
+        _grid[gridCoors.y, gridCoors.x].Empty = false;
+
         Vector3 pos = _obstaclesHolder.GetComponent<Tilemap>()
             .GetCellCenterWorld(new Vector3Int(x, y, 0));
+        
         Instantiate(obj, pos, Quaternion.identity, _obstaclesHolder);
+    }
+
+    private Vector2Int UnityToScriptCoord(int x, int y)
+    {
+        return new Vector2Int(x + Math.Abs(_leftRoom.StartX*2), y + Math.Abs(_rightRoom.StartY*2));
+    }
+
+    private Vector2Int ScriptToUnityCoord(int x, int y)
+    {
+        return new Vector2Int(_grid[y, x].XCoord, _grid[y, x].YCoord);
+    }
+
+    public bool IsTileEmpty(int x, int y)
+    {
+        Vector2Int coords = UnityToScriptCoord(x, y);
+
+        return _grid[coords.y, coords.x].Empty;
+    }
+
+    public GridTile[,] GetGrid()
+    {
+        return _grid;
     }
 }
