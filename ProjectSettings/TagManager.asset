@@ -53,6 +53,9 @@ TagManager:
   - name: Shadows
     uniqueID: 1906748809
     locked: 0
+  - name: Wall
+    uniqueID: 709470479
+    locked: 0
   - name: Entities
     uniqueID: 3516202691
     locked: 0

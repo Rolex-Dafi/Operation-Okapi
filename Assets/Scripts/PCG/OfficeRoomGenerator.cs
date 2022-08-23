@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Pathfinding.Examples;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = System.Random;
@@ -12,7 +13,12 @@ public class OfficeRoomGenerator : MapGenerator
     public int maxWidth = 25;
     public int maxHeight = 25;
 
-    [Header("Objects")] public List<GameObject> extraItems;
+    [Header("Objects")] public List<GameObject> horTables;
+    public List<GameObject> verTables;
+    public List<GameObject> extraItems;
+
+    [Range(0, 100)] public int tableDensity = 85;
+    [Range(0,100)]public int extraDensity = 15;
 
     private int _minWidth = 4;
     private int _minHeight = 4;
@@ -38,7 +44,13 @@ public class OfficeRoomGenerator : MapGenerator
             YCoord = y;
             this.Empty = empty;
         }
-    }; 
+    };
+
+    private struct Door
+    {
+        internal Vector3Int EntrancePos;
+        internal Vector3Int ExitPos;
+    }
 
     private Room _leftRoom;
     private Room _rightRoom;
@@ -55,7 +67,8 @@ public class OfficeRoomGenerator : MapGenerator
 
     private List<Wall> _walls;
     private List<Wall> _cols;
-    private Wall overlap;
+    private Wall _overlap;
+    private Door _door = new Door();
 
     [Header("Tile sets to use for generation.")]
     public List<Tile> tileLst;
@@ -70,6 +83,7 @@ public class OfficeRoomGenerator : MapGenerator
         GenerateOfficeWalls();
         GenerateColliders();
 
+        GenerateDoors();
         GenerateGrid();
         GenerateObjects();
     }
@@ -175,7 +189,7 @@ public class OfficeRoomGenerator : MapGenerator
     private void GenerateOfficeWalls()
     {
         _walls = new List<Wall>();
-        overlap = new Wall();
+        _overlap = new Wall();
         if (_leftRoom.Type == RoomType.LONG_HALL_VER)
         {
             // long vertical wall
@@ -212,9 +226,9 @@ public class OfficeRoomGenerator : MapGenerator
 
         if (_leftRoom.Type == RoomType.BIG_ROOM || _leftRoom.Type == RoomType.LONG_HALL_HOR ||
             _leftRoom.Type == RoomType.LONG_HALL_VER)
-            overlap.SetValues(HallType.HORIZONTAL, 0, 0, 0);
+            _overlap.SetValues(HallType.HORIZONTAL, 0, 0, 0);
         else
-            overlap.SetValues(HallType.VERTICAL, _leftRoom.StartY, _rightRoom.StartY + _rightRoom.Height, -1);
+            _overlap.SetValues(HallType.VERTICAL, _leftRoom.StartY, _rightRoom.StartY + _rightRoom.Height, -1);
         // finally set office walls to map
         PutDownWallTiles();
     }
@@ -268,8 +282,6 @@ public class OfficeRoomGenerator : MapGenerator
             }
             idx++;
         }
-        
-        
     }
 
     private void AddWallToLst(List<Wall> walls, HallType orientation, int start, int end, int height)
@@ -277,6 +289,36 @@ public class OfficeRoomGenerator : MapGenerator
         Wall newWall = new Wall();
         newWall.SetValues(orientation, start, end, height);
         walls.Add(newWall);
+    }
+
+    private void GenerateDoors()
+    {
+        Random rand = new Random();
+        
+        // generate exit position
+        _door.EntrancePos = new Vector3Int(rand.Next(_walls[0].Start + 1, _walls[0].End - 1), _walls[0].Height, 0);
+        _door.ExitPos = new Vector3Int(_walls[_walls.Count - 1].Height, rand.Next(_walls[_walls.Count - 1].Start + 1, _walls[_walls.Count - 1].End - 1), 0);
+        
+        // erase wall tiles
+        var horWalls = _gridHolder.transform.GetChild(1).GetComponent<Tilemap>();
+        var verWalls = _gridHolder.transform.GetChild(2).GetComponent<Tilemap>();
+        horWalls.SetTile(_door.EntrancePos, null);
+        verWalls.SetTile(_door.ExitPos, null);
+        
+        // erase collider and replace it with new collider
+        var colMap = _gridHolder.transform.GetChild(4).GetComponent<Tilemap>();
+        colMap.SetTile(_door.EntrancePos, null);
+        colMap.SetTile(_door.ExitPos, null);
+        List<Wall> newCols = new List<Wall>();
+        AddWallToLst(newCols, HallType.HORIZONTAL, _door.EntrancePos.x - 1, _door.EntrancePos.x + 2, _door.EntrancePos.y + 1);
+        AddWallToLst(newCols, HallType.VERTICAL, _door.ExitPos.y - 1, _door.ExitPos.y + 2, _door.ExitPos.x + 1);
+        PutDownColliders(newCols);
+        // TODO: collider for entrance and exit
+
+        //set down tiles
+        var tileMap = _gridHolder.transform.GetChild(0).GetComponent<Tilemap>();
+        tileMap.SetTile(_door.EntrancePos, tileMap.GetTile(new Vector3Int(_door.EntrancePos.x, _door.EntrancePos.y-1, _door.EntrancePos.z)));
+        tileMap.SetTile(_door.ExitPos, tileMap.GetTile(new Vector3Int(_door.ExitPos.x-1, _door.ExitPos.y, _door.ExitPos.z)));
     }
 
     private void PutDownRoomTiles(Tile tile, Tilemap tm, Room room)
@@ -367,17 +409,17 @@ public class OfficeRoomGenerator : MapGenerator
         }
         Wall leftOverlap = new Wall();
         Wall rightOverlap = new Wall();
-        leftOverlap.SetValues(overlap.Orientation, overlap.Start * 2, overlap.End * 2, -1);
-        rightOverlap.SetValues(overlap.Orientation, overlap.Start * 2, overlap.End * 2, 0);
+        leftOverlap.SetValues(_overlap.Orientation, _overlap.Start * 2, _overlap.End * 2, -1);
+        rightOverlap.SetValues(_overlap.Orientation, _overlap.Start * 2, _overlap.End * 2, 0);
         switch (_leftRoom.Type)
         {
             case RoomType.ROOM:
-                GenerateRoom();
+                GenerateOfficeRoom((_leftRoom.StartX+2)*2, (_leftRoom.StartY+2)*2, (_leftRoom.Width-4)*2, (_leftRoom.Height-4)*2);
                 GenerateExtraObjects(_leftRoom.StartX*2, _leftRoom.StartY*2, _leftRoom.Width*2-1, _leftRoom.Height*2-1, leftOverlap, false);
                 break;
             case RoomType.BIG_ROOM:
-                GenerateRoom();
-                GenerateExtraObjects(_leftRoom.StartX*2, _leftRoom.StartY*2, (_leftRoom.Width + _rightRoom.Width)*2-1, _leftRoom.Height*2-1, overlap, false);
+                GenerateOfficeRoom((_leftRoom.StartX+2)*2, (_leftRoom.StartY+2)*2, (_rightRoom.Width + _leftRoom.Width-4)*2, (_leftRoom.Height-4)*2);
+                GenerateExtraObjects(_leftRoom.StartX*2, _leftRoom.StartY*2, (_leftRoom.Width + _rightRoom.Width)*2-1, _leftRoom.Height*2-1, _overlap, false);
                 break;
             case RoomType.LONG_HALL_HOR:
                 GenerateExtraObjects(_leftRoom.StartX*2, _leftRoom.StartY*2, (_leftRoom.Width + _rightRoom.Width)*2-1, _leftRoom.Height*2-1, leftOverlap);
@@ -394,13 +436,13 @@ public class OfficeRoomGenerator : MapGenerator
         {
             GenerateExtraObjects(_rightRoom.StartX * 2, _rightRoom.StartY * 2, _rightRoom.Width * 2 - 1,
                 _rightRoom.Height * 2 - 1, rightOverlap, false);
-            GenerateRoom();
+            GenerateOfficeRoom((_rightRoom.StartX+2)*2, (_rightRoom.StartY+2)*2, (_rightRoom.Width-4)*2, (_rightRoom.Height-4)*2);
         }
         else if(_rightRoom.Type == RoomType.HOR_HALL || _rightRoom.Type == RoomType.VER_HALL)
             GenerateExtraObjects(_rightRoom.StartX*2, _rightRoom.StartY*2, _rightRoom.Width*2-1, _rightRoom.Height*2-1, rightOverlap);
     }
 
-    private void GenerateRoom()
+    private void GenerateOfficeRoom(int startX, int startY, int width, int height)
     {
         
     }
@@ -453,43 +495,79 @@ public class OfficeRoomGenerator : MapGenerator
             longWalls[1] = horWallUp;
         }
 
+        int density = extraDensity;
+        if (hall) density = (density*3)/2;
+        if (longHall) density *= 2;
+
         foreach (var wall in longWalls)
         {
             if (wall.Orientation == HallType.VERTICAL)
-                PutDownExtraObjects(0, wall.Height, wall.Start, 1, wall.End-wall.Start);
+                PutDownExtraObjects(wall.Height, wall.Start, 1, wall.End-wall.Start, density);
             else
-                PutDownExtraObjects(0, wall.Start, wall.Height, wall.End-wall.Start, 1);
+                PutDownExtraObjects(wall.Start, wall.Height, wall.End-wall.Start, 1, density);
         }
         foreach (var wall in shortWalls)
         {
             if (wall.Orientation == HallType.VERTICAL)
-                PutDownExtraObjects(1, wall.Height, wall.Start, 1, wall.End-wall.Start);
+                PutDownExtraObjects(wall.Height, wall.Start, 1, wall.End-wall.Start, density/2);
             else
-                PutDownExtraObjects(1, wall.Start, wall.Height, wall.End-wall.Start, 1);
+                PutDownExtraObjects(wall.Start, wall.Height, wall.End-wall.Start, 1, density/2);
         }
         
         Debug.Log("look at this " + GetGrid()[0,0].XCoord + "x" + GetGrid()[0,0].YCoord);
     }
 
-    private void PutDownExtraObjects(int n, int xCoord, int yCoord, int width, int height)
+    private void PutDownExtraObjects(int xCoord, int yCoord, int width, int height, int objDensity)
     {
-        //Random rnd = new Random();
+        Random rnd = new Random();
+        float offsetMax = _obstaclesHolder.GetComponent<Grid>().cellSize.x;
+        int den = objDensity;
         for (var y = yCoord; y < yCoord + height; y++)
         {
             for (var x = xCoord; x < xCoord + width; x++)
             {
-                InstantiateObjectInWorld(extraItems[n], x, y);
+                if (((x == _door.EntrancePos.x*2 || x - 1 == _door.EntrancePos.x*2) && y == _door.EntrancePos.y*2 - 1) ||
+                    (x == _door.ExitPos.x*2 - 1 && (y == _door.ExitPos.y*2 || y - 1 == _door.ExitPos.y*2)))
+                    continue; // dont block doors
+                if (rnd.Next(0, 100) <= den)
+                {
+                    int objIdx = GetNumFromRange(rnd, 0, extraItems.Count - 1);
+                    InstantiateObjectInWorld(extraItems[objIdx], x, y, 
+                        GetNumFromRangeFloat(rnd, -(int)((offsetMax*100)/3), 
+                            (int)((offsetMax*100)/3)) /100,
+                        GetNumFromRangeFloat(rnd, -(int)((offsetMax*100)/3), 
+                            (int)((offsetMax*100)/3)) /100);
+                    den = den / 4;
+                } else if (den < objDensity) den+=(objDensity-den)/4;
+                else if (x % 4 == 0) den++; // to try and avoid completely empty rooms
             }
         }
     }
 
-    private void InstantiateObjectInWorld(GameObject obj, int x, int y)
+    private int GetNumFromRange(Random rnd, int start, int end)
+    {
+        int bracket = 100 / (end - start);
+        int genNum = rnd.Next(0, 100);
+        return (int)Math.Ceiling((double)(genNum/bracket));
+    }
+
+    private float GetNumFromRangeFloat(Random rnd, int start, int end)
+    {
+        int bracket = 100 / (end - start);
+        float genNum = rnd.Next(start, end);
+        return genNum / bracket;
+    }
+
+    private void InstantiateObjectInWorld(GameObject obj, int x, int y, float offsetX = 0.0f, float offsetY = 0.0f)
     {
         Vector2Int gridCoors = UnityToScriptCoord(x, y);
         _grid[gridCoors.y, gridCoors.x].Empty = false;
 
         Vector3 pos = _obstaclesHolder.GetComponent<Tilemap>()
             .GetCellCenterWorld(new Vector3Int(x, y, 0));
+        
+        pos.x += offsetX;
+        pos.y += offsetY;
         
         Instantiate(obj, pos, Quaternion.identity, _obstaclesHolder);
     }
