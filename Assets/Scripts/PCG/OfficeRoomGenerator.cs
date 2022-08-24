@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using JetBrains.Annotations;
 using Pathfinding.Examples;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Object = UnityEngine.Object;
 using Random = System.Random;
 
 public class OfficeRoomGenerator : MapGenerator
@@ -20,6 +22,23 @@ public class OfficeRoomGenerator : MapGenerator
     [Range(0, 100)] public int tableDensity = 85;
     [Range(0,100)]public int extraDensity = 15;
 
+    private static readonly string _tableDir = "Sprites/Objects/Level_1/Table-blue/";
+    private static readonly string _horDir = "hor/";
+    private static readonly string _verDir = "ver/";
+    private static readonly string _upDir = "up";
+    private static readonly string _downDir = "down";
+    private static readonly string _leftDir = "left/";
+    private static readonly string _rightDir = "right/";
+
+    public Object[] _horRightUp;
+    private Object[] _horRightDown;
+    public Object[] _verRightUp;
+    private Object[] _verRightDown;
+    public Object[] _horLeftUp;
+    private Object[] _horLeftDown;
+    public Object[] _verLeftUp;
+    private Object[] _verLeftDown;
+    
     private int _minWidth = 4;
     private int _minHeight = 4;
 
@@ -79,6 +98,7 @@ public class OfficeRoomGenerator : MapGenerator
     public override void Generate()
     {
         base.Generate();
+        SetUpRoomGen();
         GenerateOfficeFloor();
         GenerateOfficeWalls();
         GenerateColliders();
@@ -86,6 +106,21 @@ public class OfficeRoomGenerator : MapGenerator
         GenerateDoors();
         GenerateGrid();
         GenerateObjects();
+    }
+
+    private void SetUpRoomGen()
+    {
+        if (_horRightUp != null && _horRightUp.Length > 0) return;
+
+        _horRightUp = Resources.LoadAll(_tableDir + _horDir + _rightDir + _upDir);
+        _horRightDown = Resources.LoadAll(_tableDir + _horDir + _rightDir + _downDir, typeof(Sprite));
+        _verRightUp = Resources.LoadAll(_tableDir + _verDir + _rightDir + _upDir, typeof(Sprite));
+        _verRightDown = Resources.LoadAll(_tableDir + _verDir + _rightDir + _downDir, typeof(Sprite));
+        
+        _horLeftUp = Resources.LoadAll(_tableDir + _horDir + _leftDir + _upDir, typeof(Sprite));
+        _horLeftDown = Resources.LoadAll(_tableDir + _horDir + _leftDir + _downDir, typeof(Sprite));
+        _verLeftUp = Resources.LoadAll(_tableDir + _verDir + _leftDir + _upDir, typeof(Sprite));
+        _verLeftDown = Resources.LoadAll(_tableDir + _verDir + _leftDir + _downDir, typeof(Sprite));
     }
 
     private void GenerateOfficeFloor()
@@ -444,7 +479,14 @@ public class OfficeRoomGenerator : MapGenerator
 
     private void GenerateOfficeRoom(int startX, int startY, int width, int height)
     {
-        
+        Random rnd = new Random();
+        int max = (_verRightUp.Length - 1)/2;
+        int tableIdx = rnd.Next(0, max)*2;
+        Debug.Log("max gen idx is " + max + " and actual gen idx is " + tableIdx);
+        Sprite main = (Sprite)_verRightUp[tableIdx];
+        Sprite support = (Sprite)_verRightUp[tableIdx + 1];
+        InstantiateObjectInWorld(verTables[0], 0, 0)
+            .GetComponent<TableHandler>().SetTableVariant(false, main, support);
     }
 
     private void GenerateExtraObjects(int startX, int startY, int width, int height, Wall blocked, bool hall = true, bool longHall = false)
@@ -558,7 +600,7 @@ public class OfficeRoomGenerator : MapGenerator
         return genNum / bracket;
     }
 
-    private void InstantiateObjectInWorld(GameObject obj, int x, int y, float offsetX = 0.0f, float offsetY = 0.0f)
+    private GameObject InstantiateObjectInWorld(GameObject obj, int x, int y, float offsetX = 0.0f, float offsetY = 0.0f)
     {
         Vector2Int gridCoors = UnityToScriptCoord(x, y);
         _grid[gridCoors.y, gridCoors.x].Empty = false;
@@ -569,7 +611,7 @@ public class OfficeRoomGenerator : MapGenerator
         pos.x += offsetX;
         pos.y += offsetY;
         
-        Instantiate(obj, pos, Quaternion.identity, _obstaclesHolder);
+        return Instantiate(obj, pos, Quaternion.identity, _obstaclesHolder);
     }
 
     private Vector2Int UnityToScriptCoord(int x, int y)
