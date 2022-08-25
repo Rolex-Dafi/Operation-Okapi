@@ -4,20 +4,26 @@ using UnityEngine;
 
 public class HUDManager : MonoBehaviour
 {
-    [SerializeField] private ResourceUI health;
+    //[SerializeField] private ResourceUI health;
     [SerializeField] private ResourceUI money;
     [SerializeField] private ResourceUI respect;
 
+    [SerializeField] private HealthUI health;
 
+    private GameManager gameManager;
+    
     /// <summary>
     /// Should be called from game manager after scene loaded.
     /// </summary>
     /// <param name="playerCharacter"></param>
-    public void Init(PlayerCharacter playerCharacter)
+    public void Init(GameManager gameManager, PlayerCharacter playerCharacter)
     {
-        health.Init(playerCharacter.Health);
+        this.gameManager = gameManager;
+        
         money.Init(playerCharacter.Money);
         respect.Init(playerCharacter.Respect);
+        
+        health.Init(gameManager, playerCharacter.Inventory);
     }
 
 }

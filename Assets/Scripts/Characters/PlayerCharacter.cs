@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,17 +10,15 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class PlayerCharacter : CombatCharacter, IPushable
 {
-    private Respect respect;
-
     private Dictionary<EAttackButton, Attack> currentAttacks;
 
     private PlayerController playerController;
 
     [SerializeField] private GameObject aimingGFX;
 
-    private PlayerInventory inventory;
+    public PlayerInventory Inventory { get; private set; }
 
-    public Respect Respect { get => respect; private set => respect = value; }
+    public Respect Respect { get; private set; }
 
     public new PlayerCharacterSO Data {  
         get {
@@ -51,7 +50,7 @@ public class PlayerCharacter : CombatCharacter, IPushable
         };
 
         // inventory
-        inventory.Init(Data);
+        Inventory = new PlayerInventory(Data);
 
         playerController = GetComponent<PlayerController>();
     }
@@ -92,7 +91,7 @@ public class PlayerCharacter : CombatCharacter, IPushable
         {
             int attackCost = currentAttacks[attackButton].Data.cost;
 
-            // not enought money to perform the attack
+            // not enough money to perform the attack
             if (money.GetCurrent() < attackCost) return;
 
             // only decrease money when ending the attack
@@ -112,24 +111,30 @@ public class PlayerCharacter : CombatCharacter, IPushable
 
     public void CollectItem(ItemSO item)
     {
-
+        Inventory.AddItem(item);
     }
 
     public override void TakeDamage(int amount)
     {
-        base.TakeDamage(amount);
-
-        // change inventory if applicable
+        Animator.SetTrigger(EAnimationParameter.hit.ToString());
+        
+        // redirect dmg to inventory (equipped items), get back player health
+        var current = Inventory.ReceiveDamage(amount);
+        if (current == 0) Die();
+        else
+        {
+            RuntimeManager.PlayOneShot(data.onHitSound.Guid);
+        }
     }
 
     private void OnDestroy()
     {
-        respect.CleanUp();
+        Respect.CleanUp();
     }
 
     public void Push(Vector2 direction, float distance, float speed)
     {
-        // interupt movement
+        // interrupt movement
         canMove = false;
         StartCoroutine(rb.AddForceCustom(direction, distance, speed, () => canMove = true));
     }

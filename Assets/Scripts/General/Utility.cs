@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public static class Utility
 {
@@ -115,6 +117,37 @@ public class AttackFrames
 
 public static class Extentions
 {
+    // Tweening
+    public static void PunchColor(this Image image, Color color, float time = .1f)
+    {
+        DOTween.Punch(
+            ()=> image.color.ToVector3(), 
+            x=> image.color = new Color(x.x, x.y, x.z, image.color.a), 
+            color.ToVector3(), 
+            time, 
+            1, 
+            0
+        );
+    }
+    
+    public static void PunchAlpha(this Image image, float punch, float time = .1f)
+    {
+        DOTween.Punch(
+            ()=> image.color.a * Vector3.one, 
+            x=> image.color = new Color(image.color.r, image.color.g, image.color.b, x.x), 
+            punch * Vector3.one, 
+            time, 
+            1, 
+            0
+        );
+    }
+
+    private static Vector3 ToVector3(this Color color)
+    {
+        return new Vector3(color.r, color.g, color.b);
+    }
+    
+    // Physics
     public static IEnumerator AddForceCustom(this Rigidbody2D rb, Vector2 direction, float distance, float speed, UnityAction onEnd = null)
     {
         float distanceTravelled = 0;
@@ -135,7 +168,7 @@ public static class Extentions
         }
     }
 
-
+    // Animation
     public static AnimatorControllerParameterType ToAnimatorParameterType(this EAnimationParameter parameter)
     {
         switch (parameter)
@@ -169,6 +202,7 @@ public static class Extentions
         }
     }
 
+    // General Utility
     public static Vector2 CartesianToIsometric(this Vector2 vector)
     {
         return new Vector2(vector.x, vector.y / 2);

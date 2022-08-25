@@ -251,7 +251,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 308386233
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 60bf7910f214cc14b8ce74004ded4948, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -339,6 +339,14 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   droppedItemPrefab: {fileID: 6960007355078632573, guid: b64975f22ce087d46b5dcde3f01bb378, type: 3}
+  drops:
+  - {fileID: 11400000, guid: ed1b78b82aa750e4cb265233553bebd8, type: 2}
+  - {fileID: 11400000, guid: 5e50f79048b1a264dbf5ac70eb092c6e, type: 2}
+  - {fileID: 11400000, guid: 93dcd1daef57b1a448f66b7c353a6778, type: 2}
+  - {fileID: 11400000, guid: 20da11f16aee6574cb24d8f63c1dad9c, type: 2}
+  - {fileID: 11400000, guid: 114b34a9ad105ea4095b31a3dfaa6059, type: 2}
+  - {fileID: 11400000, guid: 5fd4426258d87114abef12a3f843730f, type: 2}
+  - {fileID: 11400000, guid: cd2feab406699e14abff43416f1fb4e6, type: 2}
 --- !u!114 &4784623587545812220
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,6 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(SceneLoader), typeof(UIInput))]
 public class GameManager : MonoBehaviour
 {
+    [Header("Data")] 
+    public ColorPaletteSO ColorPalette;
+    
     [SerializeField] private PlayerCharacter playerCharacterPrefab;
 
     private PlayerCharacter playerCharacterCurrent;
@@ -62,7 +65,7 @@ public class GameManager : MonoBehaviour
 
             // set up HUD
             HUDManager hud = FindObjectOfType<HUDManager>();
-            if (hud != null) hud.Init(playerCharacterCurrent);
+            if (hud != null) hud.Init(this, playerCharacterCurrent);
 
             // let the enemy spawner (if present) know it can spawn enemies
             // can only happen after the player is present

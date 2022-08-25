@@ -1,37 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerInventory
 {
-    private Item[] inventory;
+    // static length - only as big as the max health slots
+    public Item[] Equipped { get; private set; }
 
-    private int lastItemIndex;
+    public int LastItemIndex { get; private set; }
 
-    public void Init(PlayerCharacterSO playerData)
+    public UnityEvent InventoryChanged; 
+
+    public PlayerInventory(PlayerCharacterSO playerData)
     {
-        inventory = new Item[Utility.maxHealthBarSlots];
+        Equipped = new Item[Utility.maxHealthBarSlots];
 
-        int i = 0;
+        var i = 0;
         foreach (var item in playerData.startingItems)
         {
-            inventory[i] = new Item(item, new Health(item.Health));
+            Equipped[i] = new Item(item);
             ++i;
         }
-        lastItemIndex = i - 1;
+        LastItemIndex = i - 1;
+        
+        InventoryChanged = new UnityEvent();
     }
 
     public void AddItem(ItemSO item)
     {
+        // TODO if the last item is damaged - add this as second last - i.e. before the damaged item
 
+        ++LastItemIndex;
+        Equipped[LastItemIndex] = new Item(item);
+        
+        InventoryChanged.Invoke();
     }
 
-    public void ReceiveDamage(int damage)
+    // returns the remaining health of the player (i.e sum of hp of all items in inventory)
+    public int ReceiveDamage(int damage)
     {
-        // get last item
+        // get top item
+        var topItem = Equipped[LastItemIndex];
+        // only the top item receives damage -> no overkill dmg
+        topItem.ReceiveDamage(damage);
 
-        // deduce health
-        // no overkill - i.e. if the dmg is more then remaining hp on the last item -> only destroy that item
+        // remove from inventory if destroyed
+        if (topItem.CurrentHealth <= 0)
+        {
+            Equipped[LastItemIndex] = null;
+            --LastItemIndex;
+        }
+        
+        InventoryChanged.Invoke();
+
+        // return the current health of the player = sum of current hp of all equipped items
+        return Equipped.Where(item => item != null).Sum(item => item.CurrentHealth);
     }
 
 }

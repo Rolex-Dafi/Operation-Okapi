@@ -567,6 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d79b2853f7d64474d9640a1bd0fbca23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ColorPalette: {fileID: 11400000, guid: fd369c8fc22051942b3bcd9c278d3582, type: 2}
   playerCharacterPrefab: {fileID: 2929782994530680384, guid: 28ac508a4fd66e246911f9d0874995e6, type: 3}
   audioManager: {fileID: 166999711}
 --- !u!114 &1752645815
