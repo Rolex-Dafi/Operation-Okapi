@@ -181,8 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ec2581e9f9ee5b4ca57319bef69074c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 2
-  height: 1
+  width: 3
+  height: 2
   chairUp: {fileID: 3222440386843790524}
   chairDown: {fileID: 505645098456102451}
 --- !u!1 &8515112285150643164

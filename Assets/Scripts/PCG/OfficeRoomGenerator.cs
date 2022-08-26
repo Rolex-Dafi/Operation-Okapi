@@ -42,6 +42,8 @@ public class OfficeRoomGenerator : MapGenerator
     private int _minWidth = 4;
     private int _minHeight = 4;
 
+    private int _minTableGap = 2;
+
     private struct Room
     {
         internal int Width;
@@ -113,14 +115,14 @@ public class OfficeRoomGenerator : MapGenerator
         if (_horRightUp != null && _horRightUp.Length > 0) return;
 
         _horRightUp = Resources.LoadAll(_tableDir + _horDir + _rightDir + _upDir);
-        _horRightDown = Resources.LoadAll(_tableDir + _horDir + _rightDir + _downDir, typeof(Sprite));
-        _verRightUp = Resources.LoadAll(_tableDir + _verDir + _rightDir + _upDir, typeof(Sprite));
-        _verRightDown = Resources.LoadAll(_tableDir + _verDir + _rightDir + _downDir, typeof(Sprite));
+        _horRightDown = Resources.LoadAll(_tableDir + _horDir + _rightDir + _downDir);
+        _verRightUp = Resources.LoadAll(_tableDir + _verDir + _rightDir + _upDir);
+        _verRightDown = Resources.LoadAll(_tableDir + _verDir + _rightDir + _downDir);
         
-        _horLeftUp = Resources.LoadAll(_tableDir + _horDir + _leftDir + _upDir, typeof(Sprite));
-        _horLeftDown = Resources.LoadAll(_tableDir + _horDir + _leftDir + _downDir, typeof(Sprite));
-        _verLeftUp = Resources.LoadAll(_tableDir + _verDir + _leftDir + _upDir, typeof(Sprite));
-        _verLeftDown = Resources.LoadAll(_tableDir + _verDir + _leftDir + _downDir, typeof(Sprite));
+        _horLeftUp = Resources.LoadAll(_tableDir + _horDir + _leftDir + _upDir);
+        _horLeftDown = Resources.LoadAll(_tableDir + _horDir + _leftDir + _downDir);
+        _verLeftUp = Resources.LoadAll(_tableDir + _verDir + _leftDir + _upDir);
+        _verLeftDown = Resources.LoadAll(_tableDir + _verDir + _leftDir + _downDir);
     }
 
     private void GenerateOfficeFloor()
@@ -479,14 +481,73 @@ public class OfficeRoomGenerator : MapGenerator
 
     private void GenerateOfficeRoom(int startX, int startY, int width, int height)
     {
+        int tableWidth = horTables[0].transform.GetComponent<TableHandler>().width;
+        int tableAllowance = tableWidth + _minTableGap;
+        if (width <  tableAllowance || height < tableAllowance) // no room for tables
+            return;
         Random rnd = new Random();
-        int max = (_verRightUp.Length - 1)/2;
+        float cellSize = _obstaclesHolder.GetComponent<Grid>().cellSize.y;
+        int max = (_verRightUp.Length)/2;
         int tableIdx = rnd.Next(0, max)*2;
-        Debug.Log("max gen idx is " + max + " and actual gen idx is " + tableIdx);
-        Sprite main = (Sprite)_verRightUp[tableIdx];
-        Sprite support = (Sprite)_verRightUp[tableIdx + 1];
-        InstantiateObjectInWorld(verTables[0], 0, 0)
-            .GetComponent<TableHandler>().SetTableVariant(false, main, support);
+
+        //var main = (Sprite)_verRightUp[tableIdx];
+        //var support = (Sprite)_verRightUp[tableIdx + 1];
+        //InstantiateObjectInWorld(verTables[0], 5, 7, 0.0f, cellSize/2)
+        //    .GetComponent<TableHandler>().SetTableVariant(false, main, support);
+        //InstantiateObjectInWorld(horTables[0], -6, -9, 0.0f, cellSize/2)
+        //    .GetComponent<TableHandler>().SetTableVariant(false);
+            
+        bool heads = rnd.Next() % 2 == 0; // coin flip, heads -> hor tables in a ver line, tails -> ver tables in hor line
+        if (heads)
+        {
+            
+        }
+        else // tails
+        {
+            
+        }
+    }
+
+    private void PlaceTableRow(int startX, int startY, int step, int finish, HallType orientation, bool down, GameObject table, Object[] tableVars, Random rnd)
+    {
+        int coordStep = orientation == HallType.VERTICAL ? startY : startX;
+        float tableOffsetY = _obstaclesHolder.GetComponent<Grid>().cellSize.y/2;
+
+        while (coordStep <= finish)
+        {
+            Vector3Int coords = orientation == HallType.VERTICAL ? new Vector3Int(startX, coordStep, 0) : 
+                                                                    new Vector3Int(coordStep, startY, 0);
+            GameObject tableInst = InstantiateObjectInWorld(table, coords, 0.0f, tableOffsetY);
+            
+            // rnd gen
+            int max = (tableVars.Length)/2;
+            int tableIdx = rnd.Next(0, max)*2;
+            bool chairCoinFlip = rnd.Next() % 2 == 0;
+            
+            Sprite main = (Sprite)_verRightUp[tableIdx];
+            Sprite support = (Sprite)_verRightUp[tableIdx + 1];
+            
+            tableInst.GetComponent<TableHandler>().SetTableVariant(down, main, support, chairCoinFlip);
+            
+            // fill up grid for AI
+            //if(orientation == HallType.VERTICAL) FillObstaclesGrid(startX, coordStep);
+            
+            // step
+            coordStep += step;
+        }
+    }
+
+    private void FillObstaclesGrid(int x, int y, int w, int h)
+    {
+        for (var j = y; y < y + h; y++)
+        {
+            for (var i = x; x < x + w; x++)
+            {
+                Vector2Int gridCoors = UnityToScriptCoord(i, j);
+                _grid[gridCoors.y, gridCoors.x].Empty = false;
+                Debug.Log("Tile at " + i + "x" + j + " has been obstructed for AI.");
+            }
+        }
     }
 
     private void GenerateExtraObjects(int startX, int startY, int width, int height, Wall blocked, bool hall = true, bool longHall = false)
@@ -555,8 +616,6 @@ public class OfficeRoomGenerator : MapGenerator
             else
                 PutDownExtraObjects(wall.Start, wall.Height, wall.End-wall.Start, 1, density/2);
         }
-        
-        Debug.Log("look at this " + GetGrid()[0,0].XCoord + "x" + GetGrid()[0,0].YCoord);
     }
 
     private void PutDownExtraObjects(int xCoord, int yCoord, int width, int height, int objDensity)
@@ -574,7 +633,7 @@ public class OfficeRoomGenerator : MapGenerator
                 if (rnd.Next(0, 100) <= den)
                 {
                     int objIdx = GetNumFromRange(rnd, 0, extraItems.Count - 1);
-                    InstantiateObjectInWorld(extraItems[objIdx], x, y, 
+                    InstantiateObjectInWorld(extraItems[objIdx], new Vector3Int(x, y, 0), 
                         GetNumFromRangeFloat(rnd, -(int)((offsetMax*100)/3), 
                             (int)((offsetMax*100)/3)) /100,
                         GetNumFromRangeFloat(rnd, -(int)((offsetMax*100)/3), 
@@ -600,13 +659,13 @@ public class OfficeRoomGenerator : MapGenerator
         return genNum / bracket;
     }
 
-    private GameObject InstantiateObjectInWorld(GameObject obj, int x, int y, float offsetX = 0.0f, float offsetY = 0.0f)
+    private GameObject InstantiateObjectInWorld(GameObject obj, Vector3Int coords, float offsetX = 0.0f, float offsetY = 0.0f)
     {
-        Vector2Int gridCoors = UnityToScriptCoord(x, y);
+        Vector2Int gridCoors = UnityToScriptCoord(coords.x, coords.y);
         _grid[gridCoors.y, gridCoors.x].Empty = false;
 
         Vector3 pos = _obstaclesHolder.GetComponent<Tilemap>()
-            .GetCellCenterWorld(new Vector3Int(x, y, 0));
+            .GetCellCenterWorld(coords);
         
         pos.x += offsetX;
         pos.y += offsetY;
@@ -634,5 +693,17 @@ public class OfficeRoomGenerator : MapGenerator
     public GridTile[,] GetGrid()
     {
         return _grid;
+    }
+
+    public Vector3 GetGridTileWorldCoordinates(int x, int y)
+    {
+        return _obstaclesHolder.GetComponent<Tilemap>()
+            .GetCellCenterWorld(new Vector3Int(x, y, 0));
+    }
+
+    private void CleanUp()
+    {
+        Destroy(_obstaclesHolder.GetComponent<Tilemap>());
+        Destroy(_obstaclesHolder.GetComponent<Grid>());
     }
 }
