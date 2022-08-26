@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
             // let the enemy spawner (if present) know it can spawn enemies
             // can only happen after the player is present
             EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
-            if (enemySpawner != null) enemySpawner.Init();
+            if (enemySpawner != null) enemySpawner.Init(playerCharacterCurrent);
 
             // handle player death event
             playerCharacterCurrent.onDeath.AddListener(RestartLevel);

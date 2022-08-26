@@ -32,16 +32,9 @@ public class HealthUI : MonoBehaviour
 
     private void UpdateUI()
     {
-        // TODO add tweens - ex. punch item size when changing order
-        // TODO punch color when cracking or taking dmg etc. <- in ItemUI
-        
-        // check for new items:
-        // TODO update item order in UI
-        
-        // update item gfx (ex. if any item is cracked or destroyed)
+        // update item gfx (ex. if any item is cracked or destroyed) or if they changed positions
         for (var i = 0; i < items.Length; i++)
         {
-            if (playerInventory.Equipped[i] != null) Debug.Log("updating item " + playerInventory.Equipped[i].Data.ItemName);
             items[i].UpdateItem(playerInventory.Equipped[i]);
         }
     }

@@ -20,8 +20,11 @@ public class EnemySpawner : MonoBehaviour
 
     private int lastEnemyIdx = 0;
 
-    public void Init()
+    private PlayerCharacter playerCharacter;
+    
+    public void Init(PlayerCharacter playerCharacter)
     {
+        this.playerCharacter = playerCharacter;
         canSpawn = true;
     }
 
@@ -33,7 +36,7 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnEnemy(int i)
     {
         EnemyCharacter enemyInstance = Instantiate(enemyPrefabs[i], spawnPoint.position, Quaternion.identity, transform);
-        enemyInstance.Init();
+        enemyInstance.Init(playerCharacter);
         enemyInstance.onDeath.AddListener(CleanUpEnemy);
 
         // UI

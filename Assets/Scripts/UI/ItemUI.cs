@@ -14,7 +14,7 @@ public class ItemUI : MonoBehaviour
     private GameManager gameManager;
     private int lastHealth;
 
-    private bool boxEmpty;
+    private ItemSO currentItem;
     
     public void Init(GameManager gameManager)
     {
@@ -25,8 +25,8 @@ public class ItemUI : MonoBehaviour
         itemIcon.color = new Color(1,1,1,0);
         border.color = new Color(1,1,1,0);
         cracked.color = new Color(1,1,1,0);
-        
-        boxEmpty = true;
+
+        currentItem = null;
     }
     
     private void AddItem(ItemSO item)
@@ -40,8 +40,8 @@ public class ItemUI : MonoBehaviour
         border.DOColor(Color.white, .3f);
         // punch scale
         transform.DOPunchScale(Vector3.one * 0.5f, .4f, 1, 0);
-        
-        boxEmpty = false;
+
+        currentItem = item;
     }
     
     public void UpdateItem(Item item)
@@ -49,17 +49,27 @@ public class ItemUI : MonoBehaviour
         if (item == null)
         {
             // if incoming null but item is set -> destroy it
-            if (!boxEmpty) DestroyItem(); 
+            if (currentItem != null) DestroyItem(); 
             
             return;
         }
         
+        // switching items
+        if (item.Data != currentItem)
+        {
+            // item is cracked <- can only happen when switching into empty box
+            if (item.Data != currentItem && item.CurrentHealth == 1) CrackItem();
+            
+            AddItem(item.Data);
+            return;
+        }
+        
         // if item not present - add it
-        if (boxEmpty)
+        if (currentItem == null)
         {
             AddItem(item.Data);
         }
-        
+
         // not damaged this time
         if (lastHealth == item.CurrentHealth) return;
         
@@ -69,7 +79,7 @@ public class ItemUI : MonoBehaviour
         transform.DOPunchScale(-Vector3.one * 0.1f, .3f, 1, 0);
         
         if (item.CurrentHealth == 1) CrackItem();
-        else if (item.CurrentHealth <= 0) DestroyItem();
+        if (item.CurrentHealth <= 0) DestroyItem();
         
         lastHealth = item.CurrentHealth;
     }
@@ -93,6 +103,6 @@ public class ItemUI : MonoBehaviour
         // punch scale
         transform.DOPunchScale(-Vector3.one * 0.3f, .3f, 1, 0);
         
-        boxEmpty = true;
+        currentItem = null;
     }
 }

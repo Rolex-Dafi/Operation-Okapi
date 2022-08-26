@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(CircleCollider2D), typeof(SpriteRenderer))]
 public class DroppedItem : MonoBehaviour
 {
-    // only one or the other
-    private int money;
+    // always one or the other
+    private int money; // TODO probably best if I make money into ItemSO ? bc of sprites
     private ItemSO item;
 
     [SerializeField] private EventReference onCollectSound;
@@ -16,12 +16,14 @@ public class DroppedItem : MonoBehaviour
     {
         money = amount;
         item = null;
+        // TODO change money sprite according to amount dropped
     }
 
     public void Init(ItemSO item)
     {
         this.item = item;
         money = 0;
+        GetComponent<SpriteRenderer>().sprite = item.WorldSprite;  // the prefabs base sprite is money
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
