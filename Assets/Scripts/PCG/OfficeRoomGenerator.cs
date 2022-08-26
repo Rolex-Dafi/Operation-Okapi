@@ -30,6 +30,10 @@ public class OfficeRoomGenerator : MapGenerator
     private static readonly string _leftDir = "left/";
     private static readonly string _rightDir = "right/";
 
+    [Header("sprites")]
+    private Object[][] _sprites;
+    
+    /*
     public Object[] _horRightUp;
     private Object[] _horRightDown;
     public Object[] _verRightUp;
@@ -37,7 +41,7 @@ public class OfficeRoomGenerator : MapGenerator
     public Object[] _horLeftUp;
     private Object[] _horLeftDown;
     public Object[] _verLeftUp;
-    private Object[] _verLeftDown;
+    private Object[] _verLeftDown;*/
     
     private int _minWidth = 4;
     private int _minHeight = 4;
@@ -112,17 +116,32 @@ public class OfficeRoomGenerator : MapGenerator
 
     private void SetUpRoomGen()
     {
-        if (_horRightUp != null && _horRightUp.Length > 0) return;
+        if (_sprites != null && _sprites.Length > 0) return;
 
-        _horRightUp = Resources.LoadAll(_tableDir + _horDir + _rightDir + _upDir);
-        _horRightDown = Resources.LoadAll(_tableDir + _horDir + _rightDir + _downDir);
-        _verRightUp = Resources.LoadAll(_tableDir + _verDir + _rightDir + _upDir);
-        _verRightDown = Resources.LoadAll(_tableDir + _verDir + _rightDir + _downDir);
+        /*
+        _horRightUp = Resources.LoadAll(_tableDir + _horDir + _rightDir + _upDir, typeof(Sprite));
+        _horRightDown = Resources.LoadAll(_tableDir + _horDir + _rightDir + _downDir, typeof(Sprite));
+        _verRightUp = Resources.LoadAll(_tableDir + _verDir + _rightDir + _upDir, typeof(Sprite));
+        _verRightDown = Resources.LoadAll(_tableDir + _verDir + _rightDir + _downDir, typeof(Sprite));
         
-        _horLeftUp = Resources.LoadAll(_tableDir + _horDir + _leftDir + _upDir);
-        _horLeftDown = Resources.LoadAll(_tableDir + _horDir + _leftDir + _downDir);
-        _verLeftUp = Resources.LoadAll(_tableDir + _verDir + _leftDir + _upDir);
-        _verLeftDown = Resources.LoadAll(_tableDir + _verDir + _leftDir + _downDir);
+        _horLeftUp = Resources.LoadAll(_tableDir + _horDir + _leftDir + _upDir, typeof(Sprite));
+        _horLeftDown = Resources.LoadAll(_tableDir + _horDir + _leftDir + _downDir, typeof(Sprite));
+        _verLeftUp = Resources.LoadAll(_tableDir + _verDir + _leftDir + _upDir, typeof(Sprite));
+        _verLeftDown = Resources.LoadAll(_tableDir + _verDir + _leftDir + _downDir, typeof(Sprite));
+        */
+        Debug.Log("Assets loaded.");
+        _sprites = new[]
+        {
+            Resources.LoadAll(_tableDir + _horDir + _leftDir + _upDir, typeof(Sprite)), // hor left up - 0
+            Resources.LoadAll(_tableDir + _horDir + _leftDir + _downDir, typeof(Sprite)), // hor left down - 1
+            Resources.LoadAll(_tableDir + _horDir + _rightDir + _upDir, typeof(Sprite)), //hor right up - 2
+            Resources.LoadAll(_tableDir + _horDir + _rightDir + _downDir, typeof(Sprite)), //hor right down - 3
+
+            Resources.LoadAll(_tableDir + _verDir + _leftDir + _upDir, typeof(Sprite)), // ver left up - 4
+            Resources.LoadAll(_tableDir + _verDir + _leftDir + _downDir, typeof(Sprite)), // ver left down - 5
+            Resources.LoadAll(_tableDir + _verDir + _rightDir + _upDir, typeof(Sprite)), // ver right up - 6
+            Resources.LoadAll(_tableDir + _verDir + _rightDir + _downDir, typeof(Sprite)) // ver right down - 7
+        };
     }
 
     private void GenerateOfficeFloor()
@@ -482,33 +501,70 @@ public class OfficeRoomGenerator : MapGenerator
     private void GenerateOfficeRoom(int startX, int startY, int width, int height)
     {
         int tableWidth = horTables[0].transform.GetComponent<TableHandler>().width;
+        int tableHeight = horTables[0].transform.GetComponent<TableHandler>().height;
         int tableAllowance = tableWidth + _minTableGap;
         if (width <  tableAllowance || height < tableAllowance) // no room for tables
             return;
         Random rnd = new Random();
+        /*
         float cellSize = _obstaclesHolder.GetComponent<Grid>().cellSize.y;
         int max = (_verRightUp.Length)/2;
         int tableIdx = rnd.Next(0, max)*2;
 
-        //var main = (Sprite)_verRightUp[tableIdx];
-        //var support = (Sprite)_verRightUp[tableIdx + 1];
+        var main = (Sprite)_verRightUp[tableIdx];
+        var support = (Sprite)_verRightUp[tableIdx + 1];
         //InstantiateObjectInWorld(verTables[0], 5, 7, 0.0f, cellSize/2)
         //    .GetComponent<TableHandler>().SetTableVariant(false, main, support);
         //InstantiateObjectInWorld(horTables[0], -6, -9, 0.0f, cellSize/2)
-        //    .GetComponent<TableHandler>().SetTableVariant(false);
-            
-        bool heads = rnd.Next() % 2 == 0; // coin flip, heads -> hor tables in a ver line, tails -> ver tables in hor line
-        if (heads)
+        //    .GetComponent<TableHandler>().SetTableVariant(false);*/
+        
+        // generate table type
+        int tableType = rnd.Next(0, _sprites.Length);
+        HallType horOrientation = tableType < 4 ? HallType.VERTICAL : HallType.HORIZONTAL;
+        bool downOrientation = tableType%2 == 1;
+        int tableSide = tableType%4 < 2 ? 0 : 1;
+
+
+        if (horOrientation == HallType.VERTICAL) // horizontal tables in vert column
         {
-            
+            int numRows = (width+_minTableGap) / tableAllowance;
+
+            for (int i = 0; i < numRows; i++)
+            {
+                PlaceTableRow(startX + 1 + tableAllowance*i, 
+                    startY + tableHeight,
+                    tableHeight*2 + _minTableGap,
+                    startY + height,
+                    horOrientation,
+                    downOrientation,
+                    horTables[tableSide],
+                    tableType,
+                    rnd
+                    );
+            }
         }
-        else // tails
+        else // vertical tables in hor row
         {
-            
+            int numRows = (height+_minTableGap) / tableAllowance;
+
+            for (int i = 0; i < numRows; i++)
+            {
+                PlaceTableRow(startX + tableHeight, 
+                    startY + 1 + tableAllowance*i,
+                    tableHeight*2 + _minTableGap,
+                    startX + width,
+                    horOrientation,
+                    downOrientation,
+                    verTables[tableSide],
+                    tableType,
+                    rnd
+                );
+            }
         }
     }
 
-    private void PlaceTableRow(int startX, int startY, int step, int finish, HallType orientation, bool down, GameObject table, Object[] tableVars, Random rnd)
+    private void PlaceTableRow(int startX, int startY, int step, int finish, HallType orientation, bool down, 
+                                GameObject table, int tableVars, Random rnd)
     {
         int coordStep = orientation == HallType.VERTICAL ? startY : startX;
         float tableOffsetY = _obstaclesHolder.GetComponent<Grid>().cellSize.y/2;
@@ -520,17 +576,37 @@ public class OfficeRoomGenerator : MapGenerator
             GameObject tableInst = InstantiateObjectInWorld(table, coords, 0.0f, tableOffsetY);
             
             // rnd gen
-            int max = (tableVars.Length)/2;
+            int max = (_sprites[tableVars].Length)/2;
             int tableIdx = rnd.Next(0, max)*2;
             bool chairCoinFlip = rnd.Next() % 2 == 0;
             
-            Sprite main = (Sprite)_verRightUp[tableIdx];
-            Sprite support = (Sprite)_verRightUp[tableIdx + 1];
+            Sprite main = (Sprite)_sprites[tableVars][tableIdx];
+            Sprite support = (Sprite)_sprites[tableVars][tableIdx + 1];
             
             tableInst.GetComponent<TableHandler>().SetTableVariant(down, main, support, chairCoinFlip);
             
             // fill up grid for AI
-            //if(orientation == HallType.VERTICAL) FillObstaclesGrid(startX, coordStep);
+            int x = orientation == HallType.VERTICAL ? startX - 1 : coordStep;
+            int y = orientation == HallType.VERTICAL ? coordStep : startY - 1;
+            int h = tableInst.GetComponent<TableHandler>().height;
+            int w = tableInst.GetComponent<TableHandler>().width;
+
+            if (chairCoinFlip)
+            {
+                if (orientation == HallType.HORIZONTAL)
+                {
+                    x += down ? -1 : 0;
+                    w *= 2;
+                }
+                else
+                {
+                    y += down ? -1 : 0;
+                    h *= 2;
+                }
+            }
+
+            FillObstaclesGrid(x, y, w, h);
+            //Debug.Log("W: " + w + " H: " + h + " x: " + x + " y: " + y);
             
             // step
             coordStep += step;
@@ -539,13 +615,13 @@ public class OfficeRoomGenerator : MapGenerator
 
     private void FillObstaclesGrid(int x, int y, int w, int h)
     {
-        for (var j = y; y < y + h; y++)
+        for (var j = 0; j < h; j++)
         {
-            for (var i = x; x < x + w; x++)
+            for (var i = 0; i < w; i++)
             {
-                Vector2Int gridCoors = UnityToScriptCoord(i, j);
+                Vector2Int gridCoors = UnityToScriptCoord(x + i, y + j);
                 _grid[gridCoors.y, gridCoors.x].Empty = false;
-                Debug.Log("Tile at " + i + "x" + j + " has been obstructed for AI.");
+                //Debug.Log("Tile at " + (x+i) + "x" + (y+j) + " has been obstructed for AI.");
             }
         }
     }
@@ -705,5 +781,15 @@ public class OfficeRoomGenerator : MapGenerator
     {
         Destroy(_obstaclesHolder.GetComponent<Tilemap>());
         Destroy(_obstaclesHolder.GetComponent<Grid>());
+    }
+    
+    /// <summary>
+    /// Flips a coin.
+    /// </summary>
+    /// <param name="rnd">Random generator required for the coin flip.</param>
+    /// <returns>True if heads, false if tails.</returns>
+    private static bool Heads(Random rnd)
+    {
+        return rnd.Next() % 2 == 0;
     }
 }

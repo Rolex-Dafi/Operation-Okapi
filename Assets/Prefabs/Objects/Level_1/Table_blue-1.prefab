@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   width: 3
-  height: 2
+  height: 1
   chairUp: {fileID: 3222440386843790524}
   chairDown: {fileID: 505645098456102451}
 --- !u!1 &8515112285150643164
