@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collTile: {fileID: 11400000, guid: 0c1b975e7de6e2e4ea19adea04a09bbc, type: 2}
+  entranceCollider: {fileID: 513636760818153504, guid: 194e72723ebecde45bf31e7bc27e935e, type: 3}
   mapPrefab: {fileID: 986615358494160932, guid: 0d2717c6bf3f01841a3be72c6dfaf2fd, type: 3}
   maxWidth: 20
   maxHeight: 20
@@ -61,10 +62,6 @@ MonoBehaviour:
   - {fileID: 2838800048169168558, guid: 560fba891a412264080cb22a08eb77d1, type: 3}
   tableDensity: 85
   extraDensity: 15
-  _horRightUp: []
-  _verRightUp: []
-  _horLeftUp: []
-  _verLeftUp: []
   tileLst:
   - {fileID: 11400000, guid: 63e5a5d54e762b44e8f4383c64a6751d, type: 2}
   - {fileID: 11400000, guid: 50c2684dc580f4d409ec73a24a9cd0dd, type: 2}

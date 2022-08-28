@@ -15,7 +15,9 @@ public abstract class MapGenerator : MonoBehaviour
     protected Transform _gridHolder;
     protected Transform _obstaclesHolder;
 
+    [Header("Collider objects")]
     public Tile collTile;
+    public GameObject entranceCollider;
 
     protected enum HallType
     {
@@ -52,10 +54,19 @@ public abstract class MapGenerator : MonoBehaviour
     };
     
     internal GridTile[,] _grid;
+    
+    internal struct Entrance
+    {
+        internal Vector3Int EntrancePos;
+        internal GameObject EntranceObj;
+        internal Vector3Int ExitPos;
+        internal GameObject ExitObj;
+    }
+    
+    internal Entrance _entrance;
 
-    [Header("Empty prefab of grid setup.")]
-    public GameObject mapPrefab;
-
+    [Header("Empty prefab of grid setup.")] public GameObject mapPrefab;
+    
     public virtual void Generate()
     {
         Restart();
@@ -125,9 +136,15 @@ public abstract class MapGenerator : MonoBehaviour
         return _grid;
     }
 
-    public Vector3 GetGridTileWorldCoordinates(int x, int y)
+    public Vector3 GetSmallGridTileWorldCoordinates(int x, int y)
     {
         return _obstaclesHolder.GetComponent<Tilemap>()
+            .GetCellCenterWorld(new Vector3Int(x, y, 0));
+    }
+
+    public Vector3 GetGridTileWorldCoordinates(int x, int y)
+    {
+        return _gridHolder.GetComponentInChildren<Tilemap>()
             .GetCellCenterWorld(new Vector3Int(x, y, 0));
     }
 
@@ -145,5 +162,24 @@ public abstract class MapGenerator : MonoBehaviour
     internal static bool Heads(Random rnd)
     {
         return rnd.Next() % 2 == 0;
+    }
+
+    public Vector3Int GetEntranceGridCoords()
+    {
+        return _entrance.EntrancePos;
+    }
+    public Vector3Int GetExitGridCoords()
+    {
+        return _entrance.ExitPos;
+    }
+
+    public Transform GetEntranceCollider()
+    {
+        return _entrance.EntranceObj.transform;
+    }
+    
+    public Transform GetExitCollider()
+    {
+        return _entrance.ExitObj.transform;
     }
 }

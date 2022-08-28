@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Pathfinding.Examples;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
@@ -57,12 +58,6 @@ public class OfficeRoomGenerator : MapGenerator
         internal RoomType Type;
     };
 
-    private struct Door
-    {
-        internal Vector3Int EntrancePos;
-        internal Vector3Int ExitPos;
-    }
-
     private Room _leftRoom;
     private Room _rightRoom;
     private int _hallTreshold = 5;
@@ -77,7 +72,6 @@ public class OfficeRoomGenerator : MapGenerator
     private List<Wall> _walls;
     private List<Wall> _cols;
     private Wall _overlap;
-    private Door _door = new Door();
 
     [Header("Tile sets to use for generation.")]
     public List<Tile> tileLst;
@@ -335,30 +329,38 @@ public class OfficeRoomGenerator : MapGenerator
     {
         Random rand = new Random();
         
-        // generate exit position
-        _door.EntrancePos = new Vector3Int(rand.Next(_walls[0].Start + 1, _walls[0].End - 1), _walls[0].Height, 0);
-        _door.ExitPos = new Vector3Int(_walls[_walls.Count - 1].Height, rand.Next(_walls[_walls.Count - 1].Start + 1, _walls[_walls.Count - 1].End - 1), 0);
+        // generate entrance position
+        _entrance.EntrancePos = new Vector3Int(rand.Next(_walls[0].Start + 1, _walls[0].End - 1), _walls[0].Height, 0);
+        _entrance.ExitPos = new Vector3Int(_walls[_walls.Count - 1].Height, rand.Next(_walls[_walls.Count - 1].Start + 1, _walls[_walls.Count - 1].End - 1), 0);
+
+        // generate entrance triggers
+        _entrance.EntranceObj = Instantiate(entranceCollider, _roomHolder);
+        _entrance.ExitObj = Instantiate(entranceCollider, _roomHolder);
+
+        _entrance.EntranceObj.transform.position = GetGridTileWorldCoordinates(_entrance.EntrancePos.x, _entrance.EntrancePos.y);
+        _entrance.ExitObj.transform.position = GetGridTileWorldCoordinates(_entrance.ExitPos.x, _entrance.ExitPos.y);
+        
         
         // erase wall tiles
         var horWalls = _gridHolder.transform.GetChild(1).GetComponent<Tilemap>();
         var verWalls = _gridHolder.transform.GetChild(2).GetComponent<Tilemap>();
-        horWalls.SetTile(_door.EntrancePos, null);
-        verWalls.SetTile(_door.ExitPos, null);
+        horWalls.SetTile(_entrance.EntrancePos, null);
+        verWalls.SetTile(_entrance.ExitPos, null);
         
         // erase collider and replace it with new collider
         var colMap = _gridHolder.transform.GetChild(4).GetComponent<Tilemap>();
-        colMap.SetTile(_door.EntrancePos, null);
-        colMap.SetTile(_door.ExitPos, null);
+        colMap.SetTile(_entrance.EntrancePos, null);
+        colMap.SetTile(_entrance.ExitPos, null);
         List<Wall> newCols = new List<Wall>();
-        AddWallToLst(newCols, HallType.HORIZONTAL, _door.EntrancePos.x - 1, _door.EntrancePos.x + 2, _door.EntrancePos.y + 1);
-        AddWallToLst(newCols, HallType.VERTICAL, _door.ExitPos.y - 1, _door.ExitPos.y + 2, _door.ExitPos.x + 1);
+        AddWallToLst(newCols, HallType.HORIZONTAL, _entrance.EntrancePos.x - 1, _entrance.EntrancePos.x + 2, _entrance.EntrancePos.y + 1);
+        AddWallToLst(newCols, HallType.VERTICAL, _entrance.ExitPos.y - 1, _entrance.ExitPos.y + 2, _entrance.ExitPos.x + 1);
         PutDownColliders(newCols);
         // TODO: collider for entrance and exit
 
         //set down tiles
         var tileMap = _gridHolder.transform.GetChild(0).GetComponent<Tilemap>();
-        tileMap.SetTile(_door.EntrancePos, tileMap.GetTile(new Vector3Int(_door.EntrancePos.x, _door.EntrancePos.y-1, _door.EntrancePos.z)));
-        tileMap.SetTile(_door.ExitPos, tileMap.GetTile(new Vector3Int(_door.ExitPos.x-1, _door.ExitPos.y, _door.ExitPos.z)));
+        tileMap.SetTile(_entrance.EntrancePos, tileMap.GetTile(new Vector3Int(_entrance.EntrancePos.x, _entrance.EntrancePos.y-1, _entrance.EntrancePos.z)));
+        tileMap.SetTile(_entrance.ExitPos, tileMap.GetTile(new Vector3Int(_entrance.ExitPos.x-1, _entrance.ExitPos.y, _entrance.ExitPos.z)));
     }
 
     private void PutDownRoomTiles(Tile tile, Tilemap tm, Room room)
@@ -687,8 +689,8 @@ public class OfficeRoomGenerator : MapGenerator
         {
             for (var x = xCoord; x < xCoord + width; x++)
             {
-                if (((x == _door.EntrancePos.x*2 || x - 1 == _door.EntrancePos.x*2) && y == _door.EntrancePos.y*2 - 1) ||
-                    (x == _door.ExitPos.x*2 - 1 && (y == _door.ExitPos.y*2 || y - 1 == _door.ExitPos.y*2)))
+                if (((x == _entrance.EntrancePos.x*2 || x - 1 == _entrance.EntrancePos.x*2) && y == _entrance.EntrancePos.y*2 - 1) ||
+                    (x == _entrance.ExitPos.x*2 - 1 && (y == _entrance.ExitPos.y*2 || y - 1 == _entrance.ExitPos.y*2)))
                     continue; // dont block doors
                 if (rnd.Next(0, 100) <= den)
                 {
