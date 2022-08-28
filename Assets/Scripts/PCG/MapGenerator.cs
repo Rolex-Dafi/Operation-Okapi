@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Object = UnityEngine.Object;
+using Random = System.Random;
 
 /// <summary>
 /// Base class for map generation
 /// </summary>
-public class MapGenerator : MonoBehaviour
+public abstract class MapGenerator : MonoBehaviour
 {
     protected Transform _roomHolder;
     protected Transform _gridHolder;
@@ -34,7 +36,22 @@ public class MapGenerator : MonoBehaviour
             End = e;
             Height = h;
         }
-    }
+    };
+    public struct GridTile
+    {
+        internal int XCoord;
+        internal int YCoord;
+        internal bool Empty;
+
+        public GridTile(int x, int y, bool empty = true)
+        {
+            XCoord = x;
+            YCoord = y;
+            this.Empty = empty;
+        }
+    };
+    
+    internal GridTile[,] _grid;
 
     [Header("Empty prefab of grid setup.")]
     public GameObject mapPrefab;
@@ -45,6 +62,14 @@ public class MapGenerator : MonoBehaviour
         SetUp();
     }
 
+    internal abstract void GenerateGrid();
+    protected abstract Vector2Int UnityToScriptCoord(int x, int y);
+
+    internal Vector2Int ScriptToUnityCoord(int x, int y)
+    {
+        return new Vector2Int(_grid[y, x].XCoord, _grid[y, x].YCoord);
+    }
+    
     private void SetUp()
     {
         Restart();
@@ -86,5 +111,39 @@ public class MapGenerator : MonoBehaviour
             else
                 SetTilesToMap(collTile, tm, col.Height, col.Start, col.Height + 1, col.End);
         }
+    }
+    
+    public bool IsTileEmpty(int x, int y)
+    {
+        Vector2Int coords = UnityToScriptCoord(x, y);
+
+        return _grid[coords.y, coords.x].Empty;
+    }
+    
+    public GridTile[,] GetGrid()
+    {
+        return _grid;
+    }
+
+    public Vector3 GetGridTileWorldCoordinates(int x, int y)
+    {
+        return _obstaclesHolder.GetComponent<Tilemap>()
+            .GetCellCenterWorld(new Vector3Int(x, y, 0));
+    }
+
+    internal void CleanUp()
+    {
+        Destroy(_obstaclesHolder.GetComponent<Tilemap>());
+        Destroy(_obstaclesHolder.GetComponent<Grid>());
+    }
+    
+    /// <summary>
+    /// Flips a coin.
+    /// </summary>
+    /// <param name="rnd">Random generator required for the coin flip.</param>
+    /// <returns>True if heads, false if tails.</returns>
+    internal static bool Heads(Random rnd)
+    {
+        return rnd.Next() % 2 == 0;
     }
 }

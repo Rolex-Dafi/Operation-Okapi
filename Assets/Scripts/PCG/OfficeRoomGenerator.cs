@@ -57,20 +57,6 @@ public class OfficeRoomGenerator : MapGenerator
         internal RoomType Type;
     };
 
-    public struct GridTile
-    {
-        internal int XCoord;
-        internal int YCoord;
-        internal bool Empty;
-
-        public GridTile(int x, int y, bool empty = true)
-        {
-            XCoord = x;
-            YCoord = y;
-            this.Empty = empty;
-        }
-    };
-
     private struct Door
     {
         internal Vector3Int EntrancePos;
@@ -82,8 +68,6 @@ public class OfficeRoomGenerator : MapGenerator
     private int _hallTreshold = 5;
     private int _roomMin = 8;
     private int _bigRoomTreshold = 4;
-
-    private GridTile[,] _grid;
 
     private enum RoomType
     {
@@ -431,7 +415,7 @@ public class OfficeRoomGenerator : MapGenerator
         PutDownColliders(_cols);
     }
 
-    private void GenerateGrid()
+    internal override void GenerateGrid()
     {
         int gridStartX = _leftRoom.StartX*2;
         int gridStartY = _rightRoom.StartY*2;
@@ -749,47 +733,8 @@ public class OfficeRoomGenerator : MapGenerator
         return Instantiate(obj, pos, Quaternion.identity, _obstaclesHolder);
     }
 
-    private Vector2Int UnityToScriptCoord(int x, int y)
+    protected override Vector2Int UnityToScriptCoord(int x, int y)
     {
         return new Vector2Int(x + Math.Abs(_leftRoom.StartX*2), y + Math.Abs(_rightRoom.StartY*2));
-    }
-
-    private Vector2Int ScriptToUnityCoord(int x, int y)
-    {
-        return new Vector2Int(_grid[y, x].XCoord, _grid[y, x].YCoord);
-    }
-
-    public bool IsTileEmpty(int x, int y)
-    {
-        Vector2Int coords = UnityToScriptCoord(x, y);
-
-        return _grid[coords.y, coords.x].Empty;
-    }
-
-    public GridTile[,] GetGrid()
-    {
-        return _grid;
-    }
-
-    public Vector3 GetGridTileWorldCoordinates(int x, int y)
-    {
-        return _obstaclesHolder.GetComponent<Tilemap>()
-            .GetCellCenterWorld(new Vector3Int(x, y, 0));
-    }
-
-    private void CleanUp()
-    {
-        Destroy(_obstaclesHolder.GetComponent<Tilemap>());
-        Destroy(_obstaclesHolder.GetComponent<Grid>());
-    }
-    
-    /// <summary>
-    /// Flips a coin.
-    /// </summary>
-    /// <param name="rnd">Random generator required for the coin flip.</param>
-    /// <returns>True if heads, false if tails.</returns>
-    private static bool Heads(Random rnd)
-    {
-        return rnd.Next() % 2 == 0;
     }
 }
