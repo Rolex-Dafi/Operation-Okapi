@@ -9,7 +9,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private StudioEventEmitter[] ambientEmitters;
     [SerializeField] private EventReference buttonClick;
 
-    public void InitScene()
+    public void Refresh()
     {
         FindButtons();
     }

@@ -10,15 +10,16 @@ public class HUDManager : MonoBehaviour
 
     [SerializeField] private HealthUI health;
 
-    private GameManager gameManager;
-    
+    //private GameManager gameManager;
+
     /// <summary>
     /// Should be called from game manager after scene loaded.
     /// </summary>
+    /// <param name="gameManager"></param>
     /// <param name="playerCharacter"></param>
     public void Init(GameManager gameManager, PlayerCharacter playerCharacter)
     {
-        this.gameManager = gameManager;
+        //this.gameManager = gameManager;
         
         money.Init(playerCharacter.Money);
         respect.Init(playerCharacter.Respect);

@@ -15,6 +15,7 @@ public class MenuManager : MonoBehaviour
     public void StartGame()
     {
         gameManager.StartGame();
+        Close();
     }
 
     public void ExitGame()
@@ -23,5 +24,11 @@ public class MenuManager : MonoBehaviour
         EditorApplication.isPlaying = false;
 #endif
         Application.Quit();
+    }
+
+    public void Close()
+    {
+        // TODO tween on menu close
+        Destroy(gameObject);
     }
 }

@@ -568,8 +568,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ColorPalette: {fileID: 11400000, guid: fd369c8fc22051942b3bcd9c278d3582, type: 2}
-  playerCharacterPrefab: {fileID: 2929782994530680384, guid: 28ac508a4fd66e246911f9d0874995e6, type: 3}
+  levelManager: {fileID: 0}
   audioManager: {fileID: 166999711}
+  uiInput: {fileID: 1752645816}
+  playerCharacterPrefab: {fileID: 2929782994530680384, guid: 28ac508a4fd66e246911f9d0874995e6, type: 3}
+  mainMenuPrefab: {fileID: 0}
+  hudPrefab: {fileID: 0}
 --- !u!114 &1752645815
 MonoBehaviour:
   m_ObjectHideFlags: 0
