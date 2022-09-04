@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2aac87e2c278664ba08cba91671190a, type: 3}
+  m_Name: MallLevel
+  m_EditorClassIdentifier: 
+  level: 2
+  numberOfRooms: 7
+  enemies:
+  - {fileID: 11400000, guid: 9d86bbfc01c92fb4098fc9636ec8a6a3, type: 2}
+  - {fileID: 11400000, guid: ac07ad6af016a864ba7572b957a9e782, type: 2}
+  - {fileID: 11400000, guid: 83b04af7c4cf3824e8d1f3f8b9fe05c0, type: 2}
+  - {fileID: 11400000, guid: a8abf4ff10a38e340a5d64396286f4a6, type: 2}

@@ -7,7 +7,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private EnemyCharacter[] enemyPrefabs;
 
     // UI
-    [SerializeField] private Canvas worldSpaceCanvas;
     [SerializeField] private ResourceUI healthBarPrefab;
     private ResourceUI healthBarInstance;
 
@@ -21,9 +20,11 @@ public class EnemySpawner : MonoBehaviour
     private int lastEnemyIdx = 0;
 
     private PlayerCharacter playerCharacter;
+    private GameManager gameManager;
     
-    public void Init(PlayerCharacter playerCharacter)
+    public void Init(GameManager gameManager, PlayerCharacter playerCharacter)
     {
+        this.gameManager = gameManager;
         this.playerCharacter = playerCharacter;
         canSpawn = true;
     }
@@ -40,7 +41,7 @@ public class EnemySpawner : MonoBehaviour
         enemyInstance.onDeath.AddListener(CleanUpEnemy);
 
         // UI
-        healthBarInstance = Instantiate(healthBarPrefab, worldSpaceCanvas.transform);
+        healthBarInstance = Instantiate(healthBarPrefab, gameManager.worldSpaceCanvas.transform);
         healthBarInstance.Init(enemyInstance.Health);
         healthBarInstance.GetComponent<FollowTarget>().Init(enemyInstance.transform);
 
