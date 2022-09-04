@@ -180,7 +180,9 @@ public abstract class MapGenerator : MonoBehaviour
 
     public Vector3 GetEntranceMiddlePoint()
     {
-        return GetGridTileWorldCoordinates(_entrance.EntrancePos.x, _entrance.EntrancePos.y);
+        Vector3 vec = GetGridTileWorldCoordinates(_entrance.EntrancePos.x, _entrance.EntrancePos.y);
+        vec.y -= _gridHolder.GetComponentInChildren<Grid>().cellSize.y / 2;
+        return vec;
     }
     
     public Transform GetExitCollider()
@@ -190,7 +192,9 @@ public abstract class MapGenerator : MonoBehaviour
     
     public Vector3 GetExitMiddlePoint()
     {
-        return GetGridTileWorldCoordinates(_entrance.ExitPos.x, _entrance.ExitPos.y);
+        Vector3 vec = GetGridTileWorldCoordinates(_entrance.ExitPos.x, _entrance.ExitPos.y);
+        vec.y -= _gridHolder.GetComponentInChildren<Grid>().cellSize.y / 2;
+        return vec;
     }
 
     protected GameObject GetExitObject()
