@@ -177,9 +177,19 @@ public abstract class MapGenerator : MonoBehaviour
     {
         return _entrance.EntranceObj.transform;
     }
+
+    public Vector3 GetEntranceMiddlePoint()
+    {
+        return GetGridTileWorldCoordinates(_entrance.EntrancePos.x, _entrance.EntrancePos.y);
+    }
     
     public Transform GetExitCollider()
     {
         return _entrance.ExitObj.transform;
+    }
+    
+    public Vector3 GetExitMiddlePoint()
+    {
+        return GetGridTileWorldCoordinates(_entrance.ExitPos.x, _entrance.ExitPos.y);
     }
 }
