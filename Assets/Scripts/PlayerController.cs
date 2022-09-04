@@ -28,10 +28,12 @@ public class PlayerController : MonoBehaviour
         // button down events
         foreach (EButtonDown interaction in Enum.GetValues(typeof(EButtonDown)))
         {
-            UnityAction<EButtonDown> action;
-            if (interaction == EButtonDown.Dash) action = OnDash;
-            else if (interaction == EButtonDown.Interact) action = OnInteract;
-            else action = OnAttack;
+            UnityAction<EButtonDown> action = interaction switch
+            {
+                EButtonDown.Dash => OnDash,
+                EButtonDown.Interact => OnInteract,
+                _ => OnAttack
+            };
 
             playerInput.buttonDownEvents[interaction].AddListener(action);
         }

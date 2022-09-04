@@ -27,7 +27,7 @@ public class HitBoxController : MonoBehaviour
                 damageable.TakeDamage(attackData.damage);
             }
 
-            // if attack has pushaback
+            // if attack has pushback
             if (attackData.enemyPushbackDistance > 0)
             {
                 // and object with which we collided is pushable, push it away from this

@@ -40,7 +40,7 @@ public class ItemUI : MonoBehaviour
         border.DOColor(Color.white, .3f);
         // punch scale
         transform.localScale = Vector3.one;
-        transform.DOPunchScale(Vector3.one * 0.5f, .4f, 1, 0);
+        //transform.DOPunchScale(Vector3.one * 0.5f, .4f, 1, 0);
 
         currentItem = item;
     }

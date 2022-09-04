@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
     }
 
     // TODO implement pause mechanic better
-    private void PauseGame(bool pause)
+    public void PauseGame(bool pause)
     {
         gamePaused = pause;
         Time.timeScale = pause ? 0 : 1;

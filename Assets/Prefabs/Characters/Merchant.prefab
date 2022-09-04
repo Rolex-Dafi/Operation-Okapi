@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2500597448665083016}
   - component: {fileID: 1126470926499738022}
+  - component: {fileID: 6272282930477865671}
   m_Layer: 0
   m_Name: Shadow
   m_TagString: Player
@@ -82,6 +83,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &6272282930477865671
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3797761257963449582}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &7785277350702944329
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,6 +112,8 @@ GameObject:
   - component: {fileID: 4205629459539126119}
   - component: {fileID: 3435189467929221888}
   - component: {fileID: 4146657623522657470}
+  - component: {fileID: 80799754941330931}
+  - component: {fileID: 7108983612038085454}
   m_Layer: 8
   m_Name: Merchant
   m_TagString: Player
@@ -199,12 +218,12 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.15
+  m_Radius: 0.5
 --- !u!95 &4146657623522657470
 Animator:
   serializedVersion: 3
@@ -224,3 +243,33 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &80799754941330931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7785277350702944329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf75251fcdb5dab4ab19c304ed132fbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onInteractPressed:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7108983612038085454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7785277350702944329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54025133cc9a2624195d7ab7e6c63c44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: f88ddc48b5e280148a1617ec671638c0, type: 2}
+  shopManager: {fileID: 0}
+  interactable: {fileID: 80799754941330931}
