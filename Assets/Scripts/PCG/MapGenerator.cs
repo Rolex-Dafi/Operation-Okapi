@@ -192,4 +192,21 @@ public abstract class MapGenerator : MonoBehaviour
     {
         return GetGridTileWorldCoordinates(_entrance.ExitPos.x, _entrance.ExitPos.y);
     }
+
+    protected GameObject GetExitObject()
+    {
+        var exitObj = Instantiate(entranceCollider, _roomHolder);
+        exitObj.AddComponent<Interactable>();
+        return exitObj;
+    }
+
+    public Interactable GetExitTrigger()
+    {
+        return _entrance.ExitObj.GetComponent<Interactable>();
+    }
+
+    public void DestroyCurrentRoom()
+    {
+        Restart();
+    }
 }
