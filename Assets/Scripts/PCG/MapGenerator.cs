@@ -164,6 +164,13 @@ public abstract class MapGenerator : MonoBehaviour
         return rnd.Next() % 2 == 0;
     }
 
+    protected GameObject GetExitObject()
+    {
+        var exitObj = Instantiate(entranceCollider, _roomHolder);
+        exitObj.AddComponent<Interactable>();
+        return exitObj;
+    }
+
     public Vector3Int GetEntranceGridCoords()
     {
         return _entrance.EntrancePos;
@@ -181,5 +188,15 @@ public abstract class MapGenerator : MonoBehaviour
     public Transform GetExitCollider()
     {
         return _entrance.ExitObj.transform;
+    }
+
+    public Interactable GetExitTrigger()
+    {
+        return _entrance.ExitObj.GetComponent<Interactable>();
+    }
+
+    public void DestroyCurrentRoom()
+    {
+        Restart();
     }
 }

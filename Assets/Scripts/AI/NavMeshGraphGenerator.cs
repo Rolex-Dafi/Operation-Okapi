@@ -9,6 +9,17 @@ public class NavMeshGraphGenerator : MonoBehaviour
 
     private PointGraph currentPointGraph;
 
+    public void ClearNavMesh()
+    {
+        // This holds all graph data
+        AstarData data = AstarPath.active.data;
+        
+        // This creates a Point Graph
+        currentPointGraph ??= data.AddGraph(typeof(PointGraph)) as PointGraph;
+
+        currentPointGraph.nodes = null;
+    }
+    
     public void GenerateNavMesh(MapGenerator roomGenerator)
     {
         this.roomGenerator = roomGenerator;

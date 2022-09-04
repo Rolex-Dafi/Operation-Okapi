@@ -13,16 +13,10 @@ public class Character : MonoBehaviour
     // resources
     protected Money money;
 
-    // inventory/drops
-
-    // components
-    [HideInInspector] protected Animator animator;
-
     // exposed vars
-    public Animator Animator { get => animator; set => animator = value; }
-    public Money Money { get => money; protected set => money = value; }
-    public CharacterSO Data { get => data; protected set => data = value; }
-
+    public Animator Animator { get; private set; }
+    public Money Money { get => money; private set => money = value; }
+    public CharacterSO Data => data;
 
     public virtual void Init()
     {

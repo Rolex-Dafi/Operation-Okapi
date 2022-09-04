@@ -29,4 +29,6 @@ public class ItemSO : ScriptableObject
     public Sprite WorldSprite;
     public int Health; // on the last health - display cracked gfx in HUD
 
+    public int Cost; // when buying from merchant
+
 }

@@ -1,11 +1,3 @@
-/*public enum EItemState
-{
-    Full,      // full hp
-    Damaged,
-    Cracked,   // hp == 1 -> display cracked gfx in HUD
-    Destroyed  // hp == 0
-}*/
-
 /// <summary>
 /// Only for equippable items. 
 /// </summary>

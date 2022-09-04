@@ -335,7 +335,7 @@ public class OfficeRoomGenerator : MapGenerator
 
         // generate entrance triggers
         _entrance.EntranceObj = Instantiate(entranceCollider, _roomHolder);
-        _entrance.ExitObj = Instantiate(entranceCollider, _roomHolder);
+        _entrance.ExitObj = GetExitObject();
 
         _entrance.EntranceObj.transform.position = GetGridTileWorldCoordinates(_entrance.EntrancePos.x, _entrance.EntrancePos.y);
         _entrance.ExitObj.transform.position = GetGridTileWorldCoordinates(_entrance.ExitPos.x, _entrance.ExitPos.y);

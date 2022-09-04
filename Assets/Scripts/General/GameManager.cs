@@ -1,16 +1,21 @@
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(SceneLoader), typeof(UIInput))]
+[RequireComponent(typeof(UIInput))]
 public class GameManager : MonoBehaviour
 {
+    [Header("Exposed Fields")]
+    public Canvas worldSpaceCanvas;
+    
     [Header("Data")] 
+    public TooltipUI tooltipUIPrefab;
     public ColorPaletteSO ColorPalette;
     [SerializeField] private LevelSO[] levelData;
 
-    [Header("Managers")] // These should already be added inside the scene
+    [Header("Managers and Components")] // These should already be added inside the scene
     public AudioManager audioManager;
     [SerializeField] private UIInput uiInput;
+    public PlayerSpawner playerSpawner;
     
     [Header("Prefabs")]  // These will be instantiated when needed
     [SerializeField] private PlayerCharacter playerCharacterPrefab;
@@ -23,9 +28,6 @@ public class GameManager : MonoBehaviour
     // player
     public PlayerCharacter playerCharacterInstance { get; private set; }
 
-    // components
-    //private SceneLoader sceneLoader;
-
     // UI
     private MenuManager menuInstance;
     private HUDManager hudInstance;
@@ -37,8 +39,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //sceneLoader = GetComponent<SceneLoader>();
-        //sceneLoader.Init();
         uiInput.Init();
         uiInput.buttonEvents[EUIButton.Escape].AddListener(OpenClosePauseMenu);
 
@@ -49,29 +49,24 @@ public class GameManager : MonoBehaviour
 
     private void OpenMenu()
     {
+        Debug.Log("opening menu");
+        
         audioManager.StartAmbience(Utility.mainMenuIndex);
-        //sceneLoader.LoadScene(Utility.mainMenuIndex, FinishMenuLoad);
         menuInstance = Instantiate(mainMenuPrefab);
         menuInstance.Init(this);
         audioManager.Refresh(); // new buttons added -> find them and add sounds to them
     }
 
-    /*private void FinishMenuLoad()
-    {
-        menuInstance = FindObjectOfType<MenuManager>();
-        menuInstance.Init(this);
-        audioManager.Refresh();
-    }*/
-
     public void StartGame()
     {
+        Debug.Log("starting game");
+        
         // spawn player after scene loaded
         audioManager.StartAmbience(Utility.firstLevelIndex);
         //sceneLoader.LoadScene(Utility.firstLevelIndex, FinishGameLoad);
         
-        var spawner = FindObjectOfType<PlayerSpawner>();
         // only instantiate the player once, then carry over the instance to the next room/level 
-        playerCharacterInstance = spawner.SpawnPlayerAndInit(playerCharacterPrefab);
+        playerCharacterInstance = playerSpawner.SpawnPlayerAndInit(playerCharacterPrefab);
         
         // instantiate and init HUD
         hudInstance = Instantiate(hudPrefab);
@@ -87,7 +82,7 @@ public class GameManager : MonoBehaviour
         gameInProgress = true;
     }
 
-    public void StartLevel(Level level)
+    private void StartLevel(Level level)
     {
         // instantiate the level
         currentLevelInstance = Instantiate(levelManagerPrefab);
@@ -96,34 +91,6 @@ public class GameManager : MonoBehaviour
         currentLevelInstance.LoadRoom(playerCharacterInstance);
         
         currentLevelInstance.onLevelComplete.AddListener(() => StartLevel(level+1));
-    }
-
-    private void FinishGameLoad()
-    {
-        // try to spawn player after scene loaded
-        PlayerSpawner spawner = FindObjectOfType<PlayerSpawner>();
-        if (spawner != null)
-        {
-            // only instantiate the player once, then carry over the instance to the next room/level (even across scenes)
-            // actually - levels don't have to be in separate scenes - since the rooms are generated anyway
-            playerCharacterInstance = spawner.SpawnPlayerAndInit(playerCharacterPrefab);
-
-            // set up HUD
-            HUDManager hud = FindObjectOfType<HUDManager>();
-            if (hud != null) hud.Init(this, playerCharacterInstance);
-
-            // let the enemy spawner (if present) know it can spawn enemies
-            // can only happen after the player is present
-            EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
-            if (enemySpawner != null) enemySpawner.Init(playerCharacterInstance);
-
-            // handle player death event
-            // TODO restart game here - or rather display game over sign + return to menu button
-            playerCharacterInstance.onDeath.AddListener(GameOver);
-        }
-
-        // set game in progress
-        gameInProgress = true;
     }
 
     private void OpenClosePauseMenu<T>(T interaction)
@@ -135,24 +102,23 @@ public class GameManager : MonoBehaviour
             PauseGame(true);
             // instantiate and initiate the menu
             OpenMenu();
-            //sceneLoader.AddScene(Utility.mainMenuIndex, audioManager.InitScene);
         }
         else
         {
             menuInstance.Close();
-            //sceneLoader.TryRemoveScene(Utility.mainMenuIndex, () => PauseGame(false));
         }
     }
 
-    // TODO implement pause mechanic
+    // TODO implement pause mechanic better
     private void PauseGame(bool pause)
     {
         gamePaused = pause;
+        Time.timeScale = pause ? 0 : 1;
     }
 
     private void GameOver()
     {
-        // TODO display game over sign + return to menu button
+        // TODO display game over sign + return to menu button instead
         
         // restart game
         StartGame();

@@ -34,11 +34,10 @@ public class PlayerSpawner : MonoBehaviour
     /// initialized. Should be called at the beginning of each room after it has been generated.
     /// </summary>
     /// <param name="player">the player instance to spawn</param>
-    /// <param name="parent">the transform under which it should be spawned</param>
-    public static void PlacePlayer(PlayerCharacter player, Transform parent)
+    /// <param name="position">the position at which it should be spawned</param>
+    public static void PlacePlayer(PlayerCharacter player, Vector3 position)
     {
-        player.transform.position = Vector3.zero;
-        player.transform.parent = parent;
+        player.transform.position = position;
         player.gameObject.SetActive(true);
     }
 }
