@@ -16,6 +16,11 @@ public class TooltipUI : MonoBehaviour
         canvasGroup.alpha = 0;
     }
 
+    public void SetText(string text)
+    {
+        tooltipText.text = text;
+    }
+
     public void ShowToolTip(bool show)
     {
         Debug.Log("displaying tooltip: " + tooltipText.text + ", setting show to " + show);

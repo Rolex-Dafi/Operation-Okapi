@@ -560,6 +560,7 @@ public class OfficeRoomGenerator : MapGenerator
             Vector3Int coords = orientation == HallType.VERTICAL ? new Vector3Int(startX, coordStep, 0) : 
                                                                     new Vector3Int(coordStep, startY, 0);
             GameObject tableInst = InstantiateObjectInWorld(table, coords, 0.0f, tableOffsetY);
+            if (tableInst == null) continue;
             
             // rnd gen
             int max = (_sprites[tableVars].Length)/2;
@@ -724,6 +725,11 @@ public class OfficeRoomGenerator : MapGenerator
     private GameObject InstantiateObjectInWorld(GameObject obj, Vector3Int coords, float offsetX = 0.0f, float offsetY = 0.0f)
     {
         Vector2Int gridCoors = UnityToScriptCoord(coords.x, coords.y);
+
+        if (gridCoors.x < 0 || gridCoors.x > _grid.GetLength(0) - 1 || gridCoors.y < 0 ||
+            gridCoors.y > _grid.GetLongLength(1) - 1)
+            return null;
+        
         _grid[gridCoors.y, gridCoors.x].Empty = false;
 
         Vector3 pos = _obstaclesHolder.GetComponent<Tilemap>()

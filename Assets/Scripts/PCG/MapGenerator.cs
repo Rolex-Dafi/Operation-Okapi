@@ -178,11 +178,16 @@ public abstract class MapGenerator : MonoBehaviour
         return _entrance.EntranceObj.transform;
     }
 
-    public Vector3 GetEntranceMiddlePoint()
+    public Vector3 GetGridTileWorldCoordinatesMiddle(int x, int y)
     {
-        Vector3 vec = GetGridTileWorldCoordinates(_entrance.EntrancePos.x, _entrance.EntrancePos.y);
+        Vector3 vec = GetGridTileWorldCoordinates(x, y);
         vec.y -= _gridHolder.GetComponentInChildren<Grid>().cellSize.y / 2;
         return vec;
+    }
+    
+    public Vector3 GetEntranceMiddlePoint()
+    {
+        return GetGridTileWorldCoordinatesMiddle(_entrance.EntrancePos.x, _entrance.EntrancePos.y);
     }
     
     public Transform GetExitCollider()
@@ -192,9 +197,7 @@ public abstract class MapGenerator : MonoBehaviour
     
     public Vector3 GetExitMiddlePoint()
     {
-        Vector3 vec = GetGridTileWorldCoordinates(_entrance.ExitPos.x, _entrance.ExitPos.y);
-        vec.y -= _gridHolder.GetComponentInChildren<Grid>().cellSize.y / 2;
-        return vec;
+        return GetGridTileWorldCoordinatesMiddle(_entrance.ExitPos.x, _entrance.ExitPos.y);
     }
 
     protected GameObject GetExitObject()

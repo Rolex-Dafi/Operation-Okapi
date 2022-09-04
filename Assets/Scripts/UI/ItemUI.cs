@@ -39,6 +39,7 @@ public class ItemUI : MonoBehaviour
         itemIcon.DOColor(Color.white, .1f);
         border.DOColor(Color.white, .3f);
         // punch scale
+        transform.localScale = Vector3.one;
         transform.DOPunchScale(Vector3.one * 0.5f, .4f, 1, 0);
 
         currentItem = item;
@@ -76,6 +77,7 @@ public class ItemUI : MonoBehaviour
         // tween
         backgroundBox.PunchColor(gameManager.ColorPalette.healthBrightRed, .3f);
         backgroundBox.PunchAlpha(1, .3f);
+        transform.localScale = Vector3.one;
         transform.DOPunchScale(-Vector3.one * 0.1f, .3f, 1, 0);
         
         if (item.CurrentHealth == 1) CrackItem();

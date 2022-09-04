@@ -1,5 +1,6 @@
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(UIInput))]
 public class GameManager : MonoBehaviour
@@ -119,6 +120,9 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         // TODO display game over sign + return to menu button instead
+        
+        // TODO clean everything up - probably just reload the scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         
         // restart game
         StartGame();

@@ -22,9 +22,9 @@ public class HitBoxController : MonoBehaviour
         if (!collision.CompareTag(friendlyTag))
         {
             // if object with which we collided is damageable, damage it
-            if (collision.gameObject.TryGetComponent<IDamagable>(out var damagable))
+            if (collision.gameObject.TryGetComponent<IDamagable>(out var damageable))
             {
-                damagable.TakeDamage(attackData.damage);
+                damageable.TakeDamage(attackData.damage);
             }
 
             // if attack has pushaback

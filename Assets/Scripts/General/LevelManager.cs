@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum Level
@@ -25,8 +26,8 @@ public enum RoomType
 public class LevelManager : MonoBehaviour
 {
     [Header("PCG")]
-    [SerializeField] private MapGenerator roomGenerator; 
-    [SerializeField] private NavMeshGraphGenerator navMeshGenerator;
+    private MapGenerator roomGenerator; 
+    [SerializeField] private AIGenerator aiGenerator;
 
     [Header("Spawners")] 
     [SerializeField] private EnemySpawner enemySpawner;
@@ -35,11 +36,13 @@ public class LevelManager : MonoBehaviour
 
     private GameManager gameManager;
     private LevelSO data;
+
+    private GameObject previousRoom;
     
     private int currentRoomIndex;
     private int merchantRoomIndex;
 
-    private bool levelBeaten;
+    private bool roomBeaten;
 
     public void Init(GameManager gameManager, LevelSO data)
     {
@@ -51,15 +54,15 @@ public class LevelManager : MonoBehaviour
             Debug.LogError("Level not found");
             return;
         }
+        
+        // Instantiate generator
+        roomGenerator = Instantiate(data.roomGeneratorPrefab, transform);
 
         onLevelComplete = new UnityEvent();
         
         //merchantRoomIndex = Random.Range(1, data.numberOfRooms - 2); // merchant can't be in the first room or the last room
         merchantRoomIndex = 1; // TODO debug - remove this after merchant tested
         currentRoomIndex = 0;
-
-        // TODO debug - change this to only true when all enemies beaten
-        levelBeaten = true;
     }
 
     /// <summary>
@@ -70,10 +73,17 @@ public class LevelManager : MonoBehaviour
     /// <param name="roomType">the type of room to spawn</param>
     public void LoadRoom(PlayerCharacter player, RoomType roomType = RoomType.Normal)
     {
-        // clean up previous room - important when the new room is not a pcg one but a prefab
+        // clean up previous room
+        // if previous room was pcg and this one isn't
         roomGenerator.DestroyCurrentRoom();
+        // if previous room was merchant or boss
+        if (previousRoom != null)
+        {
+            Destroy(previousRoom);
+            previousRoom = null;
+        }
         
-        navMeshGenerator.ClearNavMesh();
+        aiGenerator.ClearNavMesh();
         
         Vector3 playerSpawn = default;
         Interactable exitTrigger = default;
@@ -85,16 +95,29 @@ public class LevelManager : MonoBehaviour
                 roomGenerator.Generate();
         
                 // then generate the navmesh
-                navMeshGenerator.GenerateNavMesh(roomGenerator);
+                aiGenerator.Init(roomGenerator);
+                aiGenerator.GenerateNavMesh();
+                var enemySpawnPoints = aiGenerator.GenerateEnemySpawnPoints(2); // TODO debug, change this to higher number
         
-                // TODO spawn the enemies
-                //enemySpawner.Init(gameManager, gameManager.playerCharacterInstance);
+                // spawn enemies
+                enemySpawner.Init(gameManager, gameManager.playerCharacterInstance);
                 
-                // player
-                playerSpawn = roomGenerator.GetEntranceCollider().position;
+                // parameters TODO spawn more types of enemy in some rooms
+                //var numEnemyTypes = currentRoomIndex > 2 ? Random.Range(1, 2) : 1; // chance for 2 types if far enough
+                var enemyIndex = currentRoomIndex < 1 ? 0 : Random.Range(0, data.enemies.Length - 1);
+                foreach (var spawnPoint in enemySpawnPoints)
+                {
+                    enemySpawner.SpawnEnemy(spawnPoint, enemySpawnPoints, data.enemies[enemyIndex]); // this passes enemy spawn points as patrol points for each enemy TODO make better
+                }
+                
+                // place the player - persistent from previous room/level
+                PlayerSpawner.PlacePlayer(player, roomGenerator.GetEntranceMiddlePoint());
                 
                 // exit
                 exitTrigger = roomGenerator.GetExitTrigger();
+                exitTrigger.Init("Beat all enemies first");
+                
+                enemySpawner.onAllEnemiesDefeated.AddListener(() => SetRoomBeaten(exitTrigger));
                 
                 break;
             case RoomType.Merchant:
@@ -102,41 +125,52 @@ public class LevelManager : MonoBehaviour
                 var merchantRoom = Instantiate(data.merchantRoomPrefab);
                 // no enemies -> no navmesh required
                 
-                // player
-                playerSpawn = merchantRoom.Entrance.position;
+                // place the player - persistent from previous room/level
+                PlayerSpawner.PlacePlayer(player, merchantRoom.Entrance.position);
                 
                 // exit
                 exitTrigger = merchantRoom.ExitTrigger;
+                exitTrigger.Init("Press E to exit");
+
+                // save to delete later
+                previousRoom = merchantRoom.gameObject;
                 
                 break;
             case RoomType.Boss:
                 // get from prefab
                 var bossRoom = Instantiate(data.bossRoomPrefab);
                 
-                // ! generate navmesh too ! - or have the navmesh pre-generated in the prefab
+                // ! have the navmesh pre-generated in the prefab
                 
-                // spawn the boss - or have them pre-placed in the prefab
+                // TODO spawn the boss
                 
-                // player
-                playerSpawn = bossRoom.Entrance.position;
+                // place the player - persistent from previous room/level
+                PlayerSpawner.PlacePlayer(player, bossRoom.Entrance.position);
                 
                 // exit
                 exitTrigger = bossRoom.ExitTrigger;
+                exitTrigger.Init("Beat the boss first");
+                
+                // TODO only allow exit when boss beaten
+
+            
+                // save to delete later
+                previousRoom = bossRoom.gameObject;
                 
                 break;
         }
         
-        // TODO entrance and exit in non-generated rooms
-        
-        // place the player - persistent from previous room/level
-        PlayerSpawner.PlacePlayer(player, playerSpawn);
-        
         // initialize exit trigger
         if (exitTrigger != null)
         {
-            exitTrigger.Init("Press E to exit");
             exitTrigger.onInteractPressed.AddListener(CompleteRoom);
         }
+    }
+
+    private void SetRoomBeaten(Interactable exitTrigger)
+    {
+        exitTrigger.SetTooltip("Press E to exit");
+        roomBeaten = true;
     }
 
     /// <summary>
@@ -146,9 +180,9 @@ public class LevelManager : MonoBehaviour
     private void CompleteRoom()
     {
         // if enemies still remaining - level can't complete
-        if (!levelBeaten) return;
+        if (!roomBeaten) return;
         
-        // TODO save the game
+        // TODO save the game - call game man
         
         // increment to next room
         ++currentRoomIndex;

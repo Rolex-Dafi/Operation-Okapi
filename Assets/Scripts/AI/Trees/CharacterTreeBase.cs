@@ -14,7 +14,7 @@ public abstract class CharacterTreeBase : TreeBase
     private Seeker seeker; // for pathfinding
 
     // pathfinding
-    public Transform[] patrollPoints;
+    public Vector3[] patrollPoints;
 
     // will be needed in subtrees (ex. see if player is in range)
     protected Transform playerCharacter;
@@ -100,7 +100,7 @@ public abstract class CharacterTreeBase : TreeBase
         List<Node> patrollTasks = new List<Node>();
         for (int i = 0; i < patrollPoints.Length; i++)
         {
-            patrollTasks.Add(new WalkToTarget(rootTree, patrollPoints[i].position));
+            patrollTasks.Add(new WalkToTarget(rootTree, patrollPoints[i]));
 
             if (i < patrollPoints.Length - 1) patrollTasks.Add(new WaitFor(rootTree, (Character.Data as EnemyCharacterSO).patrollWaitTime));
         }

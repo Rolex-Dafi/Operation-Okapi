@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1354588313482233939}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ProjectileSpawn
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 308386233
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 49a1c9f60fc0b304d85bc2f7bffa2e04, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -234,7 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9051223508699215733}
   - component: {fileID: 224484283683768519}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AimingGFX
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -316,7 +316,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7354829805337838210}
   - component: {fileID: 5404449063970168748}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shadow
   m_TagString: Player
   m_Icon: {fileID: 0}

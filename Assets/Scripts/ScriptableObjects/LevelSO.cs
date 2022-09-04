@@ -13,6 +13,9 @@ public class LevelSO : ScriptableObject
     // only most common should be spawned in the first few rooms of the level
     // then later either common + rare or just rare
     public EnemyCharacterSO[] enemies;
+
+    [Header("PCG")] 
+    public MapGenerator roomGeneratorPrefab;
     
     [Header("Special rooms")]
     public SpecialRoom merchantRoomPrefab;

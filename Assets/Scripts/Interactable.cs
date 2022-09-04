@@ -30,6 +30,13 @@ public class Interactable : MonoBehaviour
         tooltipInstance.Init(message); 
     }
 
+    public void SetTooltip(string message)
+    {
+        if (tooltipInstance == null) return;
+        
+        tooltipInstance.SetText(message);
+    }
+    
     private void TryInteract()
     {
         if (playerInRange)
