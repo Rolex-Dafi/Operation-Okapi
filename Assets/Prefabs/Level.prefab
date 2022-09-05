@@ -57,6 +57,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6955649104209725718}
     m_Modifications:
+    - target: {fileID: 7793265113663375872, guid: 3967d69a8f4bb2a4ea0e263f0cc31614, type: 3}
+      propertyPath: maxFrameTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793265113663375872, guid: 3967d69a8f4bb2a4ea0e263f0cc31614, type: 3}
+      propertyPath: logPathResults
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7793265113663375873, guid: 3967d69a8f4bb2a4ea0e263f0cc31614, type: 3}
       propertyPath: roomGenerator
       value: 

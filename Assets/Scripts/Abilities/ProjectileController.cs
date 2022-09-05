@@ -23,6 +23,17 @@ public class ProjectileController : MonoBehaviour
     public void Shoot(Vector2 force)
     {
         StartCoroutine(rb.AddForceCustom(force, data.attackRange, data.projectileSpeed, OnEnd));
+        
+        // rotate in the direction of travel
+        transform.rotation = Quaternion.FromToRotation(transform.up, force);
+
+        // make it follow isometry rules
+        Vector3 eulerAngles = Quaternion.FromToRotation(transform.up, force).eulerAngles;
+        transform.rotation = Quaternion.Euler(
+            Utility.isometricAngle,
+            eulerAngles.y,
+            eulerAngles.z
+        );
     }
 
     // TODO add animation/particle effect

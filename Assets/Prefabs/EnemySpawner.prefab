@@ -53,13 +53,11 @@ MonoBehaviour:
   - {fileID: 744881628516905296, guid: 2caa2ab88814cba43a3b84ec5af2fad9, type: 3}
   - {fileID: 744881628516905296, guid: 27b1a80dd1953e14cba1157982e00f76, type: 3}
   - {fileID: 744881628516905296, guid: fd9cd61acbaca944b9a204b54237debe, type: 3}
+  - {fileID: 744881628516905296, guid: 28c0cd9d6175081499bb2120e5f0b7b1, type: 3}
   healthBarPrefab: {fileID: 4593451816082154621, guid: 244f58c0f9d5f1b44960c1faeabd2fb0, type: 3}
-  spawnPoint: {fileID: 6141249033725158607}
-  patrollPoints:
-  - {fileID: 6141249032894922178}
-  - {fileID: 6141249032967518077}
-  - {fileID: 6141249034276603757}
-  - {fileID: 6141249033446592675}
+  onAllEnemiesDefeated:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6141249032894922179
 GameObject:
   m_ObjectHideFlags: 0

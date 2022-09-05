@@ -122,8 +122,8 @@ public class AnimatorGenerator
         //rangedStartupState.AddStateMachineBehaviour<AttackStateMachine>();  // only for aimed rng atk
 
         // dash
-        //AddBoolTransition(states[EAbilityType.idle], states[EAbilityType.dash], stateMachines[EStateMachine.move], EAnimationParameter.dashing.ToString());
-        //AddBoolTransition(states[EAbilityType.walk], states[EAbilityType.dash], stateMachines[EStateMachine.move], EAnimationParameter.dashing.ToString());
+        AddBoolTransition(states[EAbilityType.idle], states[EAbilityType.dash], stateMachines[EStateMachine.move], EAnimationParameter.dashing.ToString());
+        AddBoolTransition(states[EAbilityType.walk], states[EAbilityType.dash], stateMachines[EStateMachine.move], EAnimationParameter.dashing.ToString());
 
         // hit and death
         AddAnyTriggerTransition(stateMachines[EStateMachine.root], states[EAbilityType.hit], 

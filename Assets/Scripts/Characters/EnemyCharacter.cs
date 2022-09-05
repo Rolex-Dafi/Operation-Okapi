@@ -13,16 +13,26 @@ public class EnemyCharacter : CombatCharacter
 
     private PlayerCharacter playerCharacter;
 
+    private CharacterTreeBase enemyAI;
+
+    public void Freeze(bool freeze)
+    {
+        enemyAI.ShouldUpdate = !freeze;
+    }
+    
     public void Init(PlayerCharacter playerCharacter)
     {
         this.playerCharacter = playerCharacter;
         base.Init();
+
+        enemyAI = GetComponent<CharacterTreeBase>(); // ! this assumes no subtrees !
+        enemyAI.ShouldUpdate = true;
     }
     
     public override void Die()
     {
         // drop item
-        // so far only money:
+        // TODO bug - instantiate item under room so it gets destroyed when exiting the room
         DroppedItem instance = Instantiate(droppedItemPrefab, transform.position, Quaternion.identity);
         //instance.Init(money.GetCurrent());
 

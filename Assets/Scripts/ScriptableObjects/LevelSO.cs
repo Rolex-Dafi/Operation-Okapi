@@ -14,6 +14,8 @@ public class LevelSO : ScriptableObject
     // then later either common + rare or just rare
     public EnemyCharacterSO[] enemies;
 
+    public EnemyCharacterSO boss;
+
     [Header("PCG")] 
     public MapGenerator roomGeneratorPrefab;
     

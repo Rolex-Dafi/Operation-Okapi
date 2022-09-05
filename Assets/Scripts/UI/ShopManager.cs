@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
+using DG.Tweening;
 
 public class ShopManager : MonoBehaviour
 {
@@ -21,11 +18,10 @@ public class ShopManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Expects an array of 3 items.
+    /// Opens the shop overlay.
     /// </summary>
-    /// <param name="items"></param>
-    /// <param name="playerMoneyAmount"></param>
-    public void ShowShop(ItemSO[] items, int playerMoneyAmount)
+    /// <param name="items">The data of the items to sell. (Expects an array of 3 items or less.)</param>
+    public void ShowShop(ItemSO[] items)
     {
         for (int i = 0; i < shopItemTemplates.Length; i++)
         {
@@ -36,13 +32,15 @@ public class ShopManager : MonoBehaviour
             }
             else
             {
-                var canAfford = playerMoneyAmount >= items[i].Cost;
-                shopItemTemplates[i].Init(items[i], canAfford, BuyItem);
+                // player has enough money and has space in the inventory
+                var canBuy = gameManager.PlayerCharacterInstance.Money.GetCurrent() >= items[i].Cost && 
+                             gameManager.PlayerCharacterInstance.Inventory.HasSpace();
+                shopItemTemplates[i].Init(items[i], canBuy, BuyItem);
             }
         }
         
-        // TODO tween
-        canvasGroup.alpha = 1;
+        // TODO better tween - scale etc.
+        canvasGroup.DOFade(1, .1f);
         gameManager.PauseGame(true);
     }
 
@@ -51,14 +49,20 @@ public class ShopManager : MonoBehaviour
         // let the merchant know
         merchant.Sell(item);
 
-        // close the shop
-        Close();
+        // update shop
+        foreach (var itemTemplate in shopItemTemplates)
+        {
+            itemTemplate.UpdateItem(gameManager.PlayerCharacterInstance);
+        }
     }
     
+    /// <summary>
+    /// Closes the shop overlay.
+    /// </summary>
     public void Close()
     {
-        // TODO tween
-        canvasGroup.alpha = 0;
+        // TODO better tween
+        canvasGroup.DOFade(0, .1f);
         gameManager.PauseGame(false);
     }
 }

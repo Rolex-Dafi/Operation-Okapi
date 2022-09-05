@@ -22,6 +22,8 @@ public abstract class CharacterTreeBase : TreeBase
     public CombatCharacter Character { get => character; private set => character = value; }
     public Seeker Seeker { get => seeker; private set => seeker = value; }
 
+    public bool ShouldUpdate { get; set; }
+    
     private Dictionary<string, object> data;
 
     private void Start()
@@ -45,7 +47,7 @@ public abstract class CharacterTreeBase : TreeBase
     private void Update()
     {
         // only update the root tree, not any subtrees
-        if (rootTree.Equals(this))
+        if (rootTree.Equals(this) && ShouldUpdate)
         {
             Root.Update();
         }
@@ -56,7 +58,7 @@ public abstract class CharacterTreeBase : TreeBase
         while (true)
         {
             // only update the root tree, not any subtrees
-            if (rootTree.Equals(this))
+            if (rootTree.Equals(this) && ShouldUpdate)
             {
                 Root.Update();
             }

@@ -31,6 +31,11 @@ public class PlayerCharacter : CombatCharacter, IPushable
         } 
     }
 
+    public bool ReadInput
+    {
+        set => playerController.ReadInput = value;
+    }
+    
     public override void Init()
     {
         base.Init();

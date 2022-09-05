@@ -11,7 +11,6 @@ public class EnemySpawner : MonoBehaviour
 
     // UI
     [SerializeField] private ResourceUI healthBarPrefab;
-    private Dictionary<int, ResourceUI> healthBarInstances;
 
     // Navigation
     //[SerializeField] private Transform spawnPoint;
@@ -27,6 +26,8 @@ public class EnemySpawner : MonoBehaviour
     private PlayerCharacter playerCharacter;
     private GameManager gameManager;
 
+    private List<EnemyCharacter> currentEnemies;
+    
     [HideInInspector] public UnityEvent onAllEnemiesDefeated;
     
     public void Init(GameManager gameManager, PlayerCharacter playerCharacter)
@@ -36,7 +37,7 @@ public class EnemySpawner : MonoBehaviour
         //canSpawn = true;
         numEnemiesAlive = 0;
 
-        healthBarInstances = new Dictionary<int, ResourceUI>();
+        currentEnemies = new List<EnemyCharacter>();
         
         onAllEnemiesDefeated = new UnityEvent();
     }
@@ -46,6 +47,12 @@ public class EnemySpawner : MonoBehaviour
         //if (canSpawn && !enemyAlive) SpawnEnemy(lastEnemyIdx);
     }
 
+    /// <summary>
+    /// Spawns a new enemy in the scene and initializes it.
+    /// </summary>
+    /// <param name="spawnPoint">The position to spawn the enemy at.</param>
+    /// <param name="patrolPoints">The positions between which the enemy will patrol when not engaged in combat</param>
+    /// <param name="enemy">The enemy initial data</param>
     public void SpawnEnemy(Vector3 spawnPoint, Vector3[] patrolPoints, EnemyCharacterSO enemy)
     {
         var enemyCharacter = enemyPrefabs.First(x => x.Data == enemy);
@@ -63,13 +70,14 @@ public class EnemySpawner : MonoBehaviour
         var healthBarInstance = Instantiate(healthBarPrefab, gameManager.worldSpaceCanvas.transform);
         healthBarInstance.Init(enemyInstance.Health);
         healthBarInstance.GetComponent<FollowTarget>().Init(enemyInstance.transform);
-        healthBarInstances.Add(numEnemiesAlive, healthBarInstance);
         
-        enemyInstance.onDeath.AddListener(() => CleanUpEnemy(healthBarInstance));
+        enemyInstance.onDeath.AddListener(() => CleanUpEnemy(healthBarInstance, enemyInstance));
 
         // Navigation
         enemyInstance.GetComponent<CharacterTreeBase>().patrollPoints = patrolPoints;
 
+        currentEnemies.Add(enemyInstance);
+        
         ++numEnemiesAlive;
     }
     
@@ -94,10 +102,24 @@ public class EnemySpawner : MonoBehaviour
         lastEnemyIdx = lastEnemyIdx > enemyPrefabs.Length - 1 ? 0 : lastEnemyIdx;
     }*/
 
-    private void CleanUpEnemy(Component healthBarInstance)
+    /// <summary>
+    /// All enemies currently spawned stop/start being updated.
+    /// </summary>
+    /// <param name="freeze"></param>
+    public void FreezeEnemies(bool freeze)
+    {
+        foreach (var currentEnemy in currentEnemies)
+        {
+            currentEnemy.Freeze(freeze);
+        }
+    }
+    
+    private void CleanUpEnemy(Component healthBarInstance, EnemyCharacter enemyInstance)
     {
         Destroy(healthBarInstance.gameObject);
 
+        currentEnemies.Remove(enemyInstance);
+        
         //enemyAlive = false;
         --numEnemiesAlive;
         

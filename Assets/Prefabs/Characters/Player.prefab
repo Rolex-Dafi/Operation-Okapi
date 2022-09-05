@@ -137,6 +137,7 @@ MonoBehaviour:
   movement: {x: 0, y: 0}
   mousePosition: {x: 0, y: 0}
   gamepadConnected: 0
+  readInput: 0
 --- !u!114 &6181267531167378259
 MonoBehaviour:
   m_ObjectHideFlags: 0

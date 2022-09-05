@@ -4,6 +4,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Player inventory wrapper class. The player inventory equals the items the player has
+/// currently equipped.
+/// </summary>
 public class PlayerInventory
 {
     // static length - only as big as the max health slots
@@ -28,10 +32,13 @@ public class PlayerInventory
         InventoryChanged = new UnityEvent();
     }
 
+    /// <summary>
+    /// Adds an item to the inventory - this also adds health to the player.
+    /// </summary>
+    /// <param name="item">Data of the item to add</param>
     public void AddItem(ItemSO item)
     {
-        // if health bars full -> can't pick up more items
-        if (LastItemIndex >= Equipped.Length - 1) return;
+        if (!HasSpace()) return;
 
         // if item of this type already equipped -> don't pick up
         // potential TODO heal the equipped item instead
@@ -50,7 +57,11 @@ public class PlayerInventory
         InventoryChanged.Invoke();
     }
 
-    // returns the remaining health of the player (i.e sum of hp of all items in inventory)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="damage">the amount of damage to receive</param>
+    /// <returns>the remaining health of the player (i.e sum of hp of all items in inventory)</returns>
     public int ReceiveDamage(int damage)
     {
         // get top item
@@ -71,6 +82,16 @@ public class PlayerInventory
         return Equipped.Where(item => item != null).Sum(item => item.CurrentHealth);
     }
 
+    /// <summary>
+    /// Is there space in the inventory for another item?
+    /// </summary>
+    /// <returns>If there is space</returns>
+    public bool HasSpace()
+    {
+        // if health bars full -> can't pick up more items
+        return LastItemIndex < Equipped.Length - 1;
+    }
+    
     public bool ItemEquipped(int id)
     {
         return Equipped.Where(item => item != null).Any(item => item.Data.ID == id);

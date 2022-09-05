@@ -15,6 +15,12 @@ public class PlayerController : MonoBehaviour
 
     public bool Aiming { get => aiming; set => aiming = value; }
 
+    public bool ReadInput
+    {
+        get => playerInput.readInput;
+        set => playerInput.readInput = value;
+    }
+    
     public void Init()
     {
         // player character
@@ -24,6 +30,7 @@ public class PlayerController : MonoBehaviour
         // player input
         playerInput = GetComponent<PlayerInput>();
         playerInput.Init();
+        playerInput.readInput = true;
 
         // button down events
         foreach (EButtonDown interaction in Enum.GetValues(typeof(EButtonDown)))

@@ -20,3 +20,4 @@ MonoBehaviour:
   UISprite: {fileID: 21300000, guid: 7d26ecfb262de7f44bf4d0a209d3bc82, type: 3}
   WorldSprite: {fileID: 21300000, guid: 8fcdf4eea2fb92b40b9f70c451069198, type: 3}
   Health: 2
+  Cost: 10

@@ -12,6 +12,9 @@ public class AIGenerator : MonoBehaviour
 
     private MapGenerator.GridTile[,] gridTiles;
 
+    /// <summary>
+    /// Removes the current navmesh.
+    /// </summary>
     public void ClearNavMesh()
     {
         // This holds all graph data
@@ -168,5 +171,14 @@ public class AIGenerator : MonoBehaviour
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Removes itself from the scene - should be called when instantiating a prefab which
+    /// already has a navmesh generated.
+    /// </summary>
+    public void RemoveSelf()
+    {
+        Destroy(gameObject);
     }
 }

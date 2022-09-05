@@ -16,7 +16,7 @@ public class Interactable : MonoBehaviour
         onInteractPressed = new UnityEvent();
         
         // find player input and subscribe to it
-        var playerInput = FindObjectOfType<PlayerInput>();
+        var playerInput = FindObjectOfType<PlayerInput>(true);
         playerInput.buttonDownEvents[EButtonDown.Interact].AddListener((_) => TryInteract());
         
         // add tooltip

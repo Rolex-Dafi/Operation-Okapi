@@ -17,6 +17,8 @@ public class PlayerInput : MonoBehaviour
 
     [HideInInspector] public bool gamepadConnected;
 
+    public bool readInput;
+    
     public void Init()
     {
         InputUtility.InitEvents(ref buttonDownEvents);
@@ -27,6 +29,8 @@ public class PlayerInput : MonoBehaviour
     
     private void Update()
     {
+        if (!readInput) return;
+        
         movement = new Vector2(Input.GetAxis(EAxis.Horizontal.ToString()), Input.GetAxis(EAxis.Vertical.ToString()));
 
         mousePosition = Input.mousePosition;

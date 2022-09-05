@@ -58,13 +58,25 @@ public class LevelManager : MonoBehaviour
         // Instantiate generator
         roomGenerator = Instantiate(data.roomGeneratorPrefab, transform);
 
+        // init enemy spawner
+        enemySpawner.Init(gameManager, gameManager.PlayerCharacterInstance);
+        
         onLevelComplete = new UnityEvent();
         
-        //merchantRoomIndex = Random.Range(1, data.numberOfRooms - 2); // merchant can't be in the first room or the last room
-        merchantRoomIndex = 1; // TODO debug - remove this after merchant tested
+        merchantRoomIndex = Random.Range(1, data.numberOfRooms - 2); // merchant can't be in the first room or the last room
+        //merchantRoomIndex = 0; // debug - remove this after merchant tested
         currentRoomIndex = 0;
     }
 
+    /// <summary>
+    /// All entities in the level which are normally updated stop being updated. Should be called when pausing the game.
+    /// </summary>
+    /// <param name="freeze">Should the update stop or start</param>
+    public void FreezeLevel(bool freeze)
+    {
+        enemySpawner.FreezeEnemies(freeze);
+    }
+    
     /// <summary>
     /// Loads a new room - generates it depending on current level, adds a navmesh, spawns the enemies and
     /// places the player. For special room types, no pcg performed - just instantiates a prefab.
@@ -85,7 +97,6 @@ public class LevelManager : MonoBehaviour
         
         aiGenerator.ClearNavMesh();
         
-        Vector3 playerSpawn = default;
         Interactable exitTrigger = default;
         
         switch (roomType)
@@ -100,8 +111,6 @@ public class LevelManager : MonoBehaviour
                 var enemySpawnPoints = aiGenerator.GenerateEnemySpawnPoints(2); // TODO debug, change this to higher number
         
                 // spawn enemies
-                enemySpawner.Init(gameManager, gameManager.playerCharacterInstance);
-                
                 // parameters TODO spawn more types of enemy in some rooms
                 //var numEnemyTypes = currentRoomIndex > 2 ? Random.Range(1, 2) : 1; // chance for 2 types if far enough
                 var enemyIndex = currentRoomIndex < 1 ? 0 : Random.Range(0, data.enemies.Length - 1);
@@ -121,7 +130,7 @@ public class LevelManager : MonoBehaviour
                 
                 break;
             case RoomType.Merchant:
-                // get from prefab - or custom generation
+                // get from prefab
                 var merchantRoom = Instantiate(data.merchantRoomPrefab);
                 // no enemies -> no navmesh required
                 
@@ -137,12 +146,15 @@ public class LevelManager : MonoBehaviour
                 
                 break;
             case RoomType.Boss:
-                // get from prefab
+                // get rid of the current astar first - we can do this because this is the last room (the navmesh
+                // in the boss prefab is pre-generated and having two in the scene will cause errors)
+                aiGenerator.RemoveSelf();
+                
+                // get from prefab (navmesh should be pre-generated in the prefab)
                 var bossRoom = Instantiate(data.bossRoomPrefab);
                 
-                // ! have the navmesh pre-generated in the prefab
-                
-                // TODO spawn the boss
+                // spawn the boss
+                enemySpawner.SpawnEnemy(bossRoom.EnemySpawn, bossRoom.EnemyPatrolPoints, data.boss);
                 
                 // place the player - persistent from previous room/level
                 PlayerSpawner.PlacePlayer(player, bossRoom.Entrance.position);
@@ -151,14 +163,16 @@ public class LevelManager : MonoBehaviour
                 exitTrigger = bossRoom.ExitTrigger;
                 exitTrigger.Init("Beat the boss first");
                 
-                // TODO only allow exit when boss beaten
+                // only allow exit when boss beaten
+                enemySpawner.onAllEnemiesDefeated.AddListener(() => SetRoomBeaten(exitTrigger));
 
-            
                 // save to delete later
                 previousRoom = bossRoom.gameObject;
                 
                 break;
         }
+
+        roomBeaten = false;
         
         // initialize exit trigger
         if (exitTrigger != null)
@@ -190,11 +204,11 @@ public class LevelManager : MonoBehaviour
         // spawn next room or end the level depending on next room index
         if (currentRoomIndex == merchantRoomIndex)           // merchant
         {
-            LoadRoom(gameManager.playerCharacterInstance, RoomType.Merchant);
+            LoadRoom(gameManager.PlayerCharacterInstance, RoomType.Merchant);
         }
         else if (currentRoomIndex == data.numberOfRooms - 1) // last room - boss
         {
-            LoadRoom(gameManager.playerCharacterInstance, RoomType.Boss);
+            LoadRoom(gameManager.PlayerCharacterInstance, RoomType.Boss);
         }
         else if (currentRoomIndex == data.numberOfRooms)     // level end
         {
@@ -202,7 +216,7 @@ public class LevelManager : MonoBehaviour
         }
         else                                                 // normal room
         {
-            LoadRoom(gameManager.playerCharacterInstance);
+            LoadRoom(gameManager.PlayerCharacterInstance);
         }
     }
 

@@ -41,13 +41,21 @@ public class MerchantCharacter : Character
         // select three items from the current shop
         ShuffleShop(); // TODO only do this in init, so players can't keep getting offered new items
         var itemsToShow = new ItemSO[3];
-        for (int i = 0; i < 3; i++)
+        var i = 0;
+        foreach (var itemSo in currentShop)
         {
-            itemsToShow[i] = currentShop[i];
+            // only show items which the player doesn't currently have
+            if (!gameManager.PlayerCharacterInstance.Inventory.ItemEquipped(itemSo.ID))
+            {
+                itemsToShow[i] = itemSo;
+                ++i;
+            }
+
+            if (i >= 3) break; // stop if the shop is filled
         }
         
-        // show them
-        shopManager.ShowShop(itemsToShow, gameManager.playerCharacterInstance.Money.GetCurrent());
+        // show the items
+        shopManager.ShowShop(itemsToShow);
     }
 
     private void ShuffleShop()
@@ -72,11 +80,11 @@ public class MerchantCharacter : Character
         currentShop.Remove(item);
         
         // add money and remove it from player
-        gameManager.playerCharacterInstance.Money.ChangeCurrent(-item.Cost);
+        gameManager.PlayerCharacterInstance.Money.ChangeCurrent(-item.Cost);
         money.ChangeCurrent(item.Cost);
         
         // give the item to the player
-        gameManager.playerCharacterInstance.CollectItem(item);
+        gameManager.PlayerCharacterInstance.CollectItem(item);
     }
 
 }

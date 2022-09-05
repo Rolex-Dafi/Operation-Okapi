@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Managers and Components")] // These should already be added inside the scene
     public AudioManager audioManager;
-    [SerializeField] private UIInput uiInput;
+    public UIInput uiInput;
     public PlayerSpawner playerSpawner;
     
     [Header("Prefabs")]  // These will be instantiated when needed
@@ -24,10 +24,11 @@ public class GameManager : MonoBehaviour
 
     [Header("UI Prefabs")] 
     [SerializeField] private MenuManager mainMenuPrefab;
+    [SerializeField] private MenuManager pauseMenuPrefab;
     [SerializeField] private HUDManager hudPrefab;
 
     // player
-    public PlayerCharacter playerCharacterInstance { get; private set; }
+    public PlayerCharacter PlayerCharacterInstance { get; private set; }
 
     // UI
     private MenuManager menuInstance;
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         uiInput.Init();
-        uiInput.buttonEvents[EUIButton.Escape].AddListener(OpenClosePauseMenu);
+        uiInput.buttonEvents[EUIButton.Escape].AddListener((_) => OpenClosePauseMenu());
 
         // load the first scene
         // for now the main menu
@@ -58,6 +59,15 @@ public class GameManager : MonoBehaviour
         audioManager.Refresh(); // new buttons added -> find them and add sounds to them
     }
 
+    private void OpenPauseMenu()
+    {
+        Debug.Log("opening pause menu");
+        
+        menuInstance = Instantiate(pauseMenuPrefab);
+        menuInstance.Init(this);
+        audioManager.Refresh(); // new buttons added -> find them and add sounds to them
+    }
+
     public void StartGame()
     {
         Debug.Log("starting game");
@@ -67,17 +77,16 @@ public class GameManager : MonoBehaviour
         //sceneLoader.LoadScene(Utility.firstLevelIndex, FinishGameLoad);
         
         // only instantiate the player once, then carry over the instance to the next room/level 
-        playerCharacterInstance = playerSpawner.SpawnPlayerAndInit(playerCharacterPrefab);
+        PlayerCharacterInstance = playerSpawner.SpawnPlayerAndInit(playerCharacterPrefab);
         
         // instantiate and init HUD
         hudInstance = Instantiate(hudPrefab);
-        hudInstance.Init(this, playerCharacterInstance);
+        hudInstance.Init(this, PlayerCharacterInstance);
 
-        // TODO load a save here
         // start the first level
         StartLevel(Level.Office);
         
-        playerCharacterInstance.onDeath.AddListener(GameOver);
+        PlayerCharacterInstance.onDeath.AddListener(GameOver);
         
         // set game in progress
         gameInProgress = true;
@@ -89,43 +98,55 @@ public class GameManager : MonoBehaviour
         currentLevelInstance = Instantiate(levelManagerPrefab);
         currentLevelInstance.Init(this, levelData.First(x => x.level == level));
         // load the first room
-        currentLevelInstance.LoadRoom(playerCharacterInstance);
+        currentLevelInstance.LoadRoom(PlayerCharacterInstance);
         
         currentLevelInstance.onLevelComplete.AddListener(() => StartLevel(level+1));
     }
 
-    private void OpenClosePauseMenu<T>(T interaction)
+    private void OpenClosePauseMenu()
     {
         if (!gameInProgress) return;
-
+        
         if (!gamePaused)
         {
             PauseGame(true);
             // instantiate and initiate the menu
-            OpenMenu();
+            OpenPauseMenu();
         }
         else
         {
+            // don't try closing the menu if no menu is open
+            if (menuInstance == null) return;
+            
+            PauseGame(false);
             menuInstance.Close();
+            menuInstance = null;
         }
     }
 
-    // TODO implement pause mechanic better
     public void PauseGame(bool pause)
     {
+        Debug.Log("setting game paused to " + pause);
+        
         gamePaused = pause;
-        Time.timeScale = pause ? 0 : 1;
+        currentLevelInstance.FreezeLevel(pause);     // stop updating all entities in the level
+        PlayerCharacterInstance.ReadInput = !pause;  // stop reading player input
     }
 
     private void GameOver()
     {
         // TODO display game over sign + return to menu button instead
-        
-        // TODO clean everything up - probably just reload the scene
+        // clean everything up - i.e. reload the scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void BackToMain()
+    {
+        // unpause the game first
+        PauseGame(false);
         
-        // restart game
-        StartGame();
+        // simply reload the scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
 }

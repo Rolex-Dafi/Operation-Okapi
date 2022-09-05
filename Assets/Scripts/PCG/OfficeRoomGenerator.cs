@@ -726,9 +726,9 @@ public class OfficeRoomGenerator : MapGenerator
     {
         Vector2Int gridCoors = UnityToScriptCoord(coords.x, coords.y);
 
-        if (gridCoors.x < 0 || gridCoors.x > _grid.GetLength(0) - 1 || gridCoors.y < 0 ||
+        /*if (gridCoors.x < 0 || gridCoors.x > _grid.GetLength(0) - 1 || gridCoors.y < 0 ||
             gridCoors.y > _grid.GetLongLength(1) - 1)
-            return null;
+            return null;*/
         
         _grid[gridCoors.y, gridCoors.x].Empty = false;
 

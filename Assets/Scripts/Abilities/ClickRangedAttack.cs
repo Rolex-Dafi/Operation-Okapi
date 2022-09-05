@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class ClickRangedAttack : RangedAttack
@@ -9,7 +10,8 @@ public class ClickRangedAttack : RangedAttack
     public override void OnBegin()
     {
         base.OnBegin();
-        SpawnProjectile();
+        SpawnProjectile(); // TODO invoke after delay specified in data
+        //character.Invoke("SpawnProjectile", (data as AttackSO).projectileDelay);
     }
 
 }

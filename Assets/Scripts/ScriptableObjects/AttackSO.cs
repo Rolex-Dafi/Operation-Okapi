@@ -29,6 +29,7 @@ public class AttackSO : AbilitySO
     // for ranged only
     public ProjectileController projectilePrefab;
     public float projectileSpeed = 100;
+    [Range(0, 5)] public float projectileDelay; // time from the start of the animation when the projectile should be spawned (in seconds)
 
     // TODO - return more attack classes, after they're designed and I create them
     public Attack GetAttack(CombatCharacter character)
