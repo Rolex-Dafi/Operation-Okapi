@@ -227,6 +227,7 @@ public class OfficeRoomGenerator : MapGenerator
         if (_leftRoom.Type == RoomType.LONG_HALL_VER)
         {
             // long vertical wall
+            Debug.Log("Here.");
             AddWallToLst(_walls, HallType.HORIZONTAL, _leftRoom.StartX, _leftRoom.StartX + _leftRoom.Width,
                 _rightRoom.Height);
             AddWallToLst(_walls, HallType.VERTICAL, _leftRoom.StartY, _rightRoom.Height,
@@ -423,8 +424,10 @@ public class OfficeRoomGenerator : MapGenerator
         int gridStartY = _rightRoom.StartY*2;
 
         int gridWidth = _leftRoom.Type == RoomType.LONG_HALL_VER ? _leftRoom.Width*2 : (_leftRoom.Width + _rightRoom.Width) * 2;
-        int gridHeight = (_leftRoom.Type == RoomType.BIG_ROOM || _leftRoom.Type == RoomType.LONG_HALL_HOR) ? _leftRoom.Height * 2 : ((_leftRoom.StartY+_leftRoom.Height)-_rightRoom.StartY) * 2;
-        
+        //int gridHeight = (_leftRoom.Type == RoomType.BIG_ROOM || _leftRoom.Type == RoomType.LONG_HALL_HOR) ? _leftRoom.Height * 2 : ((_leftRoom.StartY+_leftRoom.Height)-_rightRoom.StartY) * 2;
+        int gridHeight = (_leftRoom.Type == RoomType.BIG_ROOM || _leftRoom.Type == RoomType.LONG_HALL_HOR) ? _leftRoom.Height * 2 : ((_leftRoom.Height + _rightRoom.Height)-_overlap.End) * 2;
+        //Debug.Log("Overlap: " + _overlap.Start + "x" + _overlap.End + " height> " + _overlap.Height);
+
         Debug.Log("Grid dimensions: " + gridWidth + "x" + gridHeight);
 
         _grid = new GridTile[gridHeight, gridWidth];
@@ -492,18 +495,7 @@ public class OfficeRoomGenerator : MapGenerator
         if (width <  tableAllowance || height < tableAllowance) // no room for tables
             return;
         Random rnd = new Random();
-        /*
-        float cellSize = _obstaclesHolder.GetComponent<Grid>().cellSize.y;
-        int max = (_verRightUp.Length)/2;
-        int tableIdx = rnd.Next(0, max)*2;
 
-        var main = (Sprite)_verRightUp[tableIdx];
-        var support = (Sprite)_verRightUp[tableIdx + 1];
-        //InstantiateObjectInWorld(verTables[0], 5, 7, 0.0f, cellSize/2)
-        //    .GetComponent<TableHandler>().SetTableVariant(false, main, support);
-        //InstantiateObjectInWorld(horTables[0], -6, -9, 0.0f, cellSize/2)
-        //    .GetComponent<TableHandler>().SetTableVariant(false);*/
-        
         // generate table type
         int tableType = rnd.Next(0, _sprites.Length);
         HallType horOrientation = tableType < 4 ? HallType.VERTICAL : HallType.HORIZONTAL;
@@ -685,6 +677,7 @@ public class OfficeRoomGenerator : MapGenerator
     {
         Random rnd = new Random();
         float offsetMax = _obstaclesHolder.GetComponent<Grid>().cellSize.x;
+        //Debug.Log("putting down objects from " + xCoord + "x" + yCoord + " size of " + width + "x" + height);
         int den = objDensity;
         for (var y = yCoord; y < yCoord + height; y++)
         {
@@ -729,7 +722,8 @@ public class OfficeRoomGenerator : MapGenerator
         /*if (gridCoors.x < 0 || gridCoors.x > _grid.GetLength(0) - 1 || gridCoors.y < 0 ||
             gridCoors.y > _grid.GetLongLength(1) - 1)
             return null;*/
-        
+        //Debug.Log("putting down object at " + gridCoors.x + "x" + gridCoors.y + " (unity coords " + coords.x + "x" + coords.y + ")");
+        //Debug.Log("Grid is size " + _grid.GetLength(1) + "x" + _grid.GetLength(0));
         _grid[gridCoors.y, gridCoors.x].Empty = false;
 
         Vector3 pos = _obstaclesHolder.GetComponent<Tilemap>()
@@ -743,6 +737,6 @@ public class OfficeRoomGenerator : MapGenerator
 
     protected override Vector2Int UnityToScriptCoord(int x, int y)
     {
-        return new Vector2Int(x + Math.Abs(_leftRoom.StartX*2), y + Math.Abs(_rightRoom.StartY*2));
+        return new Vector2Int(x + Math.Abs(_leftRoom.StartX*2), y + Math.Abs(_leftRoom.Type == RoomType.LONG_HALL_VER? _leftRoom.StartY*2 : _rightRoom.StartY*2));
     }
 }
