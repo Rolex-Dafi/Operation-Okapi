@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -157,8 +158,15 @@ public abstract class MapGenerator : MonoBehaviour
                 SetTilesToMap(collTile, tm, col.Height, col.Start, col.Height + 1, col.End);
         }
     }
+
+    protected void AddWallToLst(List<Wall> walls, HallType orientation, int start, int end, int height)
+    {
+        Wall newWall = new Wall();
+        newWall.SetValues(orientation, start, end, height);
+        walls.Add(newWall);
+    }
     
-    internal void SetRoom(ref Room room, Random rand)
+    internal virtual void SetRoom(ref Room room, Random rand)
     {
         room = new Room();
         
@@ -237,6 +245,13 @@ public abstract class MapGenerator : MonoBehaviour
     internal static bool Heads(Random rnd)
     {
         return rnd.Next() % 2 == 0;
+    }
+    
+    internal int GetNumFromRange(Random rnd, int start, int end)
+    {
+        int bracket = 100 / (end - start);
+        int genNum = rnd.Next(0, 100);
+        return (int)Math.Ceiling((double)(genNum/bracket));
     }
 
     public Vector3Int GetEntranceGridCoords()

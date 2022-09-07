@@ -257,13 +257,6 @@ public class OfficeRoomGenerator : MapGenerator
         }
     }
 
-    private void AddWallToLst(List<Wall> walls, HallType orientation, int start, int end, int height)
-    {
-        Wall newWall = new Wall();
-        newWall.SetValues(orientation, start, end, height);
-        walls.Add(newWall);
-    }
-
     private void GenerateDoors()
     {
         Random rand = new Random();
@@ -637,13 +630,6 @@ public class OfficeRoomGenerator : MapGenerator
                 else if (x % 4 == 0) den++; // to try and avoid completely empty rooms
             }
         }
-    }
-
-    private int GetNumFromRange(Random rnd, int start, int end)
-    {
-        int bracket = 100 / (end - start);
-        int genNum = rnd.Next(0, 100);
-        return (int)Math.Ceiling((double)(genNum/bracket));
     }
 
     private float GetNumFromRangeFloat(Random rnd, int start, int end)
