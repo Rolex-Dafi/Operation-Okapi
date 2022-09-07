@@ -370,6 +370,66 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &520322850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 520322852}
+  - component: {fileID: 520322851}
+  m_Layer: 0
+  m_Name: StreetGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &520322851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520322850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39335604cc15ed94f85e1b038a4cd058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collTile: {fileID: 11400000, guid: 0c1b975e7de6e2e4ea19adea04a09bbc, type: 2}
+  entranceCollider: {fileID: 513636760818153504, guid: 194e72723ebecde45bf31e7bc27e935e, type: 3}
+  maxWidth: 0
+  maxHeight: 0
+  mapPrefab: {fileID: 986615358494160932, guid: 0d2717c6bf3f01841a3be72c6dfaf2fd, type: 3}
+  grassTile:
+  - {fileID: 11400000, guid: c744e71a12e3e3e449d929d17f657538, type: 2}
+  - {fileID: 11400000, guid: 3ac5454091671ae4f92b01179a7fadfb, type: 2}
+  - {fileID: 11400000, guid: b172b7c41358a2f42a60067cd63a4bd6, type: 2}
+  pavementTile:
+  - {fileID: 11400000, guid: a01338abcbbf0ad4eaae95c89ba94a48, type: 2}
+  - {fileID: 11400000, guid: 93a64716cf8ab86418285bebb2218d7e, type: 2}
+  - {fileID: 11400000, guid: 75d3949f80c1baa4cbf58cc4b20de363, type: 2}
+  asphaltTile:
+  - {fileID: 11400000, guid: f3ddc016c909773448c59719302158d1, type: 2}
+  - {fileID: 11400000, guid: b2ceacaf1ea79614f89eca5a1166c041, type: 2}
+  - {fileID: 11400000, guid: 912f1978ddd49e3439046679df9266a1, type: 2}
+--- !u!4 &520322852
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520322850}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1071705002
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,7 +446,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1071705003
 Transform:
   m_ObjectHideFlags: 0
@@ -415,9 +475,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collTile: {fileID: 11400000, guid: 0c1b975e7de6e2e4ea19adea04a09bbc, type: 2}
   entranceCollider: {fileID: 513636760818153504, guid: 194e72723ebecde45bf31e7bc27e935e, type: 3}
-  mapPrefab: {fileID: 986615358494160932, guid: 0d2717c6bf3f01841a3be72c6dfaf2fd, type: 3}
   maxWidth: 20
   maxHeight: 20
+  mapPrefab: {fileID: 986615358494160932, guid: 0d2717c6bf3f01841a3be72c6dfaf2fd, type: 3}
   horTables:
   - {fileID: 8515112284680159075, guid: c60f982a61ef8404bb179b2de34adf8f, type: 3}
   - {fileID: 4653125907629947514, guid: b65d6399da796fd4f9cb0d4e2615a1bf, type: 3}
@@ -529,8 +589,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1071705004}
-        m_TargetAssemblyTypeName: OfficeRoomGenerator, Assembly-CSharp
+      - m_Target: {fileID: 520322851}
+        m_TargetAssemblyTypeName: StreetGenerator, Assembly-CSharp
         m_MethodName: Generate
         m_Mode: 1
         m_Arguments:

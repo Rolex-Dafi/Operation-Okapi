@@ -12,10 +12,6 @@ using Random = System.Random;
 
 public class OfficeRoomGenerator : MapGenerator
 {
-    [Header("Maximum width and height of the generated rooms.")]
-    public int maxWidth = 25;
-    public int maxHeight = 25;
-
     [Header("Objects")] public List<GameObject> horTables;
     public List<GameObject> verTables;
     public List<GameObject> extraItems;
@@ -33,44 +29,13 @@ public class OfficeRoomGenerator : MapGenerator
 
     [Header("sprites")]
     private Object[][] _sprites;
-    
-    /*
-    public Object[] _horRightUp;
-    private Object[] _horRightDown;
-    public Object[] _verRightUp;
-    private Object[] _verRightDown;
-    public Object[] _horLeftUp;
-    private Object[] _horLeftDown;
-    public Object[] _verLeftUp;
-    private Object[] _verLeftDown;*/
-    
-    private int _minWidth = 4;
-    private int _minHeight = 4;
 
     private int _minTableGap = 2;
 
-    private struct Room
-    {
-        internal int Width;
-        internal int Height;
-        internal int StartX;
-        internal int StartY;
-        internal RoomType Type;
-    };
-
     private Room _leftRoom;
     private Room _rightRoom;
-    private int _hallTreshold = 5;
-    private int _roomMin = 8;
     private int _bigRoomTreshold = 4;
-
-    private enum RoomType
-    {
-        HOR_HALL, VER_HALL, ROOM, BIG_ROOM, LONG_HALL_VER, LONG_HALL_HOR
-    }
-
-    private List<Wall> _walls;
-    private List<Wall> _cols;
+    
     private Wall _overlap;
 
     [Header("Tile sets to use for generation.")]
@@ -92,22 +57,19 @@ public class OfficeRoomGenerator : MapGenerator
         GenerateObjects();
     }
 
+    protected override void SetUpParameters()
+    {
+        maxWidth = maxHeight = 25;
+        _minWidth = _minHeight = 4;
+
+        _roomMin = 8;
+        _hallTreshold = 6;
+    }
+
     private void SetUpRoomGen()
     {
         if (_sprites != null && _sprites.Length > 0) return;
-
-        /*
-        _horRightUp = Resources.LoadAll(_tableDir + _horDir + _rightDir + _upDir, typeof(Sprite));
-        _horRightDown = Resources.LoadAll(_tableDir + _horDir + _rightDir + _downDir, typeof(Sprite));
-        _verRightUp = Resources.LoadAll(_tableDir + _verDir + _rightDir + _upDir, typeof(Sprite));
-        _verRightDown = Resources.LoadAll(_tableDir + _verDir + _rightDir + _downDir, typeof(Sprite));
         
-        _horLeftUp = Resources.LoadAll(_tableDir + _horDir + _leftDir + _upDir, typeof(Sprite));
-        _horLeftDown = Resources.LoadAll(_tableDir + _horDir + _leftDir + _downDir, typeof(Sprite));
-        _verLeftUp = Resources.LoadAll(_tableDir + _verDir + _leftDir + _upDir, typeof(Sprite));
-        _verLeftDown = Resources.LoadAll(_tableDir + _verDir + _leftDir + _downDir, typeof(Sprite));
-        */
-        Debug.Log("Assets loaded.");
         _sprites = new[]
         {
             Resources.LoadAll(_tableDir + _horDir + _leftDir + _upDir, typeof(Sprite)), // hor left up - 0
@@ -120,6 +82,7 @@ public class OfficeRoomGenerator : MapGenerator
             Resources.LoadAll(_tableDir + _verDir + _rightDir + _upDir, typeof(Sprite)), // ver right up - 6
             Resources.LoadAll(_tableDir + _verDir + _rightDir + _downDir, typeof(Sprite)) // ver right down - 7
         };
+        Debug.Log("Assets loaded.");
     }
 
     private void GenerateOfficeFloor()
@@ -187,31 +150,6 @@ public class OfficeRoomGenerator : MapGenerator
                   " and is " + _leftRoom.Width + "x" + _leftRoom.Height + " big.");
         Debug.Log("Right room starts at " + _rightRoom.StartX + "x" + _rightRoom.StartY +
                   " and is " + _rightRoom.Width + "x" + _rightRoom.Height + " big.");
-    }
-
-    private void SetRoom(ref Room room, Random rand)
-    {
-        room = new Room();
-        
-        room.Height = rand.Next(_minHeight, maxHeight);
-        room.Width = rand.Next(_minWidth, maxWidth);
-        var diff = room.Height - room.Width;
-        
-        if (diff < 0 && room.Height < _hallTreshold) {
-            room.Type = RoomType.HOR_HALL;
-            room.Width += _hallTreshold;
-        }
-        else if (diff > 0 && room.Width < _hallTreshold)
-        {
-            room.Type = RoomType.VER_HALL;
-            room.Height += _hallTreshold;
-        }
-        else
-        {
-            room.Type = RoomType.ROOM;
-            if (room.Height < _roomMin) room.Height = rand.Next(_roomMin, maxHeight);
-            if (room.Width < _roomMin) room.Width = rand.Next(_roomMin, maxWidth);
-        }
     }
 
     private void HandleRoomsStartY(ref Room fixedRoom, ref Room movedRoom, Random rand)

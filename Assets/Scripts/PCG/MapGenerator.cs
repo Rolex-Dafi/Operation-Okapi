@@ -19,6 +19,16 @@ public abstract class MapGenerator : MonoBehaviour
     public Tile collTile;
     public GameObject entranceCollider;
 
+    [Header("Maximum width and height of the generated rooms.")]
+    public int maxWidth;
+    public int maxHeight;
+    
+    internal int _minWidth;
+    internal int _minHeight;
+    
+    internal int _roomMin;
+    internal int _hallTreshold;
+    
     protected enum HallType
     {
         HORIZONTAL, VERTICAL
@@ -64,14 +74,36 @@ public abstract class MapGenerator : MonoBehaviour
     }
     
     internal Entrance _entrance;
+    
+    internal enum RoomType
+    {
+        HOR_HALL, VER_HALL, ROOM, BIG_ROOM, LONG_HALL_VER, LONG_HALL_HOR
+    }
+    
+    internal struct Room
+    {
+        internal int Width;
+        internal int Height;
+        internal int StartX;
+        internal int StartY;
+        internal RoomType Type;
+    };
+    
+    protected List<Wall> _walls;
+    protected List<Wall> _cols;
 
     [Header("Empty prefab of grid setup.")] public GameObject mapPrefab;
     
+    /// <summary>
+    /// Generate a room for the game.
+    /// </summary>
     public virtual void Generate()
     {
         Restart();
         SetUp();
     }
+
+    protected abstract void SetUpParameters();
 
     internal abstract void GenerateGrid();
     protected abstract Vector2Int UnityToScriptCoord(int x, int y);
@@ -84,6 +116,8 @@ public abstract class MapGenerator : MonoBehaviour
     private void SetUp()
     {
         Restart();
+        
+        SetUpParameters();
         
         _roomHolder = Instantiate(mapPrefab).transform;
         _gridHolder = _roomHolder.GetChild(0);
@@ -124,6 +158,31 @@ public abstract class MapGenerator : MonoBehaviour
         }
     }
     
+    internal void SetRoom(ref Room room, Random rand)
+    {
+        room = new Room();
+        
+        room.Height = rand.Next(_minHeight, maxHeight);
+        room.Width = rand.Next(_minWidth, maxWidth);
+        var diff = room.Height - room.Width;
+        
+        if (diff < 0 && room.Height < _hallTreshold) {
+            room.Type = RoomType.HOR_HALL;
+            room.Width += _hallTreshold;
+        }
+        else if (diff > 0 && room.Width < _hallTreshold)
+        {
+            room.Type = RoomType.VER_HALL;
+            room.Height += _hallTreshold;
+        }
+        else
+        {
+            room.Type = RoomType.ROOM;
+            if (room.Height < _roomMin) room.Height = rand.Next(_roomMin, maxHeight);
+            if (room.Width < _roomMin) room.Width = rand.Next(_roomMin, maxWidth);
+        }
+    }
+    
     public bool IsTileEmpty(int x, int y)
     {
         Vector2Int coords = UnityToScriptCoord(x, y);
@@ -131,17 +190,33 @@ public abstract class MapGenerator : MonoBehaviour
         return _grid[coords.y, coords.x].Empty;
     }
     
+    /// <summary>
+    /// Get the grid used for obstacles.
+    /// </summary>
+    /// <returns>GridTile[,] grid</returns>
     public GridTile[,] GetGrid()
     {
         return _grid;
     }
-
+    // ReSharper disable Unity.PerformanceAnalysis
+    /// <summary>
+    /// Converts tile at x y coordinates in the smaller tilemap to world coordinates.
+    /// </summary>
+    /// <param name="x">Coordinate x of the tile in the tilemap.</param>
+    /// <param name="y">Coordinate y of the tile in the tilemap.</param>
+    /// <returns>Vector3 world coordinates of the tile.</returns>
     public Vector3 GetSmallGridTileWorldCoordinates(int x, int y)
     {
         return _obstaclesHolder.GetComponent<Tilemap>()
             .GetCellCenterWorld(new Vector3Int(x, y, 0));
     }
 
+    /// <summary>
+    /// Converts tile at x y coordinates in the tilemap to world coordinates.
+    /// </summary>
+    /// <param name="x">Coordinate x of the tile in the tilemap.</param>
+    /// <param name="y">Coordinate y of the tile in the tilemap.</param>
+    /// <returns>Vector3 world coordinates of the tile.</returns>
     public Vector3 GetGridTileWorldCoordinates(int x, int y)
     {
         return _gridHolder.GetComponentInChildren<Tilemap>()
@@ -178,6 +253,13 @@ public abstract class MapGenerator : MonoBehaviour
         return _entrance.EntranceObj.transform;
     }
 
+    /// <summary>
+    /// Converts tile at x y coordinates to the middle point of the tile
+    /// in world coordinates.
+    /// </summary>
+    /// <param name="x">Coordinate x of the tile in the tilemap.</param>
+    /// <param name="y">Coordinate y of the tile in the tilemap.</param>
+    /// <returns>Vector3 world coordinates of the middle point of the tile.</returns>
     public Vector3 GetGridTileWorldCoordinatesMiddle(int x, int y)
     {
         Vector3 vec = GetGridTileWorldCoordinates(x, y);
