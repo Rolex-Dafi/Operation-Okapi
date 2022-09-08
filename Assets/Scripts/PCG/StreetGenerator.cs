@@ -17,6 +17,8 @@ public class StreetGenerator : MapGenerator
     private int _maxBorder = 4;
     private int _minBorder = 2;
     private int _borderTiles = 2;
+    
+    public List<GameObject> props;
 
     internal enum StreetType
     {
@@ -39,10 +41,11 @@ public class StreetGenerator : MapGenerator
         }
         
         GenerateFloor();
-        //GenerateWalls();
+        GenerateWalls();
         GenerateColliders();
+        GenerateDoors();
 
-        //GenerateGrid();
+        GenerateGrid();
     }
 
     private void CleanUpStreet()
@@ -227,9 +230,50 @@ public class StreetGenerator : MapGenerator
                   _extraRoom.Width + "x" + _extraRoom.Height);
     }
     
-    private void GenerateWalls()
+    internal override void GenerateWalls()
     {
+        _walls = new List<Wall>();
         
+        if (_streetType == StreetType.CROSSROADS)
+        {
+            // add parallel top walls from both
+            AddWallToLst(_walls, HallType.HORIZONTAL, _extraRoom.StartX, _extraRoom.StartX + _extraRoom.Width,
+                _extraRoom.StartY + _extraRoom.Height);
+            AddWallToLst(_walls, HallType.VERTICAL, _extraRoom.StartY, _room.StartY,
+                _extraRoom.StartX + _extraRoom.Width);
+            // no other walls at crossroads
+            //AddAllSectionedLines(_walls, _room, _extraRoom);
+        } else if (_streetType == StreetType.PLAZA || _extraRoom.Height <= 0)
+        {
+            AddWallToLst(_walls, HallType.HORIZONTAL, _room.Type == RoomType.VER_HALL ? _room.StartX + _borderTiles : _room.StartX, _room.StartX + _room.Width,
+                _room.StartY + _room.Height);
+            AddWallToLst(_walls, HallType.VERTICAL, _room.Type == RoomType.HOR_HALL ? _room.StartY + _borderTiles : _room.StartY, _room.StartY + _room.Height,
+                _room.StartX + _room.Width);
+        }
+        else
+        {
+            // hor colliders of both rooms
+            AddWallToLst(_walls, HallType.HORIZONTAL, 
+                _room.Type == RoomType.HOR_HALL ? _room.StartX : _room.StartX + _borderTiles,
+                _room.StartX + _room.Width,
+                _room.StartY + _room.Height);
+            
+            // touching walls
+            if (_room.Height > _extraRoom.Height && _extraRoom.StartY + _extraRoom.Height < _room.StartY + _room.Height)
+                AddWallToLst(_walls, HallType.VERTICAL, _extraRoom.StartY + _extraRoom.Height, 
+                    _room.StartY + _room.Height, _room.StartX + _room.Width);
+            
+            AddWallToLst(_walls, HallType.HORIZONTAL, _extraRoom.StartX, _extraRoom.StartX + _extraRoom.Width,
+                _extraRoom.StartY + _extraRoom.Height);
+            
+            // right wall of second room
+            AddWallToLst(_walls, HallType.VERTICAL, 
+                (_extraRoom.Type == RoomType.HOR_HALL && _room.StartY == _extraRoom.StartY) ? _extraRoom.StartY + _borderTiles : _extraRoom.StartY, 
+                _extraRoom.StartY + _extraRoom.Height, _extraRoom.StartX + _extraRoom.Width);
+        }
+        
+        Debug.Log("no walls: " + _walls.Count);
+        //PutDownColliders(_walls);
     }
     
     private void GenerateColliders()
@@ -240,15 +284,15 @@ public class StreetGenerator : MapGenerator
         if (_streetType == StreetType.CROSSROADS)
         {
             // add parallel cols from both
-            AddParallelColliders(_room, HallType.VERTICAL);
-            AddParallelColliders(_extraRoom, HallType.HORIZONTAL);
+            AddParallelLines(_cols, _room, HallType.VERTICAL);
+            AddParallelLines(_cols, _extraRoom, HallType.HORIZONTAL);
             
-            AddAllSectionedColliders(_room, _extraRoom);
+            AddAllSectionedLines(_cols, _room, _extraRoom);
 
         } else if (_streetType == StreetType.PLAZA || _extraRoom.Width <= 0)
         {
-            AddParallelColliders(_room, HallType.VERTICAL);
-            AddParallelColliders(_room, HallType.HORIZONTAL);
+            AddParallelLines(_cols, _room, HallType.VERTICAL);
+            AddParallelLines(_cols, _room, HallType.HORIZONTAL);
         }
         else
         {
@@ -256,8 +300,8 @@ public class StreetGenerator : MapGenerator
             AddWallToLst(_cols, HallType.VERTICAL, _room.StartY - 1, _room.StartY + _room.Height + 1,
                 _room.StartX - 1);
             // hor colliders of both rooms
-            AddParallelColliders(_room, HallType.HORIZONTAL);
-            AddParallelColliders(_extraRoom, HallType.HORIZONTAL);
+            AddParallelLines(_cols, _room, HallType.HORIZONTAL);
+            AddParallelLines(_cols, _extraRoom, HallType.HORIZONTAL);
             
             // right wall of second room
             AddWallToLst(_cols, HallType.VERTICAL, _extraRoom.StartY - 1, 
@@ -265,68 +309,51 @@ public class StreetGenerator : MapGenerator
             
             // touching walls
             if (_room.Height > _extraRoom.Height)
-                AddSectionedCollider(_room, _extraRoom, 
+                AddSectionedLine(_cols, _room, _extraRoom, 
                     _room.StartX + _room.Width, HallType.VERTICAL);
             else
-                AddSectionedCollider(_extraRoom, _room, 
+                AddSectionedLine(_cols, _extraRoom, _room, 
                     _extraRoom.StartX - 1, HallType.VERTICAL);
         }
         
         PutDownColliders(_cols);
     }
-
-    private void AddSectionedCollider(Room room, Room cuttingRoom, int coord, HallType orientation)
-    {
-        if (orientation == HallType.VERTICAL)
-        {
-            AddWallToLst(_cols, orientation, room.StartY-1, 
-                cuttingRoom.StartY, coord);
-            AddWallToLst(_cols, orientation, cuttingRoom.StartY + cuttingRoom.Height, 
-                room.StartY + room.Height+1, coord);
-        }
-        else
-        {
-            AddWallToLst(_cols, orientation, room.StartX-1, 
-                cuttingRoom.StartX, coord);
-            AddWallToLst(_cols, orientation, cuttingRoom.StartX + cuttingRoom.Width, 
-                room.StartX + room.Width+1, coord);
-        }
-    }
-
-    private void AddAllSectionedColliders(Room horRoom, Room verRoom)
-    {
-        AddSectionedCollider(horRoom, verRoom, horRoom.StartY-1, HallType.HORIZONTAL);
-        AddSectionedCollider(horRoom, verRoom, horRoom.StartY + horRoom.Height, HallType.HORIZONTAL);
-        
-        AddSectionedCollider(verRoom, horRoom, verRoom.StartX-1, HallType.VERTICAL);
-        AddSectionedCollider(verRoom, horRoom, verRoom.StartX + verRoom.Width, HallType.VERTICAL);
-    }
-
-    private void AddParallelColliders(Room room, HallType orientation)
-    {
-        if (orientation == HallType.HORIZONTAL)
-        {
-            AddWallToLst(_cols, orientation, room.StartX, room.StartX + room.Width,
-                room.StartY + room.Height);
-            AddWallToLst(_cols, orientation, room.StartX, room.StartX + room.Width,
-                room.StartY - 1);
-        }
-        else
-        {
-            AddWallToLst(_cols, orientation, room.StartY - 1, room.StartY + room.Height + 1,
-                room.StartX + room.Width);
-            AddWallToLst(_cols, orientation, room.StartY - 1, room.StartY + room.Height + 1,
-                room.StartX - 1);
-        }
-    }
-
+    
     internal override void GenerateGrid()
     {
-        throw new System.NotImplementedException();
-    }
+        gridStartX = _room.StartX*2;
+        gridStartY = _room.StartY*2;
+        int gridWidth = _room.Width * 2;
+        int gridHeight = _room.Height * 2;
 
-    protected override Vector2Int UnityToScriptCoord(int x, int y)
-    {
-        throw new System.NotImplementedException();
+        if (_extraRoom.Height > 0)// accomodate for second room
+        {      
+            if (_streetType == StreetType.CROSSROADS || _room.Type == RoomType.HOR_HALL)
+            {
+                gridStartY = _extraRoom.StartY * 2;
+                gridHeight = _extraRoom.Height * 2;
+            }
+
+            if (_streetType == StreetType.STREET)
+                gridWidth += _extraRoom.Width * 2;
+        }
+        
+        Debug.Log("Grid dimensions: " + gridWidth + "x" + gridHeight);
+        Debug.Log("Grid starts at " + gridStartX + "x" + gridStartY);
+
+        _grid = new GridTile[gridHeight, gridWidth];
+        for (int y = 0; y < gridHeight; y++)
+        {
+            for (int x = 0; x < gridWidth; x++)
+            {
+                if((x < _room.Width*2 && gridStartY + y >= _room.StartY*2 && gridStartY + y < _room.StartY*2 + _room.Height*2) ||
+                   (_extraRoom.Height > 0 && 
+                    (gridStartX + x >= _extraRoom.StartX*2 && gridStartX + x < _extraRoom.StartX*2 + _extraRoom.Width*2 && 
+                     gridStartY + y >= _extraRoom.StartY*2 && gridStartY + y < _extraRoom.StartY*2 + _extraRoom.Height*2)))
+                    _grid[y, x] = new GridTile(gridStartX + x, gridStartY + y);
+                else
+                    _grid[y, x] = new GridTile(gridStartX + x, gridStartY + y, false);
+            }
+        }
     }
 }

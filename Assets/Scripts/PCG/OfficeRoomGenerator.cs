@@ -49,7 +49,7 @@ public class OfficeRoomGenerator : MapGenerator
         base.Generate();
         SetUpRoomGen();
         GenerateOfficeFloor();
-        GenerateOfficeWalls();
+        GenerateWalls();
         GenerateColliders();
 
         GenerateDoors();
@@ -158,7 +158,7 @@ public class OfficeRoomGenerator : MapGenerator
             Math.Min(0, fixedRoom.StartY + fixedRoom.Height - movedRoom.Height));
     }
 
-    private void GenerateOfficeWalls()
+    internal override void GenerateWalls()
     {
         _walls = new List<Wall>();
         _overlap = new Wall();
@@ -257,44 +257,6 @@ public class OfficeRoomGenerator : MapGenerator
         }
     }
 
-    private void GenerateDoors()
-    {
-        Random rand = new Random();
-        
-        // generate entrance position
-        _entrance.EntrancePos = new Vector3Int(rand.Next(_walls[0].Start + 1, _walls[0].End - 1), _walls[0].Height, 0);
-        _entrance.ExitPos = new Vector3Int(_walls[_walls.Count - 1].Height, rand.Next(_walls[_walls.Count - 1].Start + 1, _walls[_walls.Count - 1].End - 1), 0);
-
-        // generate entrance triggers
-        _entrance.EntranceObj = Instantiate(entranceCollider, _roomHolder);
-        _entrance.ExitObj = GetExitObject();
-
-        _entrance.EntranceObj.transform.position = GetGridTileWorldCoordinates(_entrance.EntrancePos.x, _entrance.EntrancePos.y);
-        _entrance.ExitObj.transform.position = GetGridTileWorldCoordinates(_entrance.ExitPos.x, _entrance.ExitPos.y);
-        
-        
-        // erase wall tiles
-        var horWalls = _gridHolder.transform.GetChild(1).GetComponent<Tilemap>();
-        var verWalls = _gridHolder.transform.GetChild(2).GetComponent<Tilemap>();
-        horWalls.SetTile(_entrance.EntrancePos, null);
-        verWalls.SetTile(_entrance.ExitPos, null);
-        
-        // erase collider and replace it with new collider
-        var colMap = _gridHolder.transform.GetChild(4).GetComponent<Tilemap>();
-        colMap.SetTile(_entrance.EntrancePos, null);
-        colMap.SetTile(_entrance.ExitPos, null);
-        List<Wall> newCols = new List<Wall>();
-        AddWallToLst(newCols, HallType.HORIZONTAL, _entrance.EntrancePos.x - 1, _entrance.EntrancePos.x + 2, _entrance.EntrancePos.y + 1);
-        AddWallToLst(newCols, HallType.VERTICAL, _entrance.ExitPos.y - 1, _entrance.ExitPos.y + 2, _entrance.ExitPos.x + 1);
-        PutDownColliders(newCols);
-        // TODO: collider for entrance and exit
-
-        //set down tiles
-        var tileMap = _gridHolder.transform.GetChild(0).GetComponent<Tilemap>();
-        tileMap.SetTile(_entrance.EntrancePos, tileMap.GetTile(new Vector3Int(_entrance.EntrancePos.x, _entrance.EntrancePos.y-1, _entrance.EntrancePos.z)));
-        tileMap.SetTile(_entrance.ExitPos, tileMap.GetTile(new Vector3Int(_entrance.ExitPos.x-1, _entrance.ExitPos.y, _entrance.ExitPos.z)));
-    }
-
     private void PutDownRoomTiles(Tile tile, Tilemap tm, Room room)
     {
         SetTilesToMap(tile, tm, room.StartX, room.StartY, 
@@ -351,8 +313,8 @@ public class OfficeRoomGenerator : MapGenerator
 
     internal override void GenerateGrid()
     {
-        int gridStartX = _leftRoom.StartX*2;
-        int gridStartY = _rightRoom.StartY*2;
+        gridStartX = _leftRoom.StartX*2;
+        gridStartY = _rightRoom.StartY*2;
 
         int gridWidth = _leftRoom.Type == RoomType.LONG_HALL_VER ? _leftRoom.Width*2 : (_leftRoom.Width + _rightRoom.Width) * 2;
         //int gridHeight = (_leftRoom.Type == RoomType.BIG_ROOM || _leftRoom.Type == RoomType.LONG_HALL_HOR) ? _leftRoom.Height * 2 : ((_leftRoom.StartY+_leftRoom.Height)-_rightRoom.StartY) * 2;
@@ -523,19 +485,6 @@ public class OfficeRoomGenerator : MapGenerator
         }
     }
 
-    private void FillObstaclesGrid(int x, int y, int w, int h)
-    {
-        for (var j = 0; j < h; j++)
-        {
-            for (var i = 0; i < w; i++)
-            {
-                Vector2Int gridCoors = UnityToScriptCoord(x + i, y + j);
-                _grid[gridCoors.y, gridCoors.x].Empty = false;
-                //Debug.Log("Tile at " + (x+i) + "x" + (y+j) + " has been obstructed for AI.");
-            }
-        }
-    }
-
     private void GenerateExtraObjects(int startX, int startY, int width, int height, Wall blocked, bool hall = true, bool longHall = false)
     {
         Wall[] longWalls = new Wall[2];
@@ -591,19 +540,20 @@ public class OfficeRoomGenerator : MapGenerator
         foreach (var wall in longWalls)
         {
             if (wall.Orientation == HallType.VERTICAL)
-                PutDownExtraObjects(wall.Height, wall.Start, 1, wall.End-wall.Start, density);
+                PutDownObjects(wall.Height, wall.Start, 1, wall.End-wall.Start, extraItems,density);
             else
-                PutDownExtraObjects(wall.Start, wall.Height, wall.End-wall.Start, 1, density);
+                PutDownObjects(wall.Start, wall.Height, wall.End-wall.Start, 1, extraItems, density);
         }
         foreach (var wall in shortWalls)
         {
             if (wall.Orientation == HallType.VERTICAL)
-                PutDownExtraObjects(wall.Height, wall.Start, 1, wall.End-wall.Start, density/2);
+                PutDownObjects(wall.Height, wall.Start, 1, wall.End-wall.Start, extraItems, density/2);
             else
-                PutDownExtraObjects(wall.Start, wall.Height, wall.End-wall.Start, 1, density/2);
+                PutDownObjects(wall.Start, wall.Height, wall.End-wall.Start, 1, extraItems, density/2);
         }
     }
 
+    /*
     private void PutDownExtraObjects(int xCoord, int yCoord, int width, int height, int objDensity)
     {
         Random rnd = new Random();
@@ -630,34 +580,7 @@ public class OfficeRoomGenerator : MapGenerator
                 else if (x % 4 == 0) den++; // to try and avoid completely empty rooms
             }
         }
-    }
-
-    private float GetNumFromRangeFloat(Random rnd, int start, int end)
-    {
-        int bracket = 100 / (end - start);
-        float genNum = rnd.Next(start, end);
-        return genNum / bracket;
-    }
-
-    private GameObject InstantiateObjectInWorld(GameObject obj, Vector3Int coords, float offsetX = 0.0f, float offsetY = 0.0f)
-    {
-        Vector2Int gridCoors = UnityToScriptCoord(coords.x, coords.y);
-
-        /*if (gridCoors.x < 0 || gridCoors.x > _grid.GetLength(0) - 1 || gridCoors.y < 0 ||
-            gridCoors.y > _grid.GetLongLength(1) - 1)
-            return null;*/
-        //Debug.Log("putting down object at " + gridCoors.x + "x" + gridCoors.y + " (unity coords " + coords.x + "x" + coords.y + ")");
-        //Debug.Log("Grid is size " + _grid.GetLength(1) + "x" + _grid.GetLength(0));
-        _grid[gridCoors.y, gridCoors.x].Empty = false;
-
-        Vector3 pos = _obstaclesHolder.GetComponent<Tilemap>()
-            .GetCellCenterWorld(coords);
-        
-        pos.x += offsetX;
-        pos.y += offsetY;
-        
-        return Instantiate(obj, pos, Quaternion.identity, _obstaclesHolder);
-    }
+    }*/
 
     protected override Vector2Int UnityToScriptCoord(int x, int y)
     {

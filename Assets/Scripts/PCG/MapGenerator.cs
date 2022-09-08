@@ -30,12 +30,12 @@ public abstract class MapGenerator : MonoBehaviour
     internal int _roomMin;
     internal int _hallTreshold;
     
-    protected enum HallType
+    internal enum HallType
     {
         HORIZONTAL, VERTICAL
     }
     
-    protected struct Wall
+    internal struct Wall
     {
         internal HallType Orientation;
         internal int Start;
@@ -65,6 +65,8 @@ public abstract class MapGenerator : MonoBehaviour
     };
     
     internal GridTile[,] _grid;
+    internal int gridStartX;
+    internal int gridStartY;
     
     internal struct Entrance
     {
@@ -90,8 +92,8 @@ public abstract class MapGenerator : MonoBehaviour
         internal RoomType Type;
     };
     
-    protected List<Wall> _walls;
-    protected List<Wall> _cols;
+    internal List<Wall> _walls;
+    internal List<Wall> _cols;
 
     [Header("Empty prefab of grid setup.")] public GameObject mapPrefab;
     
@@ -107,7 +109,10 @@ public abstract class MapGenerator : MonoBehaviour
     protected abstract void SetUpParameters();
 
     internal abstract void GenerateGrid();
-    protected abstract Vector2Int UnityToScriptCoord(int x, int y);
+    protected virtual Vector2Int UnityToScriptCoord(int x, int y)
+    {
+        return new Vector2Int(x + Math.Abs(gridStartX), y + Math.Abs(gridStartY));
+    }
 
     internal Vector2Int ScriptToUnityCoord(int x, int y)
     {
@@ -146,7 +151,7 @@ public abstract class MapGenerator : MonoBehaviour
         }
     }
 
-    protected void PutDownColliders(List<Wall> cols)
+    internal void PutDownColliders(List<Wall> cols)
     {
         var tm = _gridHolder.transform.GetChild(4).GetComponent<Tilemap>();
 
@@ -158,12 +163,97 @@ public abstract class MapGenerator : MonoBehaviour
                 SetTilesToMap(collTile, tm, col.Height, col.Start, col.Height + 1, col.End);
         }
     }
+    
+    internal void AddSectionedLine(List<Wall> line, Room room, Room cuttingRoom, int coord, HallType orientation)
+    {
+        if (orientation == HallType.VERTICAL)
+        {
+            AddWallToLst(line, orientation, room.StartY-1, 
+                cuttingRoom.StartY, coord);
+            AddWallToLst(line, orientation, cuttingRoom.StartY + cuttingRoom.Height, 
+                room.StartY + room.Height+1, coord);
+        }
+        else
+        {
+            AddWallToLst(line, orientation, room.StartX-1, 
+                cuttingRoom.StartX, coord);
+            AddWallToLst(line, orientation, cuttingRoom.StartX + cuttingRoom.Width, 
+                room.StartX + room.Width+1, coord);
+        }
+    }
 
-    protected void AddWallToLst(List<Wall> walls, HallType orientation, int start, int end, int height)
+    internal void AddAllSectionedLines(List<Wall> line, Room horRoom, Room verRoom)
+    {
+        AddSectionedLine(line, horRoom, verRoom, horRoom.StartY-1, HallType.HORIZONTAL);
+        AddSectionedLine(line, horRoom, verRoom, horRoom.StartY + horRoom.Height, HallType.HORIZONTAL);
+        
+        AddSectionedLine(line, verRoom, horRoom, verRoom.StartX-1, HallType.VERTICAL);
+        AddSectionedLine(line, verRoom, horRoom, verRoom.StartX + verRoom.Width, HallType.VERTICAL);
+    }
+
+    internal void AddParallelLines(List<Wall> line, Room room, HallType orientation)
+    {
+        if (orientation == HallType.HORIZONTAL)
+        {
+            AddWallToLst(line, orientation, room.StartX, room.StartX + room.Width,
+                room.StartY + room.Height);
+            AddWallToLst(line, orientation, room.StartX, room.StartX + room.Width,
+                room.StartY - 1);
+        }
+        else
+        {
+            AddWallToLst(line, orientation, room.StartY - 1, room.StartY + room.Height + 1,
+                room.StartX + room.Width);
+            AddWallToLst(line, orientation, room.StartY - 1, room.StartY + room.Height + 1,
+                room.StartX - 1);
+        }
+    }
+
+    internal void AddWallToLst(List<Wall> walls, HallType orientation, int start, int end, int height)
     {
         Wall newWall = new Wall();
         newWall.SetValues(orientation, start, end, height);
         walls.Add(newWall);
+    }
+
+    internal abstract void GenerateWalls();
+    
+    internal void GenerateDoors()
+    {
+        Random rand = new Random();
+        
+        // generate entrance position
+        _entrance.EntrancePos = new Vector3Int(rand.Next(_walls[0].Start + 1, _walls[0].End - 1), _walls[0].Height, 0);
+        _entrance.ExitPos = new Vector3Int(_walls[_walls.Count - 1].Height, rand.Next(_walls[_walls.Count - 1].Start + 1, _walls[_walls.Count - 1].End - 1), 0);
+
+        // generate entrance triggers
+        _entrance.EntranceObj = Instantiate(entranceCollider, _roomHolder);
+        _entrance.ExitObj = GetExitObject();
+
+        _entrance.EntranceObj.transform.position = GetGridTileWorldCoordinates(_entrance.EntrancePos.x, _entrance.EntrancePos.y);
+        _entrance.ExitObj.transform.position = GetGridTileWorldCoordinates(_entrance.ExitPos.x, _entrance.ExitPos.y);
+        
+        
+        // erase wall tiles
+        var horWalls = _gridHolder.transform.GetChild(1).GetComponent<Tilemap>();
+        var verWalls = _gridHolder.transform.GetChild(2).GetComponent<Tilemap>();
+        horWalls.SetTile(_entrance.EntrancePos, null);
+        verWalls.SetTile(_entrance.ExitPos, null);
+        
+        // erase collider and replace it with new collider
+        var colMap = _gridHolder.transform.GetChild(4).GetComponent<Tilemap>();
+        colMap.SetTile(_entrance.EntrancePos, null);
+        colMap.SetTile(_entrance.ExitPos, null);
+        List<Wall> newCols = new List<Wall>();
+        AddWallToLst(newCols, HallType.HORIZONTAL, _entrance.EntrancePos.x - 1, _entrance.EntrancePos.x + 2, _entrance.EntrancePos.y + 1);
+        AddWallToLst(newCols, HallType.VERTICAL, _entrance.ExitPos.y - 1, _entrance.ExitPos.y + 2, _entrance.ExitPos.x + 1);
+        PutDownColliders(newCols);
+        // TODO: collider for entrance and exit
+
+        //set down tiles
+        var tileMap = _gridHolder.transform.GetChild(0).GetComponent<Tilemap>();
+        tileMap.SetTile(_entrance.EntrancePos, tileMap.GetTile(new Vector3Int(_entrance.EntrancePos.x, _entrance.EntrancePos.y-1, _entrance.EntrancePos.z)));
+        tileMap.SetTile(_entrance.ExitPos, tileMap.GetTile(new Vector3Int(_entrance.ExitPos.x-1, _entrance.ExitPos.y, _entrance.ExitPos.z)));
     }
     
     internal virtual void SetRoom(ref Room room, Random rand)
@@ -189,6 +279,63 @@ public abstract class MapGenerator : MonoBehaviour
             if (room.Height < _roomMin) room.Height = rand.Next(_roomMin, maxHeight);
             if (room.Width < _roomMin) room.Width = rand.Next(_roomMin, maxWidth);
         }
+    }
+    
+    internal void FillObstaclesGrid(int x, int y, int w, int h)
+    {
+        for (var j = 0; j < h; j++)
+        {
+            for (var i = 0; i < w; i++)
+            {
+                Vector2Int gridCoors = UnityToScriptCoord(x + i, y + j);
+                _grid[gridCoors.y, gridCoors.x].Empty = false;
+                //Debug.Log("Tile at " + (x+i) + "x" + (y+j) + " has been obstructed for AI.");
+            }
+        }
+    }
+
+    internal void PutDownObjects(int xCoord, int yCoord, int w, int h, List<GameObject> objects, int objDensity)
+    {
+        Random rnd = new Random();
+        float offsetMax = _obstaclesHolder.GetComponent<Grid>().cellSize.x;
+        
+        int den = objDensity;
+        for (var y = yCoord; y < yCoord + h; y++)
+        {
+            for (var x = xCoord; x < xCoord + w; x++)
+            {
+                if (((x == _entrance.EntrancePos.x*2 || x - 1 == _entrance.EntrancePos.x*2) && y == _entrance.EntrancePos.y*2 - 1) ||
+                    (x == _entrance.ExitPos.x*2 - 1 && (y == _entrance.ExitPos.y*2 || y - 1 == _entrance.ExitPos.y*2)))
+                    continue; // dont block doors
+                if (rnd.Next(0, 100) <= den)
+                {
+                    int objIdx = GetNumFromRange(rnd, 0, objects.Count - 1);
+                    InstantiateObjectInWorld(objects[objIdx], new Vector3Int(x, y, 0), 
+                        GetNumFromRangeFloat(rnd, -(int)((offsetMax*100)/3), 
+                            (int)((offsetMax*100)/3)) /100,
+                        GetNumFromRangeFloat(rnd, -(int)((offsetMax*100)/3), 
+                            (int)((offsetMax*100)/3)) /100);
+                    den = den / 4;
+                } else if (den < objDensity) den+=(objDensity-den)/4;
+                else if (x % 4 == 0) den++; // to try and avoid completely empty rooms
+            }
+        }
+    }
+    
+    internal GameObject InstantiateObjectInWorld(GameObject obj, Vector3Int coords, float offsetX = 0.0f, float offsetY = 0.0f)
+    {
+        Vector2Int gridCoords = UnityToScriptCoord(coords.x, coords.y);
+        if (!_grid[gridCoords.y, gridCoords.x].Empty) return null;
+        
+        _grid[gridCoords.y, gridCoords.x].Empty = false;
+
+        Vector3 pos = _obstaclesHolder.GetComponent<Tilemap>()
+            .GetCellCenterWorld(coords);
+        
+        pos.x += offsetX;
+        pos.y += offsetY;
+        
+        return Instantiate(obj, pos, Quaternion.identity, _obstaclesHolder);
     }
     
     public bool IsTileEmpty(int x, int y)
@@ -249,9 +396,18 @@ public abstract class MapGenerator : MonoBehaviour
     
     internal int GetNumFromRange(Random rnd, int start, int end)
     {
+        if (start == end) return start;
         int bracket = 100 / (end - start);
         int genNum = rnd.Next(0, 100);
         return (int)Math.Ceiling((double)(genNum/bracket));
+    }
+    
+    private float GetNumFromRangeFloat(Random rnd, int start, int end)
+    {
+        if (start == end) return start;
+        int bracket = 100 / (end - start);
+        float genNum = rnd.Next(start, end);
+        return genNum / bracket;
     }
 
     public Vector3Int GetEntranceGridCoords()
