@@ -133,6 +133,8 @@ public class LevelManager : MonoBehaviour
                 // get from prefab
                 var merchantRoom = Instantiate(data.merchantRoomPrefab);
                 // no enemies -> no navmesh required
+                // room beaten automatically
+                roomBeaten = true;
                 
                 // place the player - persistent from previous room/level
                 PlayerSpawner.PlacePlayer(player, merchantRoom.Entrance.position);

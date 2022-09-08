@@ -8,10 +8,13 @@ public class Dash : Ability
     private int numUsedInChain;
     public DashSO Data { get => (DashSO)data; protected set => data = value; }
 
+    private readonly int characterLayerID;
+    
     public Dash(CombatCharacter character, DashSO data) : base(character, data, EAbilityType.dash)
     {
         lastTimeUsed = 0;
         numUsedInChain = 0;
+        characterLayerID = character.gameObject.layer;
     }
 
 
@@ -45,6 +48,9 @@ public class Dash : Ability
         // dash in isometric coordinates !
         Vector2 direction = character.Facing.CartesianToIsometric().normalized;
 
+        // ignore obstacles when dashing - this includes enemies/the player - set in Layer Collision Matrix in Project Settings
+        character.gameObject.layer = LayerMask.NameToLayer(Utility.ignoreObstaclesLayer);
+        
         while (InUse)
         {
             yield return character.RB.AddForceCustom(direction, Data.distance, Data.speed, OnEnd);
@@ -57,6 +63,9 @@ public class Dash : Ability
         // stop playing the animation
         character.Animator.SetBool(EAnimationParameter.dashing.ToString(), false);
 
+        // set physics layer back to normal
+        character.gameObject.layer = characterLayerID;
+        
         // stop moving
         InUse = false;
         lastTimeUsed = Time.time;

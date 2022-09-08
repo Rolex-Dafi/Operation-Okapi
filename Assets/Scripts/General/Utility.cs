@@ -14,6 +14,7 @@ public static class Utility
     public const string enemyTagAndLayer = "Enemy";
     public const string obstacleLayer = "Obstacle";
     public const string wallLayer = "Wall";
+    public const string ignoreObstaclesLayer = "IgnoreObstacles";
 
     // TODO actually look this size up
     public const float minObstacleSize = .6f;
