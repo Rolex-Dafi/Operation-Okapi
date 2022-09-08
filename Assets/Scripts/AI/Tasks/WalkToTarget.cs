@@ -6,7 +6,7 @@ public class WalkToTarget : TaskBase
     private Vector3? target;
     private string targetName;
     private Path currentPath;
-    private float nextWaypointSqrtDistance = 0.05f;
+    private float nextWaypointDistance = 0.2f;
     private int nextWaypoint = 0;
     private bool currentlyMoving = false;
 
@@ -27,10 +27,6 @@ public class WalkToTarget : TaskBase
     {
         this.targetName = targetName;
         targetStatic = false;
-
-        // assumes runtime targets have a nonzero radius - like the player
-        // hacky constant which should apply to player:
-        nextWaypointSqrtDistance = 1f;
     }
 
     protected override void OnBegin()
@@ -100,8 +96,8 @@ public class WalkToTarget : TaskBase
         while (true)
         {
             // TODO stop walk when walking into a collider - ex. the player
-            distToWaypoint = (bt.transform.position - currentPath.vectorPath[nextWaypoint]).sqrMagnitude;
-            if (distToWaypoint < nextWaypointSqrtDistance)
+            distToWaypoint = (bt.transform.position - currentPath.vectorPath[nextWaypoint]).magnitude;
+            if (distToWaypoint < nextWaypointDistance)
             {
                 if (nextWaypoint + 1 < currentPath.vectorPath.Count)
                 {

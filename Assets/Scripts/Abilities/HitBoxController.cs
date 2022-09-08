@@ -30,11 +30,14 @@ public class HitBoxController : MonoBehaviour
             // if attack has pushback
             if (attackData.enemyPushbackDistance > 0)
             {
-                // and object with which we collided is pushable, push it away from this
+                // and object with which we collided is pushable, push/pull it
                 if (collision.gameObject.TryGetComponent<IPushable>(out var pushable))
                 {
-                    Vector2 direction = collision.transform.position - transform.position;
-                    pushable.Push(direction, attackData.enemyPushbackDistance, attackData.enemyPushbackSpeed);
+                    pushable.Push(
+                        collision.transform.position - transform.position, 
+                        attackData.enemyPushbackDistance, 
+                        attackData.enemyPushbackSpeed
+                        );
                 }
 
             }

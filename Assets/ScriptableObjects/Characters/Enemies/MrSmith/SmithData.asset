@@ -14,10 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   money: 2
   health: 7
-  respect: 0
   attacks:
-  - {fileID: 11400000, guid: 5881f0047ae974a4fb2ead18ba1ffc8e, type: 2}
-  - {fileID: 11400000, guid: 14cd788273a4616408f54f599391feab, type: 2}
+  - {fileID: 11400000, guid: df44642c00dddae4f928ae7703988438, type: 2}
+  - {fileID: 11400000, guid: 7bf2c5af8badee942a730b4a14917562, type: 2}
   dash: {fileID: 0}
   onHitSound:
     Guid:

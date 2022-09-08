@@ -98,6 +98,8 @@ public class LevelManager : MonoBehaviour
         aiGenerator.ClearNavMesh();
         
         Interactable exitTrigger = default;
+
+        roomBeaten = false;
         
         switch (roomType)
         {
@@ -150,10 +152,12 @@ public class LevelManager : MonoBehaviour
             case RoomType.Boss:
                 // get rid of the current astar first - we can do this because this is the last room (the navmesh
                 // in the boss prefab is pre-generated and having two in the scene will cause errors)
-                aiGenerator.RemoveSelf();
+                //aiGenerator.RemoveSelf();
                 
                 // get from prefab (navmesh should be pre-generated in the prefab)
                 var bossRoom = Instantiate(data.bossRoomPrefab);
+                // load the navmesh
+                aiGenerator.LoadGraph(data.bossNavGraphData);
                 
                 // spawn the boss
                 enemySpawner.SpawnEnemy(bossRoom.EnemySpawn, bossRoom.EnemyPatrolPoints, data.boss);
@@ -173,8 +177,6 @@ public class LevelManager : MonoBehaviour
                 
                 break;
         }
-
-        roomBeaten = false;
         
         // initialize exit trigger
         if (exitTrigger != null)
