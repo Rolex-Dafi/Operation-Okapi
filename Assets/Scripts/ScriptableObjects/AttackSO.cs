@@ -10,8 +10,6 @@ public class AttackSO : AbilitySO
     public EAttackButton button; // for player attacks only
     public EAttackEffect effect;
 
-    [Range(0, 10)] public int damage;
-
     [Range(0, 10)] public int cost; // for player attacks only, enemies should (?) have unlimited attacks
     
     // min wait time between attacks
@@ -22,9 +20,6 @@ public class AttackSO : AbilitySO
 
     // how much is the character slown during the attack (0..completely, 1..full speed)
     [Range(0, 1)] public float movementSpeedFactor = 0;
-
-    public float enemyPushbackDistance = 0;
-    public float enemyPushbackSpeed = 40;   // if speed is negative -> pull instead of push
 
     // for ranged only
     public ProjectileController projectilePrefab;

@@ -35,6 +35,8 @@ public class AnimatorGenerator
     private string characterName;
     private readonly string redirection = "redirection";
 
+    private readonly string deathAnimPath = GFXUtility.characterAnimationsDirectory + "/death_all.anim";
+
     public AnimatorGenerator(string characterName)
     {
         this.characterName = characterName;
@@ -51,14 +53,14 @@ public class AnimatorGenerator
             characterName
         });
 
-        DirectoryInfo dirInfo = new DirectoryInfo(dir);
+        var dirInfo = new DirectoryInfo(dir);
         if (!dirInfo.Exists)
         {
             Debug.LogWarning("Directory " + dir + " not found");
         }
 
         // create controller
-        AnimatorController controller = AnimatorController.CreateAnimatorControllerAtPath(dir + "/" + characterName + ".controller");
+        var controller = AnimatorController.CreateAnimatorControllerAtPath(dir + "/" + characterName + ".controller");
 
         // add parameters
         foreach (EAnimationParameter parameter in Enum.GetValues(typeof(EAnimationParameter)))
@@ -67,7 +69,7 @@ public class AnimatorGenerator
         }
 
         // add statemachines
-        Dictionary<EStateMachine, AnimatorStateMachine> stateMachines = new Dictionary<EStateMachine, AnimatorStateMachine>
+        var stateMachines = new Dictionary<EStateMachine, AnimatorStateMachine>
         {
             { EStateMachine.root, controller.layers[0].stateMachine }
         };
@@ -76,7 +78,7 @@ public class AnimatorGenerator
 
         // add states with blend trees
         // add an empty state for the attack sm
-        Dictionary<EAbilityType, AnimatorState> states = new Dictionary<EAbilityType, AnimatorState>();
+        var states = new Dictionary<EAbilityType, AnimatorState>();
         foreach (EAbilityType ability in Enum.GetValues(typeof(EAbilityType)))
         {
             if (ability == EAbilityType.NDEF) continue;
@@ -84,10 +86,11 @@ public class AnimatorGenerator
             // TODO change this to be less hacky later
             //string attackFramesName = ability == EAbilityType.ranged ? "active" : "";
 
-            states.Add(ability, CreateBlendTree(controller, stateMachines[ability.ToEStateMachine()], ability.ToString()));
+            var blendTree = CreateBlendTree(controller, stateMachines[ability.ToEStateMachine()], ability.ToString());
+            if (blendTree != null) states.Add(ability, blendTree);
         }
         // redirection state for attacks
-        AnimatorState redirectionState = stateMachines[EStateMachine.attack].AddState(redirection);
+        var redirectionState = stateMachines[EStateMachine.attack].AddState(redirection);
         // startup state for aimed ranged attack
         //AnimatorState rangedStartupState = CreateBlendTree(controller, stateMachines[EAbilityType.ranged.ToEStateMachine()], EAbilityType.ranged.ToString(), "startup");  // only for aimed rng atk
         // set default states for each sm
@@ -108,26 +111,35 @@ public class AnimatorGenerator
             new AnimatorTransitionProperties(AnimatorConditionMode.If, 0, EAnimationParameter.attack.ToString()));
         AddTransition(states[EAbilityType.walk], redirectionState,
             new AnimatorTransitionProperties(AnimatorConditionMode.If, 0, EAnimationParameter.attack.ToString()));
-        // from redirection state -
-        // TODO change this to a loop for more attacks later !!
-        // TODO also take into account different attack effects (i.e. for click, aim and spray attacks there'll be different states !!
-        AddAttackTransition(redirectionState, states[EAbilityType.melee], stateMachines[EStateMachine.move], 0);
-        AddAttackTransition(redirectionState, states[EAbilityType.ranged], stateMachines[EStateMachine.move], 1);  
-        //AddAttackTransition(redirectionState, states[EAbilityType.special], stateMachines[EStateMachine.move], 2);
+        // from redirection state
+        // TODO change this to a loop for more attacks later
+        // TODO also take into account different attack effects (i.e. for click, aim and spray attacks there'll be different states)
+        if (states.ContainsKey(EAbilityType.melee)) AddAttackTransition(redirectionState, states[EAbilityType.melee], stateMachines[EStateMachine.move], 0);
+        if (states.ContainsKey(EAbilityType.ranged)) AddAttackTransition(redirectionState, states[EAbilityType.ranged], stateMachines[EStateMachine.move], 1);  
+        if (states.ContainsKey(EAbilityType.special)) AddAttackTransition(redirectionState, states[EAbilityType.special], stateMachines[EStateMachine.move], 2);
         //AddAttackTransition(redirectionState, states[EAbilityType.ranged], stateMachines[EStateMachine.move], 1, EAttackEffect.Aim, rangedStartupState);  // only for aimed rng atk
         // add behaviours
-        states[EAbilityType.melee].AddStateMachineBehaviour<AttackStateMachine>();
-        states[EAbilityType.ranged].AddStateMachineBehaviour<AttackStateMachine>();
-        //states[EAbilityType.special].AddStateMachineBehaviour<AttackStateMachine>();
+        if (states.ContainsKey(EAbilityType.melee)) states[EAbilityType.melee].AddStateMachineBehaviour<AttackStateMachine>();
+        if (states.ContainsKey(EAbilityType.ranged)) states[EAbilityType.ranged].AddStateMachineBehaviour<AttackStateMachine>();
+        if (states.ContainsKey(EAbilityType.special)) states[EAbilityType.special].AddStateMachineBehaviour<AttackStateMachine>();
         //rangedStartupState.AddStateMachineBehaviour<AttackStateMachine>();  // only for aimed rng atk
 
         // dash
-        AddBoolTransition(states[EAbilityType.idle], states[EAbilityType.dash], stateMachines[EStateMachine.move], EAnimationParameter.dashing.ToString());
-        AddBoolTransition(states[EAbilityType.walk], states[EAbilityType.dash], stateMachines[EStateMachine.move], EAnimationParameter.dashing.ToString());
+        if (states.ContainsKey(EAbilityType.dash))
+        {
+            AddBoolTransition(states[EAbilityType.idle], states[EAbilityType.dash], stateMachines[EStateMachine.move],
+                EAnimationParameter.dashing.ToString());
+            AddBoolTransition(states[EAbilityType.walk], states[EAbilityType.dash], stateMachines[EStateMachine.move],
+                EAnimationParameter.dashing.ToString());
+        }
 
         // hit and death
         AddAnyTriggerTransition(stateMachines[EStateMachine.root], states[EAbilityType.hit], 
             stateMachines[EStateMachine.move], EAnimationParameter.hit.ToString());
+        // everyone has the same death animation
+        states[EAbilityType.death] = stateMachines[EStateMachine.root].AddState(EAbilityType.death.ToString());
+        states[EAbilityType.death].motion = (AnimationClip)AssetDatabase.LoadAssetAtPath(deathAnimPath, typeof(AnimationClip));
+        states[EAbilityType.death].AddStateMachineBehaviour<DeathStateMachine>();
         AddAnyTriggerTransition(stateMachines[EStateMachine.root], states[EAbilityType.death],
             stateMachines[EStateMachine.move], EAnimationParameter.death.ToString());
 

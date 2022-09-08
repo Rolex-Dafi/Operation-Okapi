@@ -177,6 +177,11 @@ public class CombatCharacter : Character, IDamagable
     {
         Animator.SetTrigger(EAnimationParameter.death.ToString());
         RuntimeManager.PlayOneShot(data.onDeathSound.Guid);
+        canMove = false;
+    }
+
+    public void CleanUp()
+    {
         onDeath.Invoke();
         Destroy(gameObject);
     }

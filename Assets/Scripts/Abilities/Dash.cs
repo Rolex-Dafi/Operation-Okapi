@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Dash : Ability
 {
+    private HitBoxController hitBoxController; // if dash does damage - the collider also needs to be enabled in the animation
+    
     private float lastTimeUsed;
     private int numUsedInChain;
     public DashSO Data { get => (DashSO)data; protected set => data = value; }
@@ -15,8 +17,9 @@ public class Dash : Ability
         lastTimeUsed = 0;
         numUsedInChain = 0;
         characterLayerID = character.gameObject.layer;
+        
+        hitBoxController = character.GetComponentInChildren<HitBoxController>();
     }
-
 
     public override void OnBegin()
     {
@@ -50,6 +53,9 @@ public class Dash : Ability
 
         // ignore obstacles when dashing - this includes enemies/the player - set in Layer Collision Matrix in Project Settings
         character.gameObject.layer = LayerMask.NameToLayer(Utility.ignoreObstaclesLayer);
+        
+        // if dash does damage, init hitbox
+        if (Data.damage > 0) hitBoxController.Init(Data);
         
         while (InUse)
         {

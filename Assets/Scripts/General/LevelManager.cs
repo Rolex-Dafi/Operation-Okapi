@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum Level
@@ -226,6 +224,13 @@ public class LevelManager : MonoBehaviour
 
     private void EndLevel()
     {
+        // clean up last room - should always be the boss
+        if (previousRoom != null)
+        {
+            Destroy(previousRoom);
+            previousRoom = null;
+        }
+        
         // notify all listeners - should be at least game manager and HUD
         onLevelComplete.Invoke();
         
