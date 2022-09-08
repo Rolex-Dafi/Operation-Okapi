@@ -22,4 +22,6 @@ public class LevelSO : ScriptableObject
     [Header("Special rooms")]
     public SpecialRoom merchantRoomPrefab;
     public SpecialRoom bossRoomPrefab;
+
+    public TextAsset bossNavGraphData; // pre-computed and saved data about the boss room navigation graph
 }

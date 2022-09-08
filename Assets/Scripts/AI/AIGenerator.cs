@@ -173,6 +173,11 @@ public class AIGenerator : MonoBehaviour
         return true;
     }
 
+    public void LoadGraph(TextAsset graphData)
+    {
+        AstarPath.active.data.DeserializeGraphs(graphData.bytes);
+    }
+    
     /// <summary>
     /// Removes itself from the scene - should be called when instantiating a prefab which
     /// already has a navmesh generated.

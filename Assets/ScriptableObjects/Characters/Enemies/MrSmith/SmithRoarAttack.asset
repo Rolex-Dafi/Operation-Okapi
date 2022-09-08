@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e64b9df5068ba247a2d408399dba8c8, type: 3}
   m_Name: SmithRoarAttack
   m_EditorClassIdentifier: 
-  coolDown: 0.5
+  coolDown: 2
   onBeginSound:
     Guid:
-      Data1: 1600317305
-      Data2: 1223787421
-      Data3: -592736086
-      Data4: -1472659454
-    Path: event:/SFX/Melee
+      Data1: 1391659015
+      Data2: 1082295178
+      Data3: 1494663845
+      Data4: 1392971024
+    Path: event:/SFX/Roar
   onEndSound:
     Guid:
       Data1: 0
@@ -33,11 +33,11 @@ MonoBehaviour:
   effect: 0
   damage: 2
   cost: 0
-  recoveryTime: 2
-  attackRange: 0.5
+  recoveryTime: 1
+  attackRange: 1.5
   movementSpeedFactor: 0
   enemyPushbackDistance: 1
-  enemyPushbackSpeed: 15
+  enemyPushbackSpeed: -5
   projectilePrefab: {fileID: 4754095188408049542, guid: 5c61aeab842b3c545a391ffb9482a26b, type: 3}
   projectileSpeed: 10
   projectileDelay: 0

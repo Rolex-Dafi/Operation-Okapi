@@ -24,7 +24,7 @@ public class AttackSO : AbilitySO
     [Range(0, 1)] public float movementSpeedFactor = 0;
 
     public float enemyPushbackDistance = 0;
-    public float enemyPushbackSpeed = 40;
+    public float enemyPushbackSpeed = 40;   // if speed is negative -> pull instead of push
 
     // for ranged only
     public ProjectileController projectilePrefab;

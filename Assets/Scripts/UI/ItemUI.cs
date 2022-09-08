@@ -41,6 +41,9 @@ public class ItemUI : MonoBehaviour
         // punch scale
         transform.localScale = Vector3.one;
         //transform.DOPunchScale(Vector3.one * 0.5f, .4f, 1, 0);
+        
+        // fade cracked effect - in case previous item in this spot was cracked
+        cracked.DOColor(new Color(1, 1, 1, 0), .15f);
 
         currentItem = item;
     }
@@ -59,9 +62,12 @@ public class ItemUI : MonoBehaviour
         if (item.Data != currentItem)
         {
             // item is cracked <- can only happen when switching into empty box
-            if (item.Data != currentItem && item.CurrentHealth == 1) CrackItem();
+            var isCracked = item.Data != currentItem && item.CurrentHealth == 1;
             
             AddItem(item.Data);
+            
+            // only crack the item after adding it
+            if (isCracked) CrackItem();
             return;
         }
         
