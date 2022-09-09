@@ -21,6 +21,7 @@ public class CombatCharacter : Character, IDamagable
     protected Health health;
     protected bool canMove;
     protected List<Attack> attacks;
+    protected List<Trap> traps;
     protected Dash dash;
     [SerializeField] private Transform projectileSpawnerTransform;
 
@@ -42,6 +43,8 @@ public class CombatCharacter : Character, IDamagable
     public Dash GetDash() => dash; 
     public Attack GetAttackByID(int id) => attacks.Find(x => x.Data.id == id);
 
+    public Trap GetMainTrap() => traps.Count > 0 ? traps[0] : null;
+
     public override void Init()
     {
         base.Init();
@@ -55,6 +58,14 @@ public class CombatCharacter : Character, IDamagable
             Attack attack = attackSO.GetAttack(this);
             if (attack != null) attacks.Add(attack);
         }
+
+        traps = new List<Trap>();
+        foreach (TrapSO trapSO in data.traps)
+        {
+            Trap trap = trapSO.GetTrap(this);
+            if (trap != null) traps.Add(trap);
+        }
+        
         if (data.dash != null)
         {
             dash = data.dash.GetDash(this);
@@ -124,6 +135,25 @@ public class CombatCharacter : Character, IDamagable
                 return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// Activates the given trap. If no trap specified, activates the first trap in the characters trap list if present.
+    /// </summary>
+    /// <param name="trap">The trap to activate</param>
+    public void ActivateTrap(Trap trap = null)
+    {
+        if (trap == null)
+        {
+            if (traps.Count > 0)
+            {
+                traps[0].OnBegin();
+            }
+        }
+        else
+        {
+            trap.OnBegin();
+        }
     }
 
     /// <summary>

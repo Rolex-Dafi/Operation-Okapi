@@ -55,6 +55,7 @@ MonoBehaviour:
   - {fileID: 744881628516905296, guid: fd9cd61acbaca944b9a204b54237debe, type: 3}
   - {fileID: 744881628516905296, guid: 28c0cd9d6175081499bb2120e5f0b7b1, type: 3}
   - {fileID: 744881628516905296, guid: 21eb7773a4dc12144b6b429de9a6fbb4, type: 3}
+  - {fileID: 744881628516905296, guid: 4abbfeda0b3bf89439bfcada879fe96b, type: 3}
   healthBarPrefab: {fileID: 4593451816082154621, guid: 244f58c0f9d5f1b44960c1faeabd2fb0, type: 3}
   onAllEnemiesDefeated:
     m_PersistentCalls:

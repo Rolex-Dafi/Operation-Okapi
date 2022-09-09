@@ -19,7 +19,7 @@ public class AttackTarget : TaskBase
 
     protected override void OnBegin()
     {
-        // get the taget from shared data
+        // get the target from shared data
         target = bt.GetItem(targetName) as Vector3?;
         // if it's not in shared data -> report failure
         if (target == null)

@@ -16,7 +16,14 @@ public class HitBoxController : MonoBehaviour
         HandleCollision(transform, collision, data, tag);
     }
 
-    public static void HandleCollision(Transform transform, Collider2D collision, AbilitySO attackData, string friendlyTag)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="transform">The transform of the object whose collision we're handling</param>
+    /// <param name="collision">The collider of the object which collided with the transform</param>
+    /// <param name="abilityData">The data </param>
+    /// <param name="friendlyTag"></param>
+    public static void HandleCollision(Transform transform, Collider2D collision, AbilitySO abilityData, string friendlyTag)
     {
         // check for friendly fire
         if (!collision.CompareTag(friendlyTag))
@@ -24,19 +31,19 @@ public class HitBoxController : MonoBehaviour
             // if object with which we collided is damageable, damage it
             if (collision.gameObject.TryGetComponent<IDamagable>(out var damageable))
             {
-                damageable.TakeDamage(attackData.damage);
+                damageable.TakeDamage(abilityData.damage);
             }
 
             // if attack has pushback
-            if (attackData.enemyPushbackDistance > 0)
+            if (abilityData.enemyPushbackDistance > 0)
             {
                 // and object with which we collided is pushable, push/pull it
                 if (collision.gameObject.TryGetComponent<IPushable>(out var pushable))
                 {
                     pushable.Push(
                         collision.transform.position - transform.position, 
-                        attackData.enemyPushbackDistance, 
-                        attackData.enemyPushbackSpeed
+                        abilityData.enemyPushbackDistance, 
+                        abilityData.enemyPushbackSpeed
                         );
                 }
             }

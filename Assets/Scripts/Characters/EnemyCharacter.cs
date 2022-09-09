@@ -10,6 +10,8 @@ public class EnemyCharacter : CombatCharacter
     [SerializeField] private DroppedItem droppedItemPrefab;
 
     [SerializeField] private ItemSO[] drops;
+    
+    private List<Trap> traps;
 
     private PlayerCharacter playerCharacter;
 
@@ -24,7 +26,7 @@ public class EnemyCharacter : CombatCharacter
     {
         this.playerCharacter = playerCharacter;
         base.Init();
-
+        
         enemyAI = GetComponent<CharacterTreeBase>(); // ! this assumes no subtrees !
         enemyAI.ShouldUpdate = true;
     }

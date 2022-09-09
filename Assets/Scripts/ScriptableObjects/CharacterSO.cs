@@ -10,6 +10,7 @@ public class CharacterSO : ScriptableObject
 
     // combat
     public AttackSO[] attacks;
+    public TrapSO[] traps;
     public DashSO dash;
 
     // sound

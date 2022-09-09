@@ -186,4 +186,24 @@ public abstract class CharacterTreeBase : TreeBase
 
         return new Sequence(dashSequence);
     }
+
+    protected Node GetTrapBT(Trap trap, bool checkCD = true)
+    {
+        Node trapTask = new SequenceWithCachedLastChild(
+            new List<Node>()
+            {
+                new WaitFor(this, trap.Data.activationTime, debugName: "dash startup"), 
+                new ActivateTrapTask(this)
+            }
+        );
+
+        List<Node> trapSequence = new List<Node>();
+        if (checkCD)
+        {
+            trapSequence.Add(new Inverter(new AbilityOnCD(this, trap, debugName: "attack on cd")));
+        }
+        trapSequence.Add(trapTask);
+
+        return new Sequence(trapSequence);
+    }
 }

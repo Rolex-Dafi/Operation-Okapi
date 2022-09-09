@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: JoeDash
   m_EditorClassIdentifier: 
   coolDown: 0.7
-  damage: 2
+  damage: 1
   enemyPushbackDistance: 0
   enemyPushbackSpeed: 40
   onBeginSound:

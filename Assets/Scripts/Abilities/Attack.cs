@@ -8,7 +8,7 @@ using UnityEngine.Events;
 /// </summary>
 public class Attack : Ability
 {
-    public AttackSO Data { get => (AttackSO)data; protected set => data = value; }
+    public AttackSO Data => (AttackSO)data;
 
     public Attack(CombatCharacter character, AttackSO data, EAbilityType type) : base(character, data, type)
     {
@@ -25,12 +25,5 @@ public class Attack : Ability
         // slow down character
         character.SetMovementSpeed(Data.movementSpeedFactor);
     }
-
-}
-
-public static class AttackExtensions
-{
-
-
 
 }
