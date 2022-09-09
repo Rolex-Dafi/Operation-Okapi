@@ -176,6 +176,7 @@ public class AIGenerator : MonoBehaviour
     public void LoadGraph(TextAsset graphData)
     {
         AstarPath.active.data.DeserializeGraphs(graphData.bytes);
+        AstarPath.active.Scan();
     }
     
     /// <summary>

@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
-public class MenuManager : MonoBehaviour
+/// <summary>
+/// Class for any UI overlay with buttons relating to high-level game logic - ex. menus, game over screen.
+/// </summary>
+public class UIOverlayManager : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI title;
+    
     private GameManager gameManager;
 
     public void Init(GameManager gameManager)
@@ -12,6 +18,15 @@ public class MenuManager : MonoBehaviour
         this.gameManager = gameManager;
     }
 
+    /// <summary>
+    /// Changes the title text of the overlay, if present.
+    /// </summary>
+    /// <param name="text"></param>
+    public void ChangeTitle(string text)
+    {
+        if (title != null) title.text = text;
+    }
+    
     /// <summary>
     /// Begin game - only call from main menu.
     /// </summary>

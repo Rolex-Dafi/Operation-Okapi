@@ -13,14 +13,13 @@ MonoBehaviour:
   m_Name: StreetLevel
   m_EditorClassIdentifier: 
   level: 1
-  numberOfRooms: 7
+  numberOfRooms: 8
   enemies:
-  - {fileID: 11400000, guid: 9d86bbfc01c92fb4098fc9636ec8a6a3, type: 2}
   - {fileID: 11400000, guid: ac07ad6af016a864ba7572b957a9e782, type: 2}
-  - {fileID: 11400000, guid: 83b04af7c4cf3824e8d1f3f8b9fe05c0, type: 2}
+  - {fileID: 11400000, guid: db22889859e538743b33956f9a3dd56f, type: 2}
   - {fileID: 11400000, guid: a8abf4ff10a38e340a5d64396286f4a6, type: 2}
   boss: {fileID: 11400000, guid: 4ad340b23ec6cfc4a9983c6a2ec4e680, type: 2}
-  roomGeneratorPrefab: {fileID: 6983978336793118391, guid: 85f7f9e7b3ddb1c479981be9600b54d9, type: 3}
+  roomGeneratorPrefab: {fileID: 2931206626607887235, guid: 409e8cf51be992f469ef38f263e18e84, type: 3}
   merchantRoomPrefab: {fileID: 480774433257717806, guid: 6bb9cfc9cb6424a46b836d22212602ff, type: 3}
-  bossRoomPrefab: {fileID: 3068351568661815356, guid: ab80c0111ad3a694fa54614fcf09808e, type: 3}
-  bossNavGraphData: {fileID: 4900000, guid: 595c1af1d5d01bc43896047cdfbf822e, type: 3}
+  bossRoomPrefab: {fileID: 3222346399066767362, guid: a342245f32067bb42a527589b3d7ddbe, type: 3}
+  bossNavGraphData: {fileID: 4900000, guid: 64ff43d04c576084cb7da98e78ad12ed, type: 3}

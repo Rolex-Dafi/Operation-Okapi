@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0efddb6c2cd2a3044a0826efcacbfc91, type: 3}
+  m_Name: JoeDash
+  m_EditorClassIdentifier: 
+  coolDown: 0.7
+  damage: 2
+  enemyPushbackDistance: 0
+  enemyPushbackSpeed: 40
+  onBeginSound:
+    Guid:
+      Data1: -1478492587
+      Data2: 1274930920
+      Data3: -1193148023
+      Data4: 1903742650
+    Path: event:/SFX/Dash
+  onEndSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  distance: 1.5
+  speed: 5
+  deltaBeforeMax: 1
+  deltaAfterMax: 0.7
+  maxNumChained: 1

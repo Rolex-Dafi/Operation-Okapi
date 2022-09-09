@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Checks whether target is within specified range. (Doesn't check whether it's unobstructed.)
+/// Checks whether target is within specified range. 
 /// </summary>
 public class TargetInRange : CheckBase
 {

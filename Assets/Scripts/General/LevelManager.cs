@@ -7,7 +7,8 @@ public enum Level
     Office,
     Street,
     Mall,
-    Roof
+    Roof,
+    End
 }
 
 public enum RoomType 

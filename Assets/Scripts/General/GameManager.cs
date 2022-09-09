@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [Header("Exposed Fields")]
-    public Canvas worldSpaceCanvas;
+    public Canvas worldSpaceCanvas;  // for things like enemy health bars
     
     [Header("Data")] 
     public TooltipUI tooltipUIPrefab;
@@ -23,15 +23,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelManager levelManagerPrefab; 
 
     [Header("UI Prefabs")] 
-    [SerializeField] private MenuManager mainMenuPrefab;
-    [SerializeField] private MenuManager pauseMenuPrefab;
+    [SerializeField] private UIOverlayManager mainMenuPrefab;
+    [SerializeField] private UIOverlayManager pauseMenuPrefab;
+    [SerializeField] private UIOverlayManager gameEndPrefab;
     [SerializeField] private HUDManager hudPrefab;
 
     // player
     public PlayerCharacter PlayerCharacterInstance { get; private set; }
 
     // UI
-    private MenuManager menuInstance;
+    private UIOverlayManager menuInstance;
     private HUDManager hudInstance;
 
     // game specific
@@ -46,10 +47,10 @@ public class GameManager : MonoBehaviour
 
         // load the first scene
         // for now the main menu
-        OpenMenu();
+        OpenMainMenu();
     }
 
-    private void OpenMenu()
+    private void OpenMainMenu()
     {
         Debug.Log("opening menu");
         
@@ -68,6 +69,9 @@ public class GameManager : MonoBehaviour
         audioManager.Refresh(); // new buttons added -> find them and add sounds to them
     }
 
+    /// <summary>
+    /// Starts the game.
+    /// </summary>
     public void StartGame()
     {
         Debug.Log("starting game");
@@ -86,7 +90,7 @@ public class GameManager : MonoBehaviour
         // start the first level
         StartLevel(Level.Office);
         
-        PlayerCharacterInstance.onDeath.AddListener(GameOver);
+        PlayerCharacterInstance.onDeath.AddListener(() => GameEnd(false));
         
         // set game in progress
         gameInProgress = true;
@@ -94,8 +98,23 @@ public class GameManager : MonoBehaviour
 
     private void StartLevel(Level level)
     {
+        switch (level)
+        {
+            // End the game
+            case Level.End:
+                GameEnd(true);
+                return;
+            // special level - has slightly different logic than the rest
+            case Level.Roof:
+                // TODO implement special logic here - probably just spawn a prefab
+            
+                // for now:
+                GameEnd(true);
+                return;
+        }
+
         // instantiate the level
-        currentLevelInstance = Instantiate(levelManagerPrefab);
+        currentLevelInstance = Instantiate(levelManagerPrefab);  
         currentLevelInstance.Init(this, levelData.First(x => x.level == level));
         // load the first room
         currentLevelInstance.LoadRoom(PlayerCharacterInstance);
@@ -124,6 +143,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Pauses the game.
+    /// </summary>
+    /// <param name="pause"></param>
     public void PauseGame(bool pause)
     {
         Debug.Log("setting game paused to " + pause);
@@ -133,13 +156,19 @@ public class GameManager : MonoBehaviour
         PlayerCharacterInstance.ReadInput = !pause;  // stop reading player input
     }
 
-    private void GameOver()
+    private void GameEnd(bool won)
     {
-        // TODO display game over sign + return to menu button instead
-        // clean everything up - i.e. reload the scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("ending game, won = " + won);
+        
+        menuInstance = Instantiate(gameEndPrefab);
+        menuInstance.Init(this);
+        menuInstance.ChangeTitle(won ? "You win!" : "Game Over");
+        audioManager.Refresh(); // new buttons added -> find them and add sounds to them
     }
 
+    /// <summary>
+    /// Returns to main menu.
+    /// </summary>
     public void BackToMain()
     {
         // unpause the game first

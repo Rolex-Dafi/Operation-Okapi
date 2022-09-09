@@ -64,6 +64,9 @@ public class PlayerInventory
     /// <returns>the remaining health of the player (i.e sum of hp of all items in inventory)</returns>
     public int ReceiveDamage(int damage)
     {
+        // in case the player is dead
+        if (LastItemIndex <= 0) return 0;
+        
         // get top item
         var topItem = Equipped[LastItemIndex];
         // only the top item receives damage -> no overkill dmg

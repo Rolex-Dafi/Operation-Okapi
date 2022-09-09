@@ -126,9 +126,9 @@ GameObject:
   - component: {fileID: 1045408381992066637}
   - component: {fileID: 1045408381992066636}
   - component: {fileID: 744881628516905296}
-  - component: {fileID: 6722359363133071970}
   - component: {fileID: 3078057376987710060}
   - component: {fileID: 2446276194769548967}
+  - component: {fileID: 614304466268524144}
   m_Layer: 7
   m_Name: Joe
   m_TagString: Enemy
@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64961dfd19ddfd4428302b334644e4c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 9d86bbfc01c92fb4098fc9636ec8a6a3, type: 2}
+  data: {fileID: 11400000, guid: db22889859e538743b33956f9a3dd56f, type: 2}
   movementSpeed: 0.5
   projectileSpawnerTransform: {fileID: 1045408380506308069}
   onDeath:
@@ -287,20 +287,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 114b34a9ad105ea4095b31a3dfaa6059, type: 2}
   - {fileID: 11400000, guid: 93dcd1daef57b1a448f66b7c353a6778, type: 2}
   - {fileID: 11400000, guid: 01654c78eecfe5e478411ce5bfb89ea3, type: 2}
---- !u!114 &6722359363133071970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1045408381992066639}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d4cfc9dbf1cc934b89880972e47bf0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rootTree: {fileID: 0}
-  patrollPoints: []
 --- !u!114 &3078057376987710060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,6 +337,20 @@ MonoBehaviour:
   bezierTangentLength: 0.4
   offset: 0.2
   factor: 0.1
+--- !u!114 &614304466268524144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045408381992066639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e91441d3a537b84488ffcfddc075f73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootTree: {fileID: 0}
+  patrollPoints: []
 --- !u!1 &7280026177934998535
 GameObject:
   m_ObjectHideFlags: 0

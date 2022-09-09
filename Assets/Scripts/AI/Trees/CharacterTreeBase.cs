@@ -158,4 +158,32 @@ public abstract class CharacterTreeBase : TreeBase
 
         return new Sequence(dashSequence);
     }
+
+    /// <summary>
+    /// Specifically for dashes that do damage.
+    /// </summary>
+    /// <param name="checkCD">Take cooldown into account</param>
+    /// <returns></returns>
+    protected Node GetDashBT(bool checkCD = true)
+    {
+        // dash attack
+        Node dashTask = new SequenceWithCachedLastChild(
+            new List<Node>()
+            {
+                new WaitFor(this, Character.GetDash().Data.deltaAfterMax, debugName:"dash startup"),    // dash startup
+                new DashToTarget(this, AIUtility.PCPositionName, debugName:"dash to pc"),      // dash to pc
+            }
+        );
+
+        // check if in dash range
+        List<Node> dashSequence = new List<Node>();
+        if (checkCD)
+        {
+            dashSequence.Add(new Inverter(new AbilityOnCD(this, Character.GetDash(), debugName: "dash on cd")));                                   // dash not on cd AND
+        }
+        dashSequence.Add(new TargetInRange(this, AIUtility.PCPositionName, Character.GetDash().Data.distance, EObstacleFilter.Obstacles));         // pc in dash range AND
+        dashSequence.Add(dashTask);                                                                                                                // perform dash    
+
+        return new Sequence(dashSequence);
+    }
 }
