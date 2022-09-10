@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1678117210744168495}
   - component: {fileID: 1678117210744168494}
-  - component: {fileID: 1586935579521748317}
+  - component: {fileID: 6277135508445758083}
   m_Layer: 6
   m_Name: Chairs_brown
   m_TagString: Untagged
@@ -84,8 +84,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!68 &1586935579521748317
-EdgeCollider2D:
+--- !u!60 &6277135508445758083
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -98,18 +98,23 @@ EdgeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.2}
+    oldSize: {x: 1.0777777, y: 0.83518517}
+    newSize: {x: 1.0777777, y: 0.83518517}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   m_Points:
-  - {x: -0.2408213, y: 0.027119428}
-  - {x: -0.10597432, y: -0.08571112}
-  - {x: 0.18218946, y: -0.048193514}
-  - {x: 0.18131268, y: 0.09784025}
-  - {x: -0.057706, y: 0.13879377}
-  - {x: -0.23850894, y: 0.024989486}
-  m_AdjacentStartPoint: {x: 0, y: 0}
-  m_AdjacentEndPoint: {x: 0, y: 0}
-  m_UseAdjacentStartPoint: 0
-  m_UseAdjacentEndPoint: 0
+    m_Paths:
+    - - {x: -0.23888889, y: -0.009629652}
+      - {x: -0.18703704, y: 0.07555553}
+      - {x: -0.06481481, y: 0.14037034}
+      - {x: 0.18703704, y: 0.08111109}
+      - {x: 0.18888889, y: -0.06888891}
+      - {x: -0.07222222, y: -0.11518521}
 --- !u!1 &2650589103091501055
 GameObject:
   m_ObjectHideFlags: 0

@@ -99,9 +99,61 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6253182725838902909, guid: 6a7bb5dab57ceab40ac710bab2ec8b35, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6253182725838902909, guid: 6a7bb5dab57ceab40ac710bab2ec8b35, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.x
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 6253182725838902909, guid: 6a7bb5dab57ceab40ac710bab2ec8b35, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 0.71481484
+      objectReference: {fileID: 0}
+    - target: {fileID: 6253182725838902909, guid: 6a7bb5dab57ceab40ac710bab2ec8b35, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 0.6166667
+      objectReference: {fileID: 0}
     - target: {fileID: 8422013538848740871, guid: 6a7bb5dab57ceab40ac710bab2ec8b35, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: bc10ebcc3e996614fb476e556acc2fd3, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7588130791490715295, guid: 6a7bb5dab57ceab40ac710bab2ec8b35, type: 3}
+    - {fileID: 6253182725838902909, guid: 6a7bb5dab57ceab40ac710bab2ec8b35, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6a7bb5dab57ceab40ac710bab2ec8b35, type: 3}
+--- !u!1 &7052552561516077637 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2962092067545111600, guid: 6a7bb5dab57ceab40ac710bab2ec8b35, type: 3}
+  m_PrefabInstance: {fileID: 5243531623494368885}
+  m_PrefabAsset: {fileID: 0}
+--- !u!60 &6160931075074842385
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7052552561516077637}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.45, y: 0.3}
+    oldSize: {x: 0.71481484, y: 0.6166667}
+    newSize: {x: 1.0777777, y: 0.83518517}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.2735185, y: 0.029814811}
+      - {x: -0.08833332, y: 0.10759259}
+      - {x: 0.3487037, y: -0.09796296}
+      - {x: 0.18203704, y: -0.18129629}

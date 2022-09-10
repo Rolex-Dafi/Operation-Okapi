@@ -111,5 +111,41 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 628ce92af8de7f449b2c1bac646fd419, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6277135508445758083, guid: b01b39ed3b1cd754fbb05ba31e647716, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b01b39ed3b1cd754fbb05ba31e647716, type: 3}
+--- !u!1 &2668817367007315037 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1678117210744168492, guid: b01b39ed3b1cd754fbb05ba31e647716, type: 3}
+  m_PrefabInstance: {fileID: 3620988620141061233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!60 &7705708417558297182
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2668817367007315037}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.2}
+    oldSize: {x: 0.7185185, y: 0.98888886}
+    newSize: {x: 1.0777777, y: 0.83518517}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.10555556, y: -0.18666667}
+      - {x: -0.25555554, y: -0.044074077}
+      - {x: -0.074074075, y: 0.11703703}
+      - {x: 0.22222222, y: 0.011481476}
+      - {x: 0.16481481, y: -0.16074075}
