@@ -18,6 +18,8 @@ public class MallGenerator : MapGenerator
     public List<GameObject> props;
     public List<Tile> storefrontsSW;
     public List<Tile> storefrontsSE;
+
+    public GameObject pillarObj;
     
     public override void Generate()
     {
@@ -30,6 +32,7 @@ public class MallGenerator : MapGenerator
         GenerateGrid();
         GenerateDoors(); 
         PutDownWalls();
+        GenerateObjects();
         //PutDownObjects(gridStartX, gridStartY, _grid.GetLength(1), _grid.GetLength(0), props, 100);
     }
 
@@ -305,6 +308,59 @@ public class MallGenerator : MapGenerator
                 
                 if(CheckWallTiles(extraWall, wall.Start+i-1, wall.Start+i+4, wall.Height, wall.Orientation))
                     extraWall.SetTile(tilePos, newTile);
+            }
+        }
+    }
+
+    private void GenerateObjects()
+    {
+        Random rnd = new Random();
+
+        /*if (Heads(rnd))*/ PutDownPillars(rnd);
+    }
+
+    private void PutDownPillars(Random rnd)
+    {
+        int gap;
+        
+        if (_room.Type == RoomType.HOR_HALL)
+        {
+            gap = rnd.Next(_room.Width/2, _room.Width*2/3);
+            for (int i = 0; i < _room.Width*2+1; i += gap)
+            {
+                if (_room.StartX * 2 + 2 + i >= _room.StartX*2 + _room.Width*2) break;
+                Debug.Log("Putting down pillar at " + (_room.StartX * 2 + 1 + i) + "x" + (_room.StartY * 2 + 1));
+                if(_crossroads) InstantiateObjectInWorld(pillarObj, new Vector3Int(_room.StartX * 2 + 1 + i, _room.StartY * 2 + _room.Height, 0));
+                else InstantiateObjectInWorld(pillarObj, new Vector3Int(_room.StartX * 2 + 1 + i, _room.StartY * 2 + 1, 0));
+            }
+        }
+        else
+        {
+            gap = rnd.Next(_room.Height/2, _room.Height*2/3);
+            for (int i = 0; i < _room.Height*2+1; i += gap)
+            {
+                if (_room.StartY * 2 + 2 + i >= _room.StartY*2 + _room.Height*2) break;
+                InstantiateObjectInWorld(pillarObj, new Vector3Int( _room.StartX * 2 + 1, _room.StartY * 2 + 1 + i, 0));
+            }
+        }
+
+        if (_extraRoom.Width > 0 && !_crossroads)
+        {
+            if (_extraRoom.Type == RoomType.HOR_HALL)
+            {
+                for (int i = 0; i < _extraRoom.Width*2+1; i += gap)
+                {
+                    if (_extraRoom.StartX * 2 + 2 + i >= _extraRoom.StartX*2 + _extraRoom.Width*2) break;
+                    InstantiateObjectInWorld(pillarObj, new Vector3Int(_extraRoom.StartX * 2 + 1 + i, _extraRoom.StartY * 2 + 1, 0));
+                }
+            }
+            else
+            {
+                for (int i = 0; i < _room.Height*2+1; i += gap)
+                {
+                    if (_extraRoom.StartY * 2 + 2 + i >= _extraRoom.StartY*2 + _extraRoom.Height*2-2) break;
+                    InstantiateObjectInWorld(pillarObj, new Vector3Int( _extraRoom.StartX * 2 + 1, _extraRoom.StartY * 2 + 1 + i, 0));
+                }
             }
         }
     }
