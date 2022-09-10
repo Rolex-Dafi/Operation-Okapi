@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Wrapper class for all characters' abilities.
+/// </summary>
 public abstract class Ability
 {
     protected CombatCharacter character;
@@ -23,6 +26,9 @@ public abstract class Ability
         this.type = type;
     }
 
+    /// <summary>
+    /// Begins performing the ability.
+    /// </summary>
     public virtual void OnBegin() 
     {
         // play on begin sound from SO if assigned
@@ -32,11 +38,18 @@ public abstract class Ability
         InUse = true;
     }
 
+    /// <summary>
+    /// Updates the performing of the ability if the ability is in use.
+    /// </summary>
+    /// <returns></returns>
     public virtual IEnumerator OnContinue() 
     {
         yield return null;
     }
 
+    /// <summary>
+    /// Ends the performing of the ability.
+    /// </summary>
     public virtual void OnEnd() { }
 
 }

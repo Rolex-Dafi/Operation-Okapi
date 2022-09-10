@@ -2,19 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TrapController : MonoBehaviour
 {
     [SerializeField] private Animator animator;
 
-    [SerializeField] private TrapTrigger[] childrenTriggers;
-    
-    private readonly string activate = "Activate";
+    [FormerlySerializedAs("childrenTriggers")] [SerializeField] private TrapDamager[] childrenDamagers;
     
     public void Init(TrapSO data)
     {
         // the actual triggers are on child(ren)
-        foreach (var child in childrenTriggers)
+        foreach (var child in childrenDamagers)
         {
             child.Init(data);
         }
@@ -26,7 +25,14 @@ public class TrapController : MonoBehaviour
     public void ActivateTrap()
     {
         // play animation - the animation should enable the hitbox
-        animator.SetTrigger(activate);
+        animator.SetTrigger(Utility.activateTrigger);
+
+        SpawnProjectiles();
+    }
+
+    private void SpawnProjectiles()
+    {
+        
     }
 
 }

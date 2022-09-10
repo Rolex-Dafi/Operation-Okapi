@@ -16,6 +16,8 @@ public static class Utility
     public const string wallLayer = "Wall";
     public const string ignoreObstaclesLayer = "IgnoreObstacles";
 
+    public const string activateTrigger = "Activate";
+    
     // TODO actually look this size up
     public const float minObstacleSize = .6f;
 

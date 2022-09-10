@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2aac87e2c278664ba08cba91671190a, type: 3}
+  m_Name: RoofLevel
+  m_EditorClassIdentifier: 
+  level: 3
+  numberOfRooms: 3
+  enemies:
+  - {fileID: 11400000, guid: ac07ad6af016a864ba7572b957a9e782, type: 2}
+  - {fileID: 11400000, guid: 83b04af7c4cf3824e8d1f3f8b9fe05c0, type: 2}
+  - {fileID: 11400000, guid: a8abf4ff10a38e340a5d64396286f4a6, type: 2}
+  - {fileID: 11400000, guid: db22889859e538743b33956f9a3dd56f, type: 2}
+  - {fileID: 11400000, guid: 9d86bbfc01c92fb4098fc9636ec8a6a3, type: 2}
+  boss: {fileID: 11400000, guid: c9f9ef82e2ea8094a8280b919013411d, type: 2}
+  roomGeneratorPrefab: {fileID: 6495269628943879577, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
+  merchantRoomPrefab: {fileID: 480774433257717806, guid: 6bb9cfc9cb6424a46b836d22212602ff, type: 3}
+  bossRoomPrefab: {fileID: 3068351568661815356, guid: ab80c0111ad3a694fa54614fcf09808e, type: 3}
+  enemySpawnPoints:
+  - {x: -1.35, y: 1.152, z: 0}
+  - {x: -0.275, y: 1.648, z: 0}
+  - {x: -2.388, y: 2.739, z: 0}
+  - {x: -2.373, y: 1.686, z: 0}
+  - {x: -3.769, y: 2.418, z: 0}
+  bossNavGraphData: {fileID: 4900000, guid: 595c1af1d5d01bc43896047cdfbf822e, type: 3}

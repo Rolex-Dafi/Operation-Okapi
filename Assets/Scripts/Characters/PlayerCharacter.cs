@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FMODUnity;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -20,7 +21,7 @@ public class PlayerCharacter : CombatCharacter, IPushable
 
     public Respect Respect { get; private set; }
 
-    public new PlayerCharacterSO Data {  
+    private new PlayerCharacterSO Data {  
         get {
             if (data.GetType() == typeof(PlayerCharacterSO)) return data as PlayerCharacterSO;
             else
@@ -31,11 +32,17 @@ public class PlayerCharacter : CombatCharacter, IPushable
         } 
     }
 
+    /// <summary>
+    /// Should the player character read input?
+    /// </summary>
     public bool ReadInput
     {
         set => playerController.ReadInput = value;
     }
-    
+   
+    /// <summary>
+    /// Initializes the player character.
+    /// </summary>
     public override void Init()
     {
         base.Init();
@@ -60,6 +67,9 @@ public class PlayerCharacter : CombatCharacter, IPushable
         playerController = GetComponent<PlayerController>();
     }
 
+    /// <summary>
+    /// Starts aiming. Should be called when performing an aimed ranged attack.
+    /// </summary>
     public void StartAiming()
     {
         // inform player controller
@@ -68,6 +78,9 @@ public class PlayerCharacter : CombatCharacter, IPushable
         aimingGFX.SetActive(true);
     }
 
+    /// <summary>
+    /// Rotates the aiming graphic of an aimed ranged attack.
+    /// </summary>
     public void RotateAimingGFX()
     {
         // rotate in the direction the player is facing
@@ -82,6 +95,9 @@ public class PlayerCharacter : CombatCharacter, IPushable
         );
     }
 
+    /// <summary>
+    /// Releases aiming of a ranged attack.
+    /// </summary>
     public void StopAiming()
     {
         // inform player controller
@@ -109,14 +125,26 @@ public class PlayerCharacter : CombatCharacter, IPushable
         }
     }
 
+    /// <summary>
+    /// Add money to player character.
+    /// </summary>
+    /// <param name="amount">The amount to collect</param>
     public void CollectMoney(int amount)
     {
         money.ChangeCurrent(amount);
     }
 
-    public void CollectItem(ItemSO item)
+    /// <summary>
+    /// Try to add an item to player inventory.
+    /// </summary>
+    /// <param name="item">Data of the item to add</param>
+    /// <param name="onItemAdded">Called if the item was added successfully</param>
+    public void CollectItem(ItemSO item, UnityAction onItemAdded = null)
     {
-        Inventory.AddItem(item);
+        if (Inventory.AddItem(item))
+        {
+            onItemAdded?.Invoke();
+        }
     }
 
     public override void TakeDamage(int amount)

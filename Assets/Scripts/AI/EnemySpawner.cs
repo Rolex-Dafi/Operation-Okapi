@@ -1,10 +1,11 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Responsible for spawning and managing enemy characters in the scene.
+/// </summary>
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private EnemyCharacter[] enemyPrefabs;
@@ -12,16 +13,7 @@ public class EnemySpawner : MonoBehaviour
     // UI
     [SerializeField] private ResourceUI healthBarPrefab;
 
-    // Navigation
-    //[SerializeField] private Transform spawnPoint;
-    //[SerializeField] private Transform[] patrollPoints;
-
-    //private bool canSpawn = false;
-    //private bool enemyAlive = false;
-
     private int numEnemiesAlive;
-    
-    //private int lastEnemyIdx = 0;
 
     private PlayerCharacter playerCharacter;
     private GameManager gameManager;
@@ -30,6 +22,11 @@ public class EnemySpawner : MonoBehaviour
     
     [HideInInspector] public UnityEvent onAllEnemiesDefeated;
     
+    /// <summary>
+    /// Initializes the enemy spawner.
+    /// </summary>
+    /// <param name="gameManager">the current game manager</param>
+    /// <param name="playerCharacter">the current player character instance</param>
     public void Init(GameManager gameManager, PlayerCharacter playerCharacter)
     {
         this.gameManager = gameManager;
@@ -42,18 +39,14 @@ public class EnemySpawner : MonoBehaviour
         onAllEnemiesDefeated = new UnityEvent();
     }
 
-    void Update()
-    {
-        //if (canSpawn && !enemyAlive) SpawnEnemy(lastEnemyIdx);
-    }
-
     /// <summary>
     /// Spawns a new enemy in the scene and initializes it.
     /// </summary>
     /// <param name="spawnPoint">The position to spawn the enemy at.</param>
     /// <param name="patrolPoints">The positions between which the enemy will patrol when not engaged in combat</param>
     /// <param name="enemy">The enemy initial data</param>
-    public void SpawnEnemy(Vector3 spawnPoint, Vector3[] patrolPoints, EnemyCharacterSO enemy)
+    /// <param name="onEnemyDeath">Action to perform after the enemy dies</param>
+    public void SpawnEnemy(Vector3 spawnPoint, Vector3[] patrolPoints, EnemyCharacterSO enemy, UnityAction onEnemyDeath = null)
     {
         var enemyCharacter = enemyPrefabs.First(x => x.Data == enemy);
 
@@ -71,7 +64,11 @@ public class EnemySpawner : MonoBehaviour
         healthBarInstance.Init(enemyInstance.Health);
         healthBarInstance.GetComponent<FollowTarget>().Init(enemyInstance.transform);
         
-        enemyInstance.onDeath.AddListener(() => CleanUpEnemy(healthBarInstance, enemyInstance));
+        enemyInstance.onDeath.AddListener(() =>
+        {
+            onEnemyDeath?.Invoke();
+            CleanUpEnemy(healthBarInstance, enemyInstance);
+        });
 
         // Navigation
         enemyInstance.GetComponent<CharacterTreeBase>().patrollPoints = patrolPoints;
@@ -81,27 +78,6 @@ public class EnemySpawner : MonoBehaviour
         ++numEnemiesAlive;
     }
     
-    /*private void SpawnEnemy(int i)
-    {
-        EnemyCharacter enemyInstance = Instantiate(enemyPrefabs[i], spawnPoint.position, Quaternion.identity, transform);
-        enemyInstance.Init(playerCharacter);
-        enemyInstance.onDeath.AddListener(CleanUpEnemy);
-
-        // UI
-        healthBarInstance = Instantiate(healthBarPrefab, gameManager.worldSpaceCanvas.transform);
-        healthBarInstance.Init(enemyInstance.Health);
-        healthBarInstance.GetComponent<FollowTarget>().Init(enemyInstance.transform);
-
-        // Navigation
-        enemyInstance.GetComponent<CharacterTreeBase>().patrollPoints = patrollPoints;
-
-        enemyAlive = true;
-        ++numEnemiesAlive;
-
-        ++lastEnemyIdx;
-        lastEnemyIdx = lastEnemyIdx > enemyPrefabs.Length - 1 ? 0 : lastEnemyIdx;
-    }*/
-
     /// <summary>
     /// All enemies currently spawned stop/start being updated.
     /// </summary>
@@ -120,7 +96,6 @@ public class EnemySpawner : MonoBehaviour
 
         currentEnemies.Remove(enemyInstance);
         
-        //enemyAlive = false;
         --numEnemiesAlive;
         
         if (numEnemiesAlive == 0) onAllEnemiesDefeated.Invoke();

@@ -10,7 +10,7 @@ public class Attack : Ability
 {
     public AttackSO Data => (AttackSO)data;
 
-    public Attack(CombatCharacter character, AttackSO data, EAbilityType type) : base(character, data, type)
+    protected Attack(CombatCharacter character, AttackSO data, EAbilityType type) : base(character, data, type)
     {
         this.data = data;
     }

@@ -65,7 +65,8 @@ public class LevelManager : MonoBehaviour
         
         onLevelComplete = new UnityEvent();
         
-        merchantRoomIndex = Random.Range(1, data.numberOfRooms - 2); // merchant can't be in the first room or the last room
+        // merchant can't be in the first few rooms (those are for presenting new enemies) or the last room
+        merchantRoomIndex = Random.Range(data.enemies.Length, data.numberOfRooms - 2); 
         //merchantRoomIndex = 0; // debug - remove this after merchant tested
         currentRoomIndex = 0;
     }
@@ -77,6 +78,16 @@ public class LevelManager : MonoBehaviour
     public void FreezeLevel(bool freeze)
     {
         enemySpawner.FreezeEnemies(freeze);
+    }
+
+    /// <summary>
+    /// Loads a room according to the room number.
+    /// </summary>
+    /// <param name="player">the current player character</param>
+    /// <param name="roomNumber">the number of the room to load</param>
+    public void LoadRoom(PlayerCharacter player, int roomNumber)
+    {
+        
     }
     
     /// <summary>
@@ -122,15 +133,14 @@ public class LevelManager : MonoBehaviour
                 // then generate the navmesh
                 aiGenerator.Init(roomGenerator);
                 aiGenerator.GenerateGraph();
-                var enemySpawnPoints = aiGenerator.GenerateEnemySpawnPoints(2); // TODO debug, change this to higher number
+                var numEnemies = 2;
+                var enemySpawnPoints = aiGenerator.GenerateEnemySpawnPoints(numEnemies); // TODO debug, change this to higher number
         
                 // spawn enemies
-                // parameters TODO spawn more types of enemy in some rooms
-                //var numEnemyTypes = currentRoomIndex > 2 ? Random.Range(1, 2) : 1; // chance for 2 types if far enough
-                var enemyIndex = currentRoomIndex < 1 ? 0 : Random.Range(0, data.enemies.Length - 1);
-                foreach (var spawnPoint in enemySpawnPoints)
+                var enemiesToSpawn = data.GetEnemiesToSpawn(currentRoomIndex, numEnemies);
+                for (int i = 0; i < numEnemies; i++)
                 {
-                    enemySpawner.SpawnEnemy(spawnPoint, enemySpawnPoints, data.enemies[enemyIndex]); // this passes enemy spawn points as patrol points for each enemy TODO make better
+                    enemySpawner.SpawnEnemy(enemySpawnPoints[i], enemySpawnPoints, enemiesToSpawn[i]);
                 }
                 
                 // place the player - persistent from previous room/level
@@ -196,6 +206,50 @@ public class LevelManager : MonoBehaviour
         {
             exitTrigger.onInteractPressed.AddListener(CompleteRoom);
         }
+    }
+
+    /// <summary>
+    /// Spawns the final room. Should only be used in the final level.
+    /// </summary>
+    /// <param name="player">the current player character</param>
+    public void LoadFinalRoom(PlayerCharacter player)
+    {
+        if (data.level != Level.Roof)
+        {
+            Debug.LogWarning("Function LoadFinalRoom() should only be used in the last level");
+            return;
+        }
+        
+        // setup
+        previousRoomWrapper = new GameObject
+        {
+            transform =
+            {
+                parent = transform
+            }
+        };
+        CurrentRoomTransform = previousRoomWrapper.transform;
+        roomBeaten = false;
+        
+        var bossRoom = Instantiate(data.bossRoomPrefab);
+        
+        // spawn the boss - register callback to win the game after defeating the boss
+        enemySpawner.SpawnEnemy(
+            bossRoom.EnemySpawn, 
+            bossRoom.EnemyPatrolPoints, 
+            data.boss, 
+            () => gameManager.GameEnd(true)
+        );
+        
+        // spawn the enemies
+        var enemiesToSpawn = data.GetEnemiesToSpawn();
+        for (int i = 0; i < enemiesToSpawn.Length; i++)
+        {
+            enemySpawner.SpawnEnemy(data.enemySpawnPoints[i], data.enemySpawnPoints, enemiesToSpawn[i]);
+        }
+
+        // place the player - persistent from previous room/level
+        PlayerSpawner.PlacePlayer(player, bossRoom.Entrance.position);
     }
 
     private void SetRoomBeaten(Interactable exitTrigger)

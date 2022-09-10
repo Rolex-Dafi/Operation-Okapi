@@ -1,20 +1,14 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Handles the behaviour when the trap is triggered.
-/// </summary>
-[RequireComponent(typeof(Collider2D))]
 public class TrapTrigger : MonoBehaviour
 {
-    private TrapSO data;
+    [SerializeField] private TrapController trapController;
     
-    public void Init(TrapSO data)
+    private void OnTriggerEnter(Collider other)
     {
-        this.data = data;
-    }
-    
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        HitBoxController.HandleCollision(transform, collision, data, tag);
+        trapController.ActivateTrap();
     }
 }

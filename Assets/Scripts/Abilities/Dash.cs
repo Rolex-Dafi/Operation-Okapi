@@ -1,7 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 
+/// </summary>
 public class Dash : Ability
 {
     private HitBoxController hitBoxController; // if dash does damage - the collider also needs to be enabled in the animation

@@ -119,10 +119,19 @@ public class GameManager : MonoBehaviour
         // instantiate the level
         currentLevelInstance = Instantiate(levelManagerPrefab);  
         currentLevelInstance.Init(this, levelData.First(x => x.level == level));
-        // load the first room
-        currentLevelInstance.LoadRoom(PlayerCharacterInstance);
-        
-        currentLevelInstance.onLevelComplete.AddListener(() => StartLevel(level+1));
+
+        if (level == Level.Roof)
+        {
+            // load final room
+            currentLevelInstance.LoadFinalRoom(PlayerCharacterInstance);
+        }
+        else
+        {
+            // load the first room
+            currentLevelInstance.LoadRoom(PlayerCharacterInstance);
+
+            currentLevelInstance.onLevelComplete.AddListener(() => StartLevel(level + 1));
+        }
     }
 
     private void OpenClosePauseMenu()
@@ -159,7 +168,7 @@ public class GameManager : MonoBehaviour
         PlayerCharacterInstance.ReadInput = !pause;  // stop reading player input
     }
 
-    private void GameEnd(bool won)
+    public void GameEnd(bool won)
     {
         Debug.Log("ending game, won = " + won);
         
