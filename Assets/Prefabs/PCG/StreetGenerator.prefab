@@ -63,8 +63,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f3ddc016c909773448c59719302158d1, type: 2}
   - {fileID: 11400000, guid: b2ceacaf1ea79614f89eca5a1166c041, type: 2}
   - {fileID: 11400000, guid: 912f1978ddd49e3439046679df9266a1, type: 2}
-  props:
+  greenery:
   - {fileID: 3345112182119053954, guid: 3869b57e76cde7547832da0507ed30d3, type: 3}
+  - {fileID: 5772875606444823942, guid: a90dcefef1f3862488cbaaf1fe124522, type: 3}
+  - {fileID: 9011469038545263493, guid: 97e88e3c813004f44bf7e4adccbc6502, type: 3}
+  - {fileID: 805467504265112570, guid: 3fd07a77fd284c64ab32894e132f4a01, type: 3}
   buildingsVert:
   - {fileID: 11400000, guid: 966c69a8d371d3344aa309bce00d979d, type: 2}
   - {fileID: 11400000, guid: 191bdc2f3e8f2934b844a524d0c008b9, type: 2}
@@ -72,3 +75,4 @@ MonoBehaviour:
   buildingsHor:
   - {fileID: 11400000, guid: c3e2cbd2010aeba43b2d2e399a7ec6c4, type: 2}
   - {fileID: 11400000, guid: 4da012fc3abe2da40b86b7c11525e9d2, type: 2}
+  greenTensity: 20

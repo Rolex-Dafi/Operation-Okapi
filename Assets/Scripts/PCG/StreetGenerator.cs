@@ -18,7 +18,7 @@ public class StreetGenerator : MapGenerator
     private int _minBorder = 1;
     private int _borderTiles = 2;
     
-    public List<GameObject> props;
+    public List<GameObject> greenery;
 
     public List<Tile> buildingsVert;
     public List<Tile> buildingsHor;
@@ -30,6 +30,7 @@ public class StreetGenerator : MapGenerator
 
     private StreetType _streetType;
     private bool _parkType;
+    public int greenTensity = 5;
     
     public override void Generate()
     {
@@ -50,6 +51,7 @@ public class StreetGenerator : MapGenerator
         GenerateDoors();
 
         PutDownBuildings();
+        PutDownGreenery();
     }
 
     private void CleanUpStreet()
@@ -79,7 +81,7 @@ public class StreetGenerator : MapGenerator
         if (maxWidth <= 0) maxWidth = 20;
         _minHeight = _minWidth = 5;
 
-        _roomMin = 8;
+        _roomMin = 10;
         _hallTreshold = 7;
 
         _streetType = StreetType.PLAZA;
@@ -407,6 +409,17 @@ public class StreetGenerator : MapGenerator
                 if(CheckWallTiles(extraWall, wall.Start+i, wall.Start+i+reserve, wall.Height, wall.Orientation))
                     extraWall.SetTile(tilePos, newTile);
             }
+        }
+    }
+
+    private void PutDownGreenery()
+    {
+        if (!_parkType) return; //no place for greens here
+
+        if (_streetType == StreetType.PLAZA)
+        {
+            PutDownObjects(_room.StartX*2+1, _room.StartY*2+1, _room.Width*2-1, _room.Height*2-1,
+                greenery, greenTensity);
         }
     }
 }

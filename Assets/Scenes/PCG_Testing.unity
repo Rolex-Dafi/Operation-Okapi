@@ -685,14 +685,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: OfficeRoomGenerator
       objectReference: {fileID: 0}
-    - target: {fileID: 6983978336793118391, guid: 85f7f9e7b3ddb1c479981be9600b54d9, type: 3}
-      propertyPath: exitTile
-      value: 
-      objectReference: {fileID: 11400000, guid: 23946bbc4be554d4e9832bec3c1f0bbe, type: 2}
-    - target: {fileID: 6983978336793118391, guid: 85f7f9e7b3ddb1c479981be9600b54d9, type: 3}
-      propertyPath: entranceTile
-      value: 
-      objectReference: {fileID: 11400000, guid: 3732e1a99d413eb4092fc52ff0e7f342, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85f7f9e7b3ddb1c479981be9600b54d9, type: 3}
 --- !u!114 &973106774 stripped
@@ -1189,18 +1181,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: StreetGenerator
       objectReference: {fileID: 0}
-    - target: {fileID: 2931206626607887235, guid: 409e8cf51be992f469ef38f263e18e84, type: 3}
-      propertyPath: exitTile
-      value: 
-      objectReference: {fileID: 11400000, guid: 74e72264ddbb2c8488ff8793aef85fca, type: 2}
-    - target: {fileID: 2931206626607887235, guid: 409e8cf51be992f469ef38f263e18e84, type: 3}
-      propertyPath: entranceTile
-      value: 
-      objectReference: {fileID: 11400000, guid: 3edd9ddb6862d464db8c2b5ab5d76107, type: 2}
-    - target: {fileID: 2931206626607887235, guid: 409e8cf51be992f469ef38f263e18e84, type: 3}
-      propertyPath: floorEntranceTile
-      value: 
-      objectReference: {fileID: 11400000, guid: b2ceacaf1ea79614f89eca5a1166c041, type: 2}
     - target: {fileID: 2931206626607887236, guid: 409e8cf51be992f469ef38f263e18e84, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -1298,42 +1278,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6495269628943879577, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
-      propertyPath: exitTile
-      value: 
-      objectReference: {fileID: 11400000, guid: 68986a9ac22a1214bb62e250b860d0e3, type: 2}
-    - target: {fileID: 6495269628943879577, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
-      propertyPath: entranceTile
-      value: 
-      objectReference: {fileID: 11400000, guid: ad195785b785da040ac59d3346b68f95, type: 2}
-    - target: {fileID: 6495269628943879577, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
-      propertyPath: floorEntranceTile
-      value: 
-      objectReference: {fileID: 11400000, guid: 912f1978ddd49e3439046679df9266a1, type: 2}
-    - target: {fileID: 6495269628943879577, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
-      propertyPath: storefrontsSE.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6495269628943879577, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
-      propertyPath: storefrontsSW.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6495269628943879577, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
-      propertyPath: storefrontsSE.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 8a5ec3568160ca84c916c7017efee8f0, type: 2}
-    - target: {fileID: 6495269628943879577, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
-      propertyPath: storefrontsSE.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: c9d4b61310b593f43873d543a08a09d3, type: 2}
-    - target: {fileID: 6495269628943879577, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
-      propertyPath: storefrontsSW.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: ec2e83f3df50d60468427cd5a5f1052d, type: 2}
-    - target: {fileID: 6495269628943879577, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
-      propertyPath: storefrontsSW.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 326b7265ecc4be84898a3c2426f767b4, type: 2}
     - target: {fileID: 6495269628943879578, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
       propertyPath: m_Name
       value: MallGenerator

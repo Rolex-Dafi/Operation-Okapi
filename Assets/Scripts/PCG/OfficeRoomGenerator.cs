@@ -60,9 +60,9 @@ public class OfficeRoomGenerator : MapGenerator
     protected override void SetUpParameters()
     {
         if(maxWidth<= 0 || maxHeight <= 0) maxWidth = maxHeight = 25;
-        _minWidth = _minHeight = 2;
+        _minWidth = _minHeight = 3;
 
-        _roomMin = 7;
+        _roomMin = 10;
         _hallTreshold = 5;
     }
 
