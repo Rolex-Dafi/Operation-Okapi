@@ -5,6 +5,8 @@ using UnityEngine;
 /// </summary>
 public class RangedAttack : Attack
 {
+    public Vector3? Target { get; set; }
+    
     protected RangedAttack(CombatCharacter character, AttackSO data) : base(character , data, EAbilityType.ranged) { }
 
     protected void SpawnProjectile()
@@ -19,6 +21,15 @@ public class RangedAttack : Attack
         );
         // Player and enemies have to be tagged correctly for this to work !
         instance.Init(Data, character.tag);
-        instance.Shoot(character.Facing);
+
+        if (Target != null)
+        {
+            instance.ShootAt(Target.GetValueOrDefault());
+            Target = null;  // reset target
+        }
+        else
+        {
+            instance.Shoot(character.Facing);
+        }
     }
 }

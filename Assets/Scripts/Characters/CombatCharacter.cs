@@ -203,6 +203,24 @@ public class CombatCharacter : Character, IDamagable
         return false;
     }
 
+    /// <summary>
+    /// Tries to find a ranged attack and performs the first one it finds.
+    /// </summary>
+    /// <param name="attackCommand"></param>
+    /// <returns>Whether an attack was performed.</returns>
+    public bool RangedAttackTarget(EAttackCommand attackCommand = EAttackCommand.Begin)
+    {
+        RangedAttack attack = attacks.OfType<RangedAttack>().ToArray()[0];
+
+        if (attack != null)
+        {
+            Attack(attack, attackCommand);
+            return true;
+        }
+
+        return false;
+    }
+    
     public virtual void TakeDamage(int amount)
     {
         Animator.SetTrigger(EAnimationParameter.hit.ToString());

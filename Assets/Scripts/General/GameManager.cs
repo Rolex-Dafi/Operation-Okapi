@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
 
     private void StartLevel(Level level)
     {
-        switch (level)
+        /*switch (level)
         {
             // End the game
             case Level.End:
@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour
                 // for now:
                 GameEnd(true);
                 return;
-        }
+        }*/
         
         // instantiate the level
         currentLevelInstance = Instantiate(levelManagerPrefab);  
