@@ -14,11 +14,14 @@ public class StreetGenerator : MapGenerator
     private Room _room;
     private Room _extraRoom;
 
-    private int _maxBorder = 4;
-    private int _minBorder = 2;
+    private int _maxBorder = 2;
+    private int _minBorder = 1;
     private int _borderTiles = 2;
     
     public List<GameObject> props;
+
+    public List<Tile> buildingsVert;
+    public List<Tile> buildingsHor;
 
     internal enum StreetType
     {
@@ -43,9 +46,10 @@ public class StreetGenerator : MapGenerator
         GenerateFloor();
         GenerateWalls();
         GenerateColliders();
+        GenerateGrid();
         GenerateDoors();
 
-        GenerateGrid();
+        PutDownBuildings();
     }
 
     private void CleanUpStreet()
@@ -60,14 +64,23 @@ public class StreetGenerator : MapGenerator
                && grassTile.Count > 0 && pavementTile.Count > 0 && asphaltTile.Count > 0;
     }
 
+    internal override void Restart()
+    {
+        base.Restart();
+        _streetType = StreetType.PLAZA;
+        Random rnd = new Random();
+        _borderTiles = rnd.Next(_minBorder, _maxBorder);
+        
+    }
+
     protected override void SetUpParameters()
     {
         if(maxHeight <= 0) maxHeight = 20;
         if (maxWidth <= 0) maxWidth = 20;
-        _minHeight = _minWidth = 7;
+        _minHeight = _minWidth = 5;
 
-        _roomMin = 10;
-        _hallTreshold = 17;
+        _roomMin = 8;
+        _hallTreshold = 7;
 
         _streetType = StreetType.PLAZA;
         
@@ -243,7 +256,13 @@ public class StreetGenerator : MapGenerator
                 _extraRoom.StartX + _extraRoom.Width);
             // no other walls at crossroads
             //AddAllSectionedLines(_walls, _room, _extraRoom);
-        } else if (_streetType == StreetType.PLAZA || _extraRoom.Height <= 0)
+        } else if (_streetType == StreetType.PLAZA)
+        {
+            AddWallToLst(_walls, HallType.HORIZONTAL, _room.StartX, _room.StartX + _room.Width,
+                _room.StartY + _room.Height);
+            AddWallToLst(_walls, HallType.VERTICAL, _room.StartY, _room.StartY + _room.Height,
+                _room.StartX + _room.Width);
+        } else if (_extraRoom.Height <= 0)
         {
             AddWallToLst(_walls, HallType.HORIZONTAL, _room.Type == RoomType.VER_HALL ? _room.StartX + _borderTiles : _room.StartX, _room.StartX + _room.Width,
                 _room.StartY + _room.Height);
@@ -353,6 +372,40 @@ public class StreetGenerator : MapGenerator
                     _grid[y, x] = new GridTile(gridStartX + x, gridStartY + y);
                 else
                     _grid[y, x] = new GridTile(gridStartX + x, gridStartY + y, false);
+            }
+        }
+    }
+    
+    private void PutDownBuildings()
+    {
+        Random rnd = new Random();
+        var extraWall = _gridHolder.transform.GetChild(5).GetComponent<Tilemap>();
+
+        foreach (var wall in _walls)
+        {
+            int reserve = wall.Orientation == HallType.VERTICAL ? 10 : 6;
+            int width = wall.End - wall.Start;
+            if (width <= reserve) continue;
+            
+            //enough space for a store
+            for (int i = 0; i < width-reserve; i++)
+            {
+                if (i % (reserve) != 0) continue;
+                Vector3Int tilePos;
+                Tile newTile;
+                if (wall.Orientation == HallType.HORIZONTAL)
+                {
+                    tilePos = new Vector3Int(wall.Start + i, wall.Height, 0);
+                    newTile = buildingsHor[rnd.Next(0, buildingsHor.Count )];
+                }
+                else
+                {
+                    tilePos = new Vector3Int(wall.Height, wall.Start + i, 0);
+                    newTile = buildingsVert[rnd.Next(0, buildingsVert.Count )];
+                }
+                
+                if(CheckWallTiles(extraWall, wall.Start+i, wall.Start+i+reserve, wall.Height, wall.Orientation))
+                    extraWall.SetTile(tilePos, newTile);
             }
         }
     }

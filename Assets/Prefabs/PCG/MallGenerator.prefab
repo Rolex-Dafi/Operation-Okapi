@@ -45,8 +45,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collTile: {fileID: 11400000, guid: 0c1b975e7de6e2e4ea19adea04a09bbc, type: 2}
   entranceCollider: {fileID: 513636760818153504, guid: 194e72723ebecde45bf31e7bc27e935e, type: 3}
-  maxWidth: 0
-  maxHeight: 0
+  maxWidth: 10
+  maxHeight: 10
+  entranceTile: {fileID: 11400000, guid: ad195785b785da040ac59d3346b68f95, type: 2}
+  exitTile: {fileID: 11400000, guid: 68986a9ac22a1214bb62e250b860d0e3, type: 2}
+  floorEntranceTile: {fileID: 11400000, guid: 912f1978ddd49e3439046679df9266a1, type: 2}
   mapPrefab: {fileID: 986615358494160932, guid: 0d2717c6bf3f01841a3be72c6dfaf2fd, type: 3}
   floorTiles:
   - {fileID: 11400000, guid: a01338abcbbf0ad4eaae95c89ba94a48, type: 2}
@@ -54,3 +57,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b57225e420f84a9499aa8f91f1cb2c24, type: 2}
   props:
   - {fileID: 3345112182119053954, guid: 3869b57e76cde7547832da0507ed30d3, type: 3}
+  storefrontsSW:
+  - {fileID: 11400000, guid: ec2e83f3df50d60468427cd5a5f1052d, type: 2}
+  - {fileID: 11400000, guid: 326b7265ecc4be84898a3c2426f767b4, type: 2}
+  storefrontsSE:
+  - {fileID: 11400000, guid: 8a5ec3568160ca84c916c7017efee8f0, type: 2}
+  - {fileID: 11400000, guid: c9d4b61310b593f43873d543a08a09d3, type: 2}

@@ -95,8 +95,17 @@ public abstract class MapGenerator : MonoBehaviour
     internal List<Wall> _walls;
     internal List<Wall> _cols;
 
+    public Tile entranceTile;
+    public Tile exitTile;
+    public Tile floorEntranceTile;
+
     [Header("Empty prefab of grid setup.")] public GameObject mapPrefab;
-    
+
+    public void Start()
+    {
+        SetUpParameters();
+    }
+
     /// <summary>
     /// Generate a room for the game.
     /// </summary>
@@ -123,14 +132,14 @@ public abstract class MapGenerator : MonoBehaviour
     {
         Restart();
         
-        SetUpParameters();
+        //SetUpParameters();
         
         _roomHolder = Instantiate(mapPrefab).transform;
         _gridHolder = _roomHolder.GetChild(0);
         _obstaclesHolder = _roomHolder.GetChild(1);
     }
 
-    private void Restart()
+    internal virtual void Restart()
     {
         if (_roomHolder == null) return;
         
@@ -223,8 +232,14 @@ public abstract class MapGenerator : MonoBehaviour
         Random rand = new Random();
         
         // generate entrance position
-        _entrance.EntrancePos = new Vector3Int(rand.Next(_walls[0].Start + 1, _walls[0].End - 1), _walls[0].Height, 0);
-        _entrance.ExitPos = new Vector3Int(_walls[_walls.Count - 1].Height, rand.Next(_walls[_walls.Count - 1].Start + 1, _walls[_walls.Count - 1].End - 1), 0);
+        int enPos = _walls[0].Start + 1 >= _walls[0].End - 1
+            ? _walls[0].Start + 1
+            : rand.Next(_walls[0].Start, _walls[0].End - 1);
+        int exPos = _walls[_walls.Count - 1].Start + 1 >= _walls[_walls.Count - 1].End - 1
+            ? _walls[_walls.Count - 1].Start + 1
+            : rand.Next(_walls[_walls.Count - 1].Start + 1, _walls[_walls.Count - 1].End - 1);
+        _entrance.EntrancePos = new Vector3Int(enPos, _walls[0].Height - 1, 0);
+        _entrance.ExitPos = new Vector3Int(_walls[_walls.Count - 1].Height - 1,  exPos, 0);
 
         // generate entrance triggers
         _entrance.EntranceObj = Instantiate(entranceCollider, _roomHolder);
@@ -235,25 +250,49 @@ public abstract class MapGenerator : MonoBehaviour
         
         
         // erase wall tiles
-        var horWalls = _gridHolder.transform.GetChild(1).GetComponent<Tilemap>();
-        var verWalls = _gridHolder.transform.GetChild(2).GetComponent<Tilemap>();
-        horWalls.SetTile(_entrance.EntrancePos, null);
-        verWalls.SetTile(_entrance.ExitPos, null);
+        var extraWall = _gridHolder.transform.GetChild(5).GetComponent<Tilemap>();
+        extraWall.SetTile(new Vector3Int(_entrance.EntrancePos.x, _entrance.EntrancePos.y+1, 0 ), entranceTile);
+        extraWall.SetTile(new Vector3Int(_entrance.ExitPos.x+1, _entrance.ExitPos.y, 0 ), exitTile);
+
+        FillObstaclesGrid(_entrance.EntrancePos.x * 2, _entrance.EntrancePos.y * 2, 2, 2);
+        FillObstaclesGrid(_entrance.ExitPos.x * 2, _entrance.ExitPos.y * 2, 2, 2);
+
+        var floorTilemap = _gridHolder.transform.GetChild(0).GetComponent<Tilemap>();
+        floorTilemap.SetTile(new Vector3Int(_entrance.EntrancePos.x, _entrance.EntrancePos.y+1, 0 ), floorEntranceTile);
+        floorTilemap.SetTile(new Vector3Int(_entrance.ExitPos.x+1, _entrance.ExitPos.y, 0 ), floorEntranceTile);
         
         // erase collider and replace it with new collider
-        var colMap = _gridHolder.transform.GetChild(4).GetComponent<Tilemap>();
-        colMap.SetTile(_entrance.EntrancePos, null);
-        colMap.SetTile(_entrance.ExitPos, null);
-        List<Wall> newCols = new List<Wall>();
-        AddWallToLst(newCols, HallType.HORIZONTAL, _entrance.EntrancePos.x - 1, _entrance.EntrancePos.x + 2, _entrance.EntrancePos.y + 1);
-        AddWallToLst(newCols, HallType.VERTICAL, _entrance.ExitPos.y - 1, _entrance.ExitPos.y + 2, _entrance.ExitPos.x + 1);
-        PutDownColliders(newCols);
-        // TODO: collider for entrance and exit
+        //var colMap = _gridHolder.transform.GetChild(4).GetComponent<Tilemap>();
+        //colMap.SetTile(_entrance.EntrancePos, null);
+        //colMap.SetTile(_entrance.ExitPos, null);
+        //List<Wall> newCols = new List<Wall>();
+        //AddWallToLst(newCols, HallType.HORIZONTAL, _entrance.EntrancePos.x - 1, _entrance.EntrancePos.x + 2, _entrance.EntrancePos.y + 1);
+        //AddWallToLst(newCols, HallType.VERTICAL, _entrance.ExitPos.y - 1, _entrance.ExitPos.y + 2, _entrance.ExitPos.x + 1);
+        //PutDownColliders(newCols);
 
         //set down tiles
-        var tileMap = _gridHolder.transform.GetChild(0).GetComponent<Tilemap>();
-        tileMap.SetTile(_entrance.EntrancePos, tileMap.GetTile(new Vector3Int(_entrance.EntrancePos.x, _entrance.EntrancePos.y-1, _entrance.EntrancePos.z)));
-        tileMap.SetTile(_entrance.ExitPos, tileMap.GetTile(new Vector3Int(_entrance.ExitPos.x-1, _entrance.ExitPos.y, _entrance.ExitPos.z)));
+        //var tileMap = _gridHolder.transform.GetChild(0).GetComponent<Tilemap>();
+        //tileMap.SetTile(_entrance.EntrancePos, tileMap.GetTile(new Vector3Int(_entrance.EntrancePos.x, _entrance.EntrancePos.y-1, _entrance.EntrancePos.z)));
+        //tileMap.SetTile(_entrance.ExitPos, tileMap.GetTile(new Vector3Int(_entrance.ExitPos.x-1, _entrance.ExitPos.y, _entrance.ExitPos.z)));
+    }
+
+    internal bool CheckWallTiles(Tilemap tm, int start, int end, int height, HallType orientation)
+    {
+        var empty = true;
+        
+        for (int i = start; i < end; i++)
+        {
+            Vector3Int pos = orientation == HallType.VERTICAL
+                ? new Vector3Int(height,  i, 0)
+                : new Vector3Int( i, height, 0);
+            if (tm.HasTile(pos))
+            {
+                //Debug.Log("What at " + pos.x + "x" + pos.y);
+                empty = false;
+                break;
+            }
+        }
+        return empty;
     }
     
     internal virtual void SetRoom(ref Room room, Random rand)
@@ -288,6 +327,8 @@ public abstract class MapGenerator : MonoBehaviour
             for (var i = 0; i < w; i++)
             {
                 Vector2Int gridCoors = UnityToScriptCoord(x + i, y + j);
+                //Debug.Log("Tile at " + (x+i) + "x" + (y+j) + " has been obstructed for AI.");
+                //Debug.Log("whic is tile at " + gridCoors.x + "x" + gridCoors.y+ ".");
                 _grid[gridCoors.y, gridCoors.x].Empty = false;
                 //Debug.Log("Tile at " + (x+i) + "x" + (y+j) + " has been obstructed for AI.");
             }

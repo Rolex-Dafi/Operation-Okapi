@@ -16,6 +16,8 @@ public class MallGenerator : MapGenerator
     private bool _crossroads = false;
 
     public List<GameObject> props;
+    public List<Tile> storefrontsSW;
+    public List<Tile> storefrontsSE;
     
     public override void Generate()
     {
@@ -25,9 +27,9 @@ public class MallGenerator : MapGenerator
         GenerateFloor();
         GenerateColliders();
         GenerateWalls();
-        GenerateDoors();
-        
         GenerateGrid();
+        GenerateDoors(); 
+        PutDownWalls();
         //PutDownObjects(gridStartX, gridStartY, _grid.GetLength(1), _grid.GetLength(0), props, 100);
     }
 
@@ -36,7 +38,7 @@ public class MallGenerator : MapGenerator
         if (maxHeight <= 0) maxHeight = 20;
         if (maxWidth <= 0) maxWidth = 20;
         
-        _minHeight = _minWidth = 4;
+        _minHeight = _minWidth = 2;
         
     }
     
@@ -270,5 +272,40 @@ public class MallGenerator : MapGenerator
         
         Debug.Log("no walls: " + _walls.Count);
         //PutDownColliders(_walls);
+        
+        //PutDownWalls();
+    }
+
+    private void PutDownWalls()
+    {
+        Random rnd = new Random();
+        var extraWall = _gridHolder.transform.GetChild(5).GetComponent<Tilemap>();
+        
+        foreach (var wall in _walls)
+        {
+            int width = wall.End - wall.Start;
+            if (width <= 3) continue;
+            
+            //enough space for a store
+            for (int i = 0; i < width-3; i++)
+            {
+                if (i % 4 != 0) continue;
+                Vector3Int tilePos;
+                Tile newTile;
+                if (wall.Orientation == HallType.HORIZONTAL)
+                {
+                    tilePos = new Vector3Int(wall.Start + i, wall.Height, 0);
+                    newTile = storefrontsSE[rnd.Next(0, storefrontsSE.Count )];
+                }
+                else
+                {
+                    tilePos = new Vector3Int(wall.Height, wall.Start + i, 0);
+                    newTile = storefrontsSW[rnd.Next(0, storefrontsSW.Count )];
+                }
+                
+                if(CheckWallTiles(extraWall, wall.Start+i-1, wall.Start+i+4, wall.Height, wall.Orientation))
+                    extraWall.SetTile(tilePos, newTile);
+            }
+        }
     }
 }

@@ -52,18 +52,18 @@ public class OfficeRoomGenerator : MapGenerator
         GenerateWalls();
         GenerateColliders();
 
-        GenerateDoors();
         GenerateGrid();
+        GenerateDoors();
         GenerateObjects();
     }
 
     protected override void SetUpParameters()
     {
-        maxWidth = maxHeight = 25;
-        _minWidth = _minHeight = 4;
+        if(maxWidth<= 0 || maxHeight <= 0) maxWidth = maxHeight = 25;
+        _minWidth = _minHeight = 2;
 
-        _roomMin = 8;
-        _hallTreshold = 6;
+        _roomMin = 7;
+        _hallTreshold = 5;
     }
 
     private void SetUpRoomGen()

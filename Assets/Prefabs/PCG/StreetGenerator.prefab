@@ -45,8 +45,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collTile: {fileID: 11400000, guid: 0c1b975e7de6e2e4ea19adea04a09bbc, type: 2}
   entranceCollider: {fileID: 513636760818153504, guid: 194e72723ebecde45bf31e7bc27e935e, type: 3}
-  maxWidth: 0
-  maxHeight: 0
+  maxWidth: 15
+  maxHeight: 15
+  entranceTile: {fileID: 11400000, guid: 3edd9ddb6862d464db8c2b5ab5d76107, type: 2}
+  exitTile: {fileID: 11400000, guid: 74e72264ddbb2c8488ff8793aef85fca, type: 2}
+  floorEntranceTile: {fileID: 11400000, guid: b2ceacaf1ea79614f89eca5a1166c041, type: 2}
   mapPrefab: {fileID: 986615358494160932, guid: 0d2717c6bf3f01841a3be72c6dfaf2fd, type: 3}
   grassTile:
   - {fileID: 11400000, guid: c744e71a12e3e3e449d929d17f657538, type: 2}
@@ -62,3 +65,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 912f1978ddd49e3439046679df9266a1, type: 2}
   props:
   - {fileID: 3345112182119053954, guid: 3869b57e76cde7547832da0507ed30d3, type: 3}
+  buildingsVert:
+  - {fileID: 11400000, guid: 966c69a8d371d3344aa309bce00d979d, type: 2}
+  - {fileID: 11400000, guid: 191bdc2f3e8f2934b844a524d0c008b9, type: 2}
+  - {fileID: 11400000, guid: 7fb7235156a89f44ea4259b25c3fd27d, type: 2}
+  buildingsHor:
+  - {fileID: 11400000, guid: c3e2cbd2010aeba43b2d2e399a7ec6c4, type: 2}
+  - {fileID: 11400000, guid: 4da012fc3abe2da40b86b7c11525e9d2, type: 2}
