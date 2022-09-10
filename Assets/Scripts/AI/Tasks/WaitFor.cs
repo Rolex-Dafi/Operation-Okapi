@@ -2,14 +2,22 @@ using BehaviourTree;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
+/// <summary>
+/// A task which makes the character wait for a specified time.
+/// </summary>
 public class WaitFor : TaskBase
 {
     private float waitFor;
 
     private float timePassed;
 
+    /// <summary>
+    /// Creates a new wait task.
+    /// </summary>
+    /// <param name="characterBT">The behavioral tree of this character</param>
+    /// <param name="waitFor">How long do we want to wait for</param>
+    /// <param name="debugName">Used in ToString() for debug purposes</param>
     public WaitFor(CharacterTreeBase characterBT, float waitFor, string debugName = "") : base(characterBT, debugName)
     {
         this.waitFor = waitFor;
@@ -19,7 +27,7 @@ public class WaitFor : TaskBase
     {
         timePassed = 0;
         // ensure we play idle animation, not movement
-        bt.Character.ForceUpdateSpeed(Vector2.zero);
+        bt.Character.ForceIdle();
     }
 
     protected override void OnContinue()

@@ -19,16 +19,20 @@ namespace BehaviourTree
     /// </summary>
     public abstract class Node
     {
-        protected Node parent;
+        private Node parent;
         protected NodeStatus status;
 
         public Node Parent { get => parent; set => parent = value; }
 
-        public Node()
+        protected Node()
         {
             Parent = null;
         }
 
+        /// <summary>
+        /// Updates the node according to the node's specific logic.
+        /// </summary>
+        /// <returns>The node status</returns>
         public abstract NodeStatus Update();
 
     }
@@ -43,7 +47,7 @@ namespace BehaviourTree
         protected int lastProcessedChild = 0;
         protected bool sequentialProcessing = true; // if true process children sequentially, else randomly
 
-        public Composite(List<Node> children) : base()
+        protected Composite(List<Node> children) : base()
         {            
             this.children = new List<Node>();
             foreach (var child in children)
@@ -235,14 +239,13 @@ namespace BehaviourTree
 
     }
 
-
     /// <summary>
     /// Leaf node base class. Leaves have no children and their function is to perform character
     /// specific actions or checks.
     /// </summary>
     public abstract class Leaf : Node
     {
-        protected string debugName;
+        private string debugName;
 
         protected Leaf(string debugName = "") : base()
         {

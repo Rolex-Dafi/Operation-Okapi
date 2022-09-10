@@ -26,8 +26,6 @@ public class PlayerSpawner : MonoBehaviour
         // player invisible after initialization -> level manager should enable it by calling PlacePlayer
         instance.gameObject.SetActive(false);
         
-        Debug.Log("current hp = "  + instance.Health.GetCurrent());
-        
         return instance;
     }
 

@@ -42,7 +42,7 @@ public class AttackTarget : TaskBase
     protected override void OnContinue()
     {
         // ensure we're not playing move anim while attacking
-        bt.Character.ForceUpdateSpeed(Vector2.zero);
+        bt.Character.ForceIdle();
 
         // call onEnd with success after attack finishes
         if (!attack.InUse)

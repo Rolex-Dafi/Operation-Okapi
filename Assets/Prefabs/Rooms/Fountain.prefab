@@ -19,6 +19,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1117412084067513179, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 4323682512652522632, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
       propertyPath: m_Name
       value: Fountain

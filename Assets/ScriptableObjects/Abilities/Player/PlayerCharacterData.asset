@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerCharacterData
   m_EditorClassIdentifier: 
   money: 100
-  health: 5
+  health: 0
   speed: 2
   attacks:
   - {fileID: 11400000, guid: cbd89847babe681479fc676aa8b37823, type: 2}

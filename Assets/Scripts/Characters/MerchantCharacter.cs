@@ -11,6 +11,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Interactable))]
 public class MerchantCharacter : Character
 {
+    [SerializeField] private Level level = Level.Office;
     [SerializeField] private ShopManager shopManager;
     [SerializeField] private Interactable interactable;
     
@@ -34,12 +35,15 @@ public class MerchantCharacter : Character
         gameManager = FindObjectOfType<GameManager>();
         
         shopManager.Init(gameManager, this);
+        ShuffleShop(); 
+        
+        // set the correct animation according to level
+        Animator.SetTrigger(level.ToString());
     }
 
     private void OpenShop()
     {
         // select three items from the current shop
-        ShuffleShop(); // TODO only do this in init, so players can't keep getting offered new items
         var itemsToShow = new ItemSO[3];
         var i = 0;
         foreach (var itemSo in currentShop)
@@ -73,7 +77,7 @@ public class MerchantCharacter : Character
     /// This trades money (according to the item's cost) from player to merchant and puts
     /// the item in the player's inventory.
     /// </summary>
-    /// <param name="item"></param>
+    /// <param name="item">The item data for the item we're selling</param>
     public void Sell(ItemSO item)
     {
         // remove item from shop

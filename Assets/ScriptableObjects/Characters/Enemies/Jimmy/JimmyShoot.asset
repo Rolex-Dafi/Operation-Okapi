@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e64b9df5068ba247a2d408399dba8c8, type: 3}
   m_Name: JimmyShoot
   m_EditorClassIdentifier: 
-  coolDown: 0.5
+  coolDown: 2
   damage: 1
   enemyPushbackDistance: 0
   enemyPushbackSpeed: 40
@@ -38,6 +38,6 @@ MonoBehaviour:
   recoveryTime: 0.5
   attackRange: 4
   movementSpeedFactor: 0
-  projectilePrefab: {fileID: 4754095188408049542, guid: 5c61aeab842b3c545a391ffb9482a26b, type: 3}
+  projectilePrefab: {fileID: 4754095188408049542, guid: e1007392ba9a234469f7d7e227f64fa2, type: 3}
   projectileSpeed: 10
   projectileDelay: 0

@@ -271,5 +271,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: f88ddc48b5e280148a1617ec671638c0, type: 2}
+  level: 2
   shopManager: {fileID: 0}
   interactable: {fileID: 80799754941330931}

@@ -1,6 +1,9 @@
 using Pathfinding;
 using UnityEngine;
 
+/// <summary>
+/// A task which makes the character walk towards a given target.
+/// </summary>
 public class WalkToTarget : TaskBase
 {
     private Vector3? target;
@@ -123,7 +126,7 @@ public class WalkToTarget : TaskBase
     private void EndWalk()
     {
         currentlyMoving = false;
-        bt.Character.ForceUpdateSpeed(Vector2.zero);
+        bt.Character.ForceIdle();
         // report success
         OnEnd(true);
     }

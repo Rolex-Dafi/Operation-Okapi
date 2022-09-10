@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: PottsBaseAttack
   m_EditorClassIdentifier: 
   coolDown: 0.5
+  damage: 1
+  enemyPushbackDistance: 0
+  enemyPushbackSpeed: 40
   onBeginSound:
     Guid:
       Data1: 1309615839
@@ -31,10 +34,10 @@ MonoBehaviour:
   id: 1
   button: 1
   effect: 0
-  damage: 1
   cost: 0
   recoveryTime: 2
   attackRange: 2
   movementSpeedFactor: 0
-  projectilePrefab: {fileID: 4754095188408049542, guid: 5c61aeab842b3c545a391ffb9482a26b, type: 3}
+  projectilePrefab: {fileID: 4754095188408049542, guid: e1007392ba9a234469f7d7e227f64fa2, type: 3}
   projectileSpeed: 10
+  projectileDelay: 0

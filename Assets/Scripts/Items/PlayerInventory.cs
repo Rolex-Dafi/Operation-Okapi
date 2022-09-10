@@ -13,23 +13,21 @@ public class PlayerInventory
     // static length - only as big as the max health slots
     public Item[] Equipped { get; }
 
-    public int LastItemIndex { get; private set; }
+    private int lastItemIndex;
 
     public UnityEvent InventoryChanged; 
 
     public PlayerInventory(PlayerCharacterSO playerData)
     {
         Equipped = new Item[Utility.maxHealthBarSlots];
-
-        var i = 0;
+        InventoryChanged = new UnityEvent();
+        lastItemIndex = -1;
+        
         foreach (var item in playerData.startingItems)
         {
-            Equipped[i] = new Item(item);
-            ++i;
+            AddItem(item);
         }
-        LastItemIndex = i - 1;
         
-        InventoryChanged = new UnityEvent();
     }
 
     /// <summary>
@@ -40,6 +38,8 @@ public class PlayerInventory
     {
         if (!HasSpace()) return;
 
+        Debug.Log("adding item " + item.ItemName + ", with health " + item.Health);
+        
         // if item of this type already equipped -> don't pick up
         // potential TODO heal the equipped item instead
         if (Equipped.Where(x => x != null).Any(x => item.ID == x.Data.ID)) return;
@@ -47,12 +47,12 @@ public class PlayerInventory
         // add the new item at the beginning of the array
         var next = Equipped[0];
         Equipped[0] = new Item(item);
-        for (var i = 1; i <= LastItemIndex; i++)
+        for (var i = 1; i <= lastItemIndex; i++)
         {
             (Equipped[i], next) = (next, Equipped[i]); // swaps Equipped[i] and next
         }
-        ++LastItemIndex;
-        Equipped[LastItemIndex] = next;
+        ++lastItemIndex;
+        if (next != null) Equipped[lastItemIndex] = next;   // if next == null, this is the first item
         
         InventoryChanged.Invoke();
     }
@@ -65,18 +65,18 @@ public class PlayerInventory
     public int ReceiveDamage(int damage)
     {
         // in case the player is dead
-        if (LastItemIndex <= 0) return 0;
+        if (lastItemIndex <= 0) return 0;
         
         // get top item
-        var topItem = Equipped[LastItemIndex];
+        var topItem = Equipped[lastItemIndex];
         // only the top item receives damage -> no overkill dmg
         topItem.ReceiveDamage(damage);
 
         // remove from inventory if destroyed
         if (topItem.CurrentHealth <= 0)
         {
-            Equipped[LastItemIndex] = null;
-            --LastItemIndex;
+            Equipped[lastItemIndex] = null;
+            --lastItemIndex;
         }
         
         InventoryChanged.Invoke();
@@ -92,7 +92,7 @@ public class PlayerInventory
     public bool HasSpace()
     {
         // if health bars full -> can't pick up more items
-        return LastItemIndex < Equipped.Length - 1;
+        return lastItemIndex < Equipped.Length - 1;
     }
     
     public bool ItemEquipped(int id)

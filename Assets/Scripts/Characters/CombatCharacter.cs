@@ -1,5 +1,4 @@
 using FMODUnity;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -31,7 +30,7 @@ public class CombatCharacter : Character, IDamagable
 
     // components
     protected Rigidbody2D rb;
-    protected CircleCollider2D col;
+    private CircleCollider2D col;
 
     // vars exposed to other classes
     public Transform ProjectileSpawnerTransform { get => projectileSpawnerTransform; }
@@ -39,7 +38,7 @@ public class CombatCharacter : Character, IDamagable
     public Vector2 Facing { get => facing; private set => facing = value; }
     public float ColliderRadius { get => col.radius; }
     public Rigidbody2D RB { get => rb; private set => rb = value; }
-    public Health Health { get => health; private set => health = value; }
+    public Health Health { get => health; private set => health = value; }  // only enemies use this, the player has items instead of hp
 
     public Dash GetDash() => dash; 
     public Attack GetAttackByID(int id) => attacks.Find(x => x.Data.id == id);
@@ -95,6 +94,10 @@ public class CombatCharacter : Character, IDamagable
         Animator.SetFloat(EAnimationParameter.directionY.ToString(), direction.y);
     }
 
+    /// <summary>
+    /// Move this character in the given direction
+    /// </summary>
+    /// <param name="move">Direction to move in</param>
     public void Move(Vector2 move)
     {
         if (move != Vector2.zero) Facing = move;
@@ -110,11 +113,17 @@ public class CombatCharacter : Character, IDamagable
         Animator.SetFloat(EAnimationParameter.speed.ToString(), speed);
     }
 
-    public void ForceUpdateSpeed(Vector2 move)
+    /// <summary>
+    /// Forces the character into an idle animation.
+    /// </summary>
+    public void ForceIdle()
     {
-        Animator.SetFloat(EAnimationParameter.speed.ToString(), move.sqrMagnitude * currentSpeed);
+        Animator.SetFloat(EAnimationParameter.speed.ToString(), 0);
     }
 
+    /// <summary>
+    /// Performs a dash if this character can move.
+    /// </summary>
     public void Dash()
     {
         if (!canMove) return;
