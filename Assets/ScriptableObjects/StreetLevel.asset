@@ -20,6 +20,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a8abf4ff10a38e340a5d64396286f4a6, type: 2}
   boss: {fileID: 11400000, guid: 92b2c8560676e1c4e8efc33f7ba5e54e, type: 2}
   roomGeneratorPrefab: {fileID: 2931206626607887235, guid: 409e8cf51be992f469ef38f263e18e84, type: 3}
-  merchantRoomPrefab: {fileID: 480774433257717806, guid: 6bb9cfc9cb6424a46b836d22212602ff, type: 3}
+  merchantRoomPrefab: {fileID: 480774433257717806, guid: 4af0d67d5f07b1d4da5be0644c43b768, type: 3}
   bossRoomPrefab: {fileID: 3222346399066767362, guid: a342245f32067bb42a527589b3d7ddbe, type: 3}
   bossNavGraphData: {fileID: 4900000, guid: 64ff43d04c576084cb7da98e78ad12ed, type: 3}

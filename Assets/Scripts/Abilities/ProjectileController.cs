@@ -54,7 +54,7 @@ public class ProjectileController : MonoBehaviour
 
     /// <summary>
     /// For projectiles shot from the sky - spawns the projectile at the given position. Expects an Animator
-    /// component to handle enabling the hitbox.
+    /// component to handle enabling the hitbox as well as the destruction of this object.
     /// </summary>
     /// <param name="position">The position to spawn at</param>
     public void ShootAt(Vector2 position)

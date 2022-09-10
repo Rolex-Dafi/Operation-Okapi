@@ -23,9 +23,6 @@ public class LevelSO : ScriptableObject
     public SpecialRoom merchantRoomPrefab;
     public SpecialRoom bossRoomPrefab;
 
-    [Header("Roof level")] // only relevant for the last special level
-    public Vector3[] enemySpawnPoints; 
-
     public TextAsset bossNavGraphData; // pre-computed and saved data about the boss room navigation graph
 
     /// <summary>

@@ -66,7 +66,8 @@ public class LevelManager : MonoBehaviour
         onLevelComplete = new UnityEvent();
         
         // merchant can't be in the first few rooms (those are for presenting new enemies) or the last room
-        merchantRoomIndex = Random.Range(data.enemies.Length, data.numberOfRooms - 2); 
+        //merchantRoomIndex = Random.Range(data.enemies.Length, data.numberOfRooms - 2); 
+        merchantRoomIndex = Random.Range(1, data.numberOfRooms - 2); 
         //merchantRoomIndex = 0; // debug - remove this after merchant tested
         currentRoomIndex = 0;
     }
@@ -245,7 +246,7 @@ public class LevelManager : MonoBehaviour
         var enemiesToSpawn = data.GetEnemiesToSpawn();
         for (int i = 0; i < enemiesToSpawn.Length; i++)
         {
-            enemySpawner.SpawnEnemy(data.enemySpawnPoints[i], data.enemySpawnPoints, enemiesToSpawn[i]);
+            enemySpawner.SpawnEnemy(bossRoom.EnemyPatrolPoints[i], bossRoom.EnemyPatrolPoints, enemiesToSpawn[i]);
         }
 
         // place the player - persistent from previous room/level
@@ -279,8 +280,15 @@ public class LevelManager : MonoBehaviour
         }
         else if (currentRoomIndex == data.numberOfRooms - 1) // last room - boss
         {
-            // clean up the astar path - only complete load the boss room (bc it has its own astar path)
-            aiGenerator.CleanUp(() => LoadRoom(gameManager.PlayerCharacterInstance, RoomType.Boss));
+            if (data.boss != null) // there's a boss
+            {
+                // clean up the astar path - only complete load the boss room (bc it has its own astar path)
+                aiGenerator.CleanUp(() => LoadRoom(gameManager.PlayerCharacterInstance, RoomType.Boss));
+            }
+            else // no boss in this level, load a normal room
+            {
+                LoadRoom(gameManager.PlayerCharacterInstance);
+            }
         }
         else if (currentRoomIndex == data.numberOfRooms)     // level end
         {

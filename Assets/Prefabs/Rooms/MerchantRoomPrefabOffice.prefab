@@ -694,7 +694,7 @@ GameObject:
   - component: {fileID: 6676353476396947836}
   - component: {fileID: 480774433257717806}
   m_Layer: 0
-  m_Name: MerchantRoomPrefab
+  m_Name: MerchantRoomPrefabOffice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2638,6 +2638,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6676353476396947836}
     m_Modifications:
+    - target: {fileID: 7108983612038085454, guid: e2ac986b94cf20644b48c56f1ee97431, type: 3}
+      propertyPath: level
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7108983612038085454, guid: e2ac986b94cf20644b48c56f1ee97431, type: 3}
       propertyPath: shopManager
       value: 

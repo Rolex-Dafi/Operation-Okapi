@@ -131,7 +131,6 @@ public class CombatCharacter : Character, IDamagable
         dash.OnBegin();
     }
 
-
     public bool Attack(Attack attack, EAttackCommand attackCommand = EAttackCommand.Begin)
     {
         if (attack == null) return false;
