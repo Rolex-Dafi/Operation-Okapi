@@ -1278,10 +1278,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6495269628943879577, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
-      propertyPath: pillarObj
-      value: 
-      objectReference: {fileID: 7761476769716239181, guid: 9c913c45c5e04b64c8613d7e596e9f4e, type: 3}
     - target: {fileID: 6495269628943879578, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
       propertyPath: m_Name
       value: MallGenerator
