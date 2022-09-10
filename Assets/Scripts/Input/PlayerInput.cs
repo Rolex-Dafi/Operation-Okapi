@@ -15,16 +15,15 @@ public class PlayerInput : MonoBehaviour
     public Dictionary<EButtonDown, UnityEvent<EButtonDown>> buttonDownEvents;
     public Dictionary<EButtonUp, UnityEvent<EButtonUp>> buttonUpEvents;
 
-    [HideInInspector] public bool gamepadConnected;
-
     public bool readInput;
     
+    /// <summary>
+    /// Initializes the input events relevant to player input.
+    /// </summary>
     public void Init()
     {
         InputUtility.InitEvents(ref buttonDownEvents);
         InputUtility.InitEvents(ref buttonUpEvents);
-
-        StartCoroutine(DetectGamepadInput());
     }
     
     private void Update()
@@ -38,24 +37,4 @@ public class PlayerInput : MonoBehaviour
         InputUtility.GetInput(ref buttonDownEvents);
         InputUtility.GetInput(ref buttonUpEvents);        
     }
-
-    private IEnumerator DetectGamepadInput()
-    {
-        while(true)
-        {
-            // check if any joystick is connected
-            bool connected = false;
-            foreach (string name in Input.GetJoystickNames())
-            {
-                //if any of the joystick names are not empty -> a gamepad is connected
-                connected |= name != "";
-            }
-            gamepadConnected = connected;
-
-            // check every 2 seconds
-            yield return new WaitForSeconds(2);
-        }
-    }
-
-    
 }

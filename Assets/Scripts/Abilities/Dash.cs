@@ -25,25 +25,25 @@ public class Dash : Ability
     {
         if (InUse) return;
 
-        // are we currently chaining dashes?
-        bool inChain = (numUsedInChain < Data.maxNumChained);
-        float delta = inChain ? Data.deltaBeforeMax : Data.deltaAfterMax;
+        // reset if deltaAfterMax time passed
+        if (Time.time - lastTimeUsed > Data.deltaAfterMax)
+        {
+            numUsedInChain = 0;
+        }
 
-        if (Time.time - lastTimeUsed > delta)
+        // if deltaBeforeMax time passed, we can chain dashes until maxNumChained
+        if (Time.time - lastTimeUsed > Data.deltaBeforeMax && numUsedInChain < Data.maxNumChained)
         {
             base.OnBegin();
 
             // play animation
             character.Animator.SetBool(EAnimationParameter.dashing.ToString(), true);
 
-            // TODO allow to dash through enemies and objects
-
             // start moving
             character.StartCoroutine(OnContinue());
 
-            numUsedInChain = inChain ? numUsedInChain + 1 : 1;
+            ++numUsedInChain;
         }
-
     }
 
     public override IEnumerator OnContinue()

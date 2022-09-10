@@ -1,6 +1,10 @@
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
+/// <summary>
+/// Class that manages the shop UI and connected events.
+/// </summary>
 public class ShopManager : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvasGroup;
@@ -42,6 +46,9 @@ public class ShopManager : MonoBehaviour
         // TODO better tween - scale etc.
         canvasGroup.DOFade(1, .1f);
         gameManager.PauseGame(true);
+        
+        // if gamepad is connected, try to select the first button you can find
+        UIInput.TrySelectFirstButton();
     }
 
     private void BuyItem(ItemSO item)
@@ -54,6 +61,9 @@ public class ShopManager : MonoBehaviour
         {
             itemTemplate.UpdateItem(gameManager.PlayerCharacterInstance);
         }
+        
+        // if gamepad is connected, try to select the first button you can find
+        UIInput.TrySelectFirstButton();
     }
     
     /// <summary>

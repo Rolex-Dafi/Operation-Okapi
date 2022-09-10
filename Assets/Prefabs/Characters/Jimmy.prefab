@@ -186,9 +186,9 @@ GameObject:
   - component: {fileID: 1045408381992066637}
   - component: {fileID: 1045408381992066636}
   - component: {fileID: 744881628516905296}
+  - component: {fileID: 8006230671159167480}
   - component: {fileID: 3078057376987710060}
   - component: {fileID: 2446276194769548967}
-  - component: {fileID: 8006230671159167480}
   m_Layer: 7
   m_Name: Jimmy
   m_TagString: Enemy
@@ -348,6 +348,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5fd4426258d87114abef12a3f843730f, type: 2}
   - {fileID: 11400000, guid: cd2feab406699e14abff43416f1fb4e6, type: 2}
   - {fileID: 11400000, guid: 01654c78eecfe5e478411ce5bfb89ea3, type: 2}
+--- !u!114 &8006230671159167480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045408381992066639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588887a19061208449ffd1c43129fb2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootTree: {fileID: 0}
+  patrollPoints: []
 --- !u!114 &3078057376987710060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,20 +412,6 @@ MonoBehaviour:
   bezierTangentLength: 0.4
   offset: 0.2
   factor: 0.1
---- !u!114 &8006230671159167480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1045408381992066639}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 588887a19061208449ffd1c43129fb2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rootTree: {fileID: 0}
-  patrollPoints: []
 --- !u!1 &2508911112033342744
 GameObject:
   m_ObjectHideFlags: 0

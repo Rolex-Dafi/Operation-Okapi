@@ -46,6 +46,9 @@ public enum EAttackEffect // equivalent to button down, hold, up - for player
     Aim    // x startup, y active, z recovery frames
 } 
 
+/// <summary>
+/// 
+/// </summary>
 public enum EDirection
 {
     e, ne, n, nw, w, sw, s, se, NDEF
@@ -68,25 +71,23 @@ public enum EAnimationParameter
 /// </summary>
 public class AttackFrames
 {
-    private EAttackEffect attackEffect;
-
     private int startup;
     private int active;
     private int recovery;
 
     public AttackFrames(EAttackEffect attackEffect = EAttackEffect.Click, int startup = 0, int active = 0, int recovery = 0)
     {
-        this.attackEffect = attackEffect;
+        AttackEffect = attackEffect;
         this.startup = startup;
         this.active = active;
         this.recovery = recovery;
     }
 
-    public EAttackEffect AttackEffect { get => attackEffect; }
+    public EAttackEffect AttackEffect { get; }
 
-    public int Startup { get => startup; }
-    public int Active { get => active; }
-    public int Recovery { get => recovery; }
+    private int Startup { get => startup; }
+    private int Active { get => active; }
+    private int Recovery { get => recovery; }
 
     public Tuple<int, int> GetStartupIndexes()
     {
@@ -119,6 +120,12 @@ public class AttackFrames
 public static class Extentions
 {
     // Tweening
+    /// <summary>
+    /// A tweening function which punches an image color towards the given value and then back to the starting one.
+    /// </summary>
+    /// <param name="image">Image to punch</param>
+    /// <param name="color">The color value to punch towards</param>
+    /// <param name="time">The duration of the tween</param>
     public static void PunchColor(this Image image, Color color, float time = .1f)
     {
         DOTween.Punch(
@@ -131,6 +138,12 @@ public static class Extentions
         );
     }
     
+    /// <summary>
+    /// A tweening function which punches an image alpha towards the given value and then back to the starting one.
+    /// </summary>
+    /// <param name="image">Image to punch</param>
+    /// <param name="punch">The alpha value to punch towards</param>
+    /// <param name="time">The duration of the tween</param>
     public static void PunchAlpha(this Image image, float punch, float time = .1f)
     {
         DOTween.Punch(
@@ -143,12 +156,26 @@ public static class Extentions
         );
     }
 
+    /// <summary>
+    /// Converts a color to a Vector3. (Simply removes the alpha component.)
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns></returns>
     private static Vector3 ToVector3(this Color color)
     {
         return new Vector3(color.r, color.g, color.b);
     }
     
     // Physics
+    /// <summary>
+    /// Moves a rigidbody in a given direction.
+    /// </summary>
+    /// <param name="rb">Rigidbody to add the force to</param>
+    /// <param name="direction">Direction of the force</param>
+    /// <param name="distance">Distance which the rigidbody should travel in the given direction</param>
+    /// <param name="speed">The speed at which the rigidbody should travel</param>
+    /// <param name="onEnd">Callback when the movement ends</param>
+    /// <returns></returns>
     public static IEnumerator AddForceCustom(this Rigidbody2D rb, Vector2 direction, float distance, float speed, UnityAction onEnd = null)
     {
         float distanceTravelled = 0;
@@ -170,6 +197,12 @@ public static class Extentions
     }
 
     // Animation
+    // TODO relocate these two to the gfx utility
+    /// <summary>
+    /// An editor helper function. Used when creating an animator controller.
+    /// </summary>
+    /// <param name="parameter"></param>
+    /// <returns></returns>
     public static AnimatorControllerParameterType ToAnimatorParameterType(this EAnimationParameter parameter)
     {
         switch (parameter)
@@ -187,6 +220,12 @@ public static class Extentions
         }
     }
 
+    /// <summary>
+    /// An editor helper function. Used when creating an animator controller.
+    /// Returns what state-machine a given ability should be created in.
+    /// </summary>
+    /// <param name="ability">The ability</param>
+    /// <returns>The state-machine the ability should be in</returns>
     public static EStateMachine ToEStateMachine(this EAbilityType ability)
     {
         switch (ability)
@@ -204,20 +243,41 @@ public static class Extentions
     }
 
     // General Utility
+    /// <summary>
+    /// Coverts a vector from cartesian to isometric coordinates.
+    /// </summary>
+    /// <param name="vector">Vector to convert</param>
+    /// <returns>Vector in isometric coordinates</returns>
     public static Vector2 CartesianToIsometric(this Vector2 vector)
     {
         return new Vector2(vector.x, vector.y / 2);
     }
 
+    /// <summary>
+    /// Converts a Vector3 to a Vector2. (Simply removes the last coordinate.)
+    /// </summary>
+    /// <param name="vector">Vector to convert</param>
+    /// <returns>Converted vector</returns>
     public static Vector2 ToVector2(this Vector3 vector)
     {
         return new Vector2(vector.x, vector.y);
     }
+    
+    /// <summary>
+    /// Converts a Vector2 to Vector3. Sets the last coordinate to 0.
+    /// </summary>
+    /// <param name="vector">Vector to convert</param>
+    /// <returns>Converted vector</returns>
     public static Vector3 ToVector3(this Vector2 vector)
     {
         return new Vector3(vector.x, vector.y, 0);
     }
 
+    /// <summary>
+    /// Converts a direction to a vector.
+    /// </summary>
+    /// <param name="direction">Direction to convert</param>
+    /// <returns>Converted vector</returns>
     public static Vector2 ToVector2(this EDirection direction)
     {
         Vector2 ret = Vector2.zero;
@@ -251,75 +311,5 @@ public static class Extentions
         }
 
         return ret.normalized;
-    }
-
-    public static EDirection ToDirection(this Vector2 vector)
-    {
-        /*// size of the angle of one direction arc
-        float directionIncrement = 45;
-
-        // directions start from east:
-        // angle between vector and pure east vector, in range (-180, 180)
-        float angle = Vector2.SignedAngle(vector, new Vector2(1, 0));
-        // convert to (0, 360)
-        angle = angle < 0 ? 360 - angle : angle;
-
-        // which direction arc does the input vector belong to?
-        int direction = Mathf.FloorToInt((angle + directionIncrement / 2) / directionIncrement);
-        // make sure the result will return a valid direction - loop around
-        direction = direction > 7 ? 0 : direction;
-
-        //return (EDirection)direction;*/
-
-        if (vector.x == 0)
-        {
-            if (vector.y > 0)
-            {
-                return EDirection.n;
-            }
-            else if (vector.y < 0)
-            {
-                return EDirection.s;
-            }
-        }
-        else if (vector.x > 0)
-        {
-            if (vector.y == 0)
-            {
-                return EDirection.e;
-            }
-            else if (vector.y > 0)
-            {
-                return EDirection.ne;
-            }
-            else
-            {
-                return EDirection.se;
-            }
-        }
-        else
-        {
-            if (vector.y == 0)
-            {
-                return EDirection.w;
-            }
-            else if (vector.y > 0)
-            {
-                return EDirection.nw;
-            }
-            else
-            {
-                return EDirection.sw;
-            }
-        }
-
-        return EDirection.NDEF;
-    }
-
-    public static Vector2 SetTo01(this Vector2 vector)
-    {
-        vector.x = vector.x == 0 ? 0 : vector.x < 0 ? -1 : 1;
-        vector.y = vector.y == 0 ? 0 : vector.y < 0 ? -1 : 1;
-        return vector;
     }
 }

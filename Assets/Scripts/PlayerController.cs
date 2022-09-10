@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 direction;
 
-        if (playerInput.gamepadConnected)
+        if (UIInput.GamepadConnected)
         {
             // when using gamepad get direction from movement input - already set in playerCharacter
             direction = playerCharacter.Facing;

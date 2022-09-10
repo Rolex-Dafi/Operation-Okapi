@@ -30,7 +30,7 @@ public class JimmyBT : CharacterTreeBase
         Node attackSelector = new Selector(
             new List<Node>()
             {
-                fountainSequence, rangedSequence, walk
+                rangedSequence, walk
             }
         );
 

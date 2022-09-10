@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Pathfinding;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class AIGenerator : MonoBehaviour
 {
@@ -13,10 +14,12 @@ public class AIGenerator : MonoBehaviour
     private MapGenerator.GridTile[,] gridTiles;
 
     /// <summary>
-    /// Removes the current navmesh.
+    /// Removes the current navmesh if present.
     /// </summary>
     public void ClearNavMesh()
     {
+        if (!AstarPath.active) return;
+        
         // This holds all graph data
         AstarData data = AstarPath.active.data;
         
@@ -177,14 +180,48 @@ public class AIGenerator : MonoBehaviour
     {
         AstarPath.active.data.DeserializeGraphs(graphData.bytes);
         AstarPath.active.Scan();
+        
+        // TODO scan the map manually - do this after colliders turned into polygon instead of edge
+        /*AstarPath.active.AddWorkItem(new AstarWorkItem(ctx => {
+            var gg = AstarPath.active.data.gridGraph;
+            for (int z = 0; z < gg.depth; z++) {
+                for (int x = 0; x < gg.width; x++) {
+                    var node = gg.GetNode(x, z);
+
+                    var nodeWorldSpacePos = (Vector3)node.position;
+                    
+                    // if inside collider do set node.walkable = false and call gg.CalculateConnectionsForCellAndNeighbours
+                }
+            }
+
+            // Recalculate all grid connections
+            // This is required because we have updated the walkability of some nodes
+            gg.GetNodes(node => gg.CalculateConnections((GridNodeBase)node));
+
+            // If you are only updating one or a few nodes you may want to use
+            // gg.CalculateConnectionsForCellAndNeighbours only on those nodes instead for performance.
+        }));*/
     }
     
     /// <summary>
-    /// Removes itself from the scene - should be called when instantiating a prefab which
-    /// already has a navmesh generated.
+    /// Removes the current astar path from the scene - should be called before instantiating a prefab which
+    /// already has an astar path component.
     /// </summary>
-    public void RemoveSelf()
+    public void CleanUp(UnityAction onEnd)
     {
-        Destroy(gameObject);
+        StartCoroutine(CleanUpInternal(onEnd));
+    }
+
+    private IEnumerator CleanUpInternal(UnityAction onEnd)
+    {
+        Destroy(FindObjectOfType<AstarPath>());
+        
+        // remove any queued updates
+        AstarPath.active.FlushGraphUpdates();
+        AstarPath.active.FlushWorkItems();
+        
+        yield return new WaitForEndOfFrame(); // wait for any remaining work to complete
+        
+        onEnd.Invoke();
     }
 }

@@ -37,11 +37,14 @@ public class LevelManager : MonoBehaviour
     private LevelSO data;
 
     private GameObject previousRoom;
+    private GameObject previousRoomWrapper;  // for any objects that should be destroyed when exiting the room
     
     private int currentRoomIndex;
     private int merchantRoomIndex;
 
     private bool roomBeaten;
+    
+    public static Transform CurrentRoomTransform { get; private set; }
 
     public void Init(GameManager gameManager, LevelSO data)
     {
@@ -85,6 +88,7 @@ public class LevelManager : MonoBehaviour
     public void LoadRoom(PlayerCharacter player, RoomType roomType = RoomType.Normal)
     {
         // clean up previous room
+        Destroy(previousRoomWrapper);
         // if previous room was pcg and this one isn't
         roomGenerator.DestroyCurrentRoom();
         // if previous room was merchant or boss
@@ -96,10 +100,19 @@ public class LevelManager : MonoBehaviour
         
         aiGenerator.ClearNavMesh();
         
+        // setup next room
+        previousRoomWrapper = new GameObject
+        {
+            transform =
+            {
+                parent = transform
+            }
+        };
+        CurrentRoomTransform = previousRoomWrapper.transform;
         Interactable exitTrigger = default;
-
         roomBeaten = false;
         
+        // the rest depends on room type
         switch (roomType)
         {
             case RoomType.Normal:
@@ -142,7 +155,7 @@ public class LevelManager : MonoBehaviour
                 
                 // exit
                 exitTrigger = merchantRoom.ExitTrigger;
-                exitTrigger.Init("Press E to exit");
+                exitTrigger.Init("Press " + EButtonDown.Interact.GetButtonName() + " to exit");
 
                 // save to delete later
                 previousRoom = merchantRoom.gameObject;
@@ -155,12 +168,13 @@ public class LevelManager : MonoBehaviour
                 
                 // get from prefab (navmesh should be pre-generated in the prefab)
                 var bossRoom = Instantiate(data.bossRoomPrefab);
-                // load the navmesh
-                aiGenerator.LoadGraph(data.bossNavGraphData);
+                // load the navmesh - TODO should be only after spawning the boss, so it takes into account traps - when i fix the navmesh gen
+                //aiGenerator.LoadGraph(data.bossNavGraphData);
+                //aiGenerator.RemoveSelf(); // TODO call this instead
                 
                 // spawn the boss
                 enemySpawner.SpawnEnemy(bossRoom.EnemySpawn, bossRoom.EnemyPatrolPoints, data.boss);
-                
+
                 // place the player - persistent from previous room/level
                 PlayerSpawner.PlacePlayer(player, bossRoom.Entrance.position);
                 
@@ -186,7 +200,7 @@ public class LevelManager : MonoBehaviour
 
     private void SetRoomBeaten(Interactable exitTrigger)
     {
-        exitTrigger.SetTooltip("Press E to exit");
+        exitTrigger.SetTooltip("Press " + EButtonDown.Interact.GetButtonName() + " to exit");
         roomBeaten = true;
     }
 
@@ -211,7 +225,8 @@ public class LevelManager : MonoBehaviour
         }
         else if (currentRoomIndex == data.numberOfRooms - 1) // last room - boss
         {
-            LoadRoom(gameManager.PlayerCharacterInstance, RoomType.Boss);
+            // clean up the astar path - only complete load the boss room (bc it has its own astar path)
+            aiGenerator.CleanUp(() => LoadRoom(gameManager.PlayerCharacterInstance, RoomType.Boss));
         }
         else if (currentRoomIndex == data.numberOfRooms)     // level end
         {
@@ -232,10 +247,15 @@ public class LevelManager : MonoBehaviour
             previousRoom = null;
         }
         
-        // notify all listeners - should be at least game manager and HUD
-        onLevelComplete.Invoke();
+        // clean up the astar path - only complete the level after cleanup
+        aiGenerator.CleanUp(() => 
+        {
+            // notify all listeners - should be at least game manager and HUD
+            onLevelComplete.Invoke();
         
-        // destroy self
-        Destroy(gameObject);
+            // destroy self
+            Destroy(gameObject);
+        });
+
     }
 }

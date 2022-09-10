@@ -10,7 +10,8 @@ public class Trap : Ability
 
     public Trap(CombatCharacter character, AbilitySO data, EAbilityType type = EAbilityType.special) : base(character, data, type)
     {
-        trapController = Object.Instantiate(Data.trapControllerPrefab, Data.spawnPosition, Quaternion.identity);
+        // spawn it under the current room so that it gets destroyed when exiting the room
+        trapController = Object.Instantiate(Data.trapControllerPrefab, Data.spawnPosition, Quaternion.identity, LevelManager.CurrentRoomTransform);
         trapController.Init(Data);
     }
 

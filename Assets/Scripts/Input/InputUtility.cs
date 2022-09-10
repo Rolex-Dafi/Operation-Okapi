@@ -60,4 +60,29 @@ public static class InputExtensions
         }
         return EAttackButton.NDEF;        
     }
+    
+    /// <summary>
+    /// Returns the button name for any given interaction - context dependent, i.e. returns different names
+    /// for keyboard and for gamepad input.
+    /// </summary>
+    /// <param name="button"></param>
+    /// <returns></returns>
+    public static string GetButtonName(this EButtonDown button)
+    {
+        switch (button)
+        {
+            case EButtonDown.Dash:
+                return UIInput.GamepadConnected ? "A" : "Space";
+            case EButtonDown.Melee:
+                return UIInput.GamepadConnected ? "X" : "RMB";
+            case EButtonDown.Ranged:
+                return UIInput.GamepadConnected ? "Y" : "LMB";
+            case EButtonDown.Special:
+                return UIInput.GamepadConnected ? "B" : "MMB";
+            case EButtonDown.Interact:
+                return UIInput.GamepadConnected ? "RB" : "E";
+            default:
+                return "";
+        }
+    }
 }

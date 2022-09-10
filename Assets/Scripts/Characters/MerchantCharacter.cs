@@ -28,7 +28,7 @@ public class MerchantCharacter : Character
         currentShop = (data as MerchantCharacterSO)?.shop.ToList();
         base.Init();
 
-        interactable.Init("Press E to shop");
+        interactable.Init("Press " + EButtonDown.Interact.GetButtonName() + " to shop");
         interactable.onInteractPressed.AddListener(OpenShop);
         
         gameManager = FindObjectOfType<GameManager>();

@@ -11,7 +11,7 @@ public class Interactable : MonoBehaviour
     
     private TooltipUI tooltipInstance;
 
-    public void Init(string message = "Press E to Interact") // TODO take into account different inputs - ex. gamepad
+    public void Init(string message) // TODO take into account different inputs - ex. gamepad
     {
         onInteractPressed = new UnityEvent();
         

@@ -16,6 +16,7 @@ public class ProjectileController : MonoBehaviour
 
         this.friendlyTag = friendlyTag;
         gameObject.tag = friendlyTag;
+        gameObject.layer = LayerMask.NameToLayer(friendlyTag);
 
         rb = GetComponent<Rigidbody2D>();
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Class for any UI overlay with buttons relating to high-level game logic - ex. menus, game over screen.
@@ -16,6 +17,9 @@ public class UIOverlayManager : MonoBehaviour
     public void Init(GameManager gameManager)
     {
         this.gameManager = gameManager;
+        
+        // if gamepad is connected, try to select the first button you can find
+        UIInput.TrySelectFirstButton();
     }
 
     /// <summary>
@@ -74,4 +78,13 @@ public class UIOverlayManager : MonoBehaviour
         // TODO tween on menu close
         Destroy(gameObject);
     }
+    
+    /// <summary>
+    /// Opens a debug window.
+    /// </summary>
+    public void OpenDebug() 
+    {
+    
+    }
+    
 }

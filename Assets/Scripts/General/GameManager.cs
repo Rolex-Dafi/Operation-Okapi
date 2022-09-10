@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UIOverlayManager mainMenuPrefab;
     [SerializeField] private UIOverlayManager pauseMenuPrefab;
     [SerializeField] private UIOverlayManager gameEndPrefab;
+    [SerializeField] private UIOverlayManager debugPrefab;
     [SerializeField] private HUDManager hudPrefab;
 
     // player
@@ -108,11 +109,14 @@ public class GameManager : MonoBehaviour
             case Level.Roof:
                 // TODO implement special logic here - probably just spawn a prefab
             
+                // and spawn the enemies - maybe one of each?
+                
                 // for now:
                 GameEnd(true);
                 return;
         }
-
+        
+        Debug.LogWarning("instantiating level ... ");
         // instantiate the level
         currentLevelInstance = Instantiate(levelManagerPrefab);  
         currentLevelInstance.Init(this, levelData.First(x => x.level == level));
@@ -178,4 +182,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    /// <summary>
+    /// Opens a debug window.
+    /// </summary>
+    public void OpenDebug()
+    {
+        
+    }
 }
