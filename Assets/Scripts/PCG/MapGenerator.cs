@@ -113,6 +113,9 @@ public abstract class MapGenerator : MonoBehaviour
     {
         Restart();
         SetUp();
+        
+        Debug.Log("Room min is " + _minWidth + "x" + _minHeight);
+        Debug.Log("Room max is " + maxWidth + "x" + maxHeight);
     }
 
     protected abstract void SetUpParameters();
@@ -141,8 +144,9 @@ public abstract class MapGenerator : MonoBehaviour
 
     internal virtual void Restart()
     {
+        if(_roomMin == 0) SetUpParameters();
         if (_roomHolder == null) return;
-        
+
         Destroy(_roomHolder.gameObject);
         _roomHolder = null;
         _gridHolder = null;

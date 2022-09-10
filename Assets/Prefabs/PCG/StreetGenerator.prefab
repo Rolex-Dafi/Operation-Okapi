@@ -75,4 +75,4 @@ MonoBehaviour:
   buildingsHor:
   - {fileID: 11400000, guid: c3e2cbd2010aeba43b2d2e399a7ec6c4, type: 2}
   - {fileID: 11400000, guid: 4da012fc3abe2da40b86b7c11525e9d2, type: 2}
-  greenTensity: 20
+  greenTensity: 2

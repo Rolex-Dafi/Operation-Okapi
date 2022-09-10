@@ -38,7 +38,7 @@ public class MallGenerator : MapGenerator
         if (maxHeight <= 0) maxHeight = 20;
         if (maxWidth <= 0) maxWidth = 20;
         
-        _minHeight = _minWidth = 3;
+        _minHeight = _minWidth = 4;
         
     }
     

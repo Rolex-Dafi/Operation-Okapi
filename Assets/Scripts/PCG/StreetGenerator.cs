@@ -30,7 +30,7 @@ public class StreetGenerator : MapGenerator
 
     private StreetType _streetType;
     private bool _parkType;
-    public int greenTensity = 5;
+    public int greenTensity = 1;
     
     public override void Generate()
     {
@@ -418,7 +418,7 @@ public class StreetGenerator : MapGenerator
 
         if (_streetType == StreetType.PLAZA)
         {
-            PutDownObjects(_room.StartX*2+1, _room.StartY*2+1, _room.Width*2-1, _room.Height*2-1,
+            PutDownObjects(_room.StartX*2+3, _room.StartY*2+3, _room.Width*2-6, _room.Height*2-6,
                 greenery, greenTensity);
         }
     }

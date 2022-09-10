@@ -45,8 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collTile: {fileID: 11400000, guid: 0c1b975e7de6e2e4ea19adea04a09bbc, type: 2}
   entranceCollider: {fileID: 513636760818153504, guid: 194e72723ebecde45bf31e7bc27e935e, type: 3}
-  maxWidth: 8
-  maxHeight: 8
+  maxWidth: 10
+  maxHeight: 10
   entranceTile: {fileID: 11400000, guid: 3732e1a99d413eb4092fc52ff0e7f342, type: 2}
   exitTile: {fileID: 11400000, guid: 23946bbc4be554d4e9832bec3c1f0bbe, type: 2}
   floorEntranceTile: {fileID: 0}
