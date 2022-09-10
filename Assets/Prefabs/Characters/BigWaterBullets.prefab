@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 1906748809
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 12874712e226c964abc6c4f8bc9bc5e4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e71eeea714fdc314e802448f2f3ed982, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.40392157}
   m_FlipX: 0
   m_FlipY: 0
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 2921781480605392842}
   - component: {fileID: 2200154454339226943}
   m_Layer: 0
-  m_Name: CreditCardBullets
+  m_Name: BigWaterBullets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157,8 +157,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 308386233
   m_SortingLayer: 5
-  m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 2b7af29df29468b4ba41a72d1e76c84c, type: 3}
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 3c3cdc49e0851f24a9f67f9940ccaf7e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -212,7 +212,7 @@ Animator:
   m_GameObject: {fileID: 6895589858959094258}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d855d78e52525fe41940e0c681469d2d, type: 2}
+  m_Controller: {fileID: 9100000, guid: b6fa844a8bd5b9848904979212c6c6c8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -238,7 +238,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.32037038, y: 0.9611111}
+    oldSize: {x: 6.974074, y: 5.9729133}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -246,9 +246,17 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.051607713, y: -0.5568768}
-      - {x: 0.1337555, y: -0.5243814}
-      - {x: 0.19346991, y: -0.48353514}
-      - {x: 0.052656755, y: -0.41526082}
-      - {x: -0.18934621, y: -0.44405246}
-      - {x: -0.16859096, y: -0.53070676}
+    - - {x: -2.061995, y: 0.19397604}
+      - {x: -3.3205836, y: -0.6164305}
+      - {x: -3.432256, y: -1.1579269}
+      - {x: -3.1884897, y: -1.8188139}
+      - {x: -1.9270537, y: -2.4987206}
+      - {x: -0.6784279, y: -2.73064}
+      - {x: 0.5750604, y: -2.7652063}
+      - {x: 2.1540499, y: -2.4390073}
+      - {x: 3.0914469, y: -1.83933}
+      - {x: 3.360105, y: -1.1302764}
+      - {x: 3.082274, y: -0.4139511}
+      - {x: 1.9070076, y: 0.23800561}
+      - {x: 0.28208357, y: 0.5121504}
+      - {x: -0.9639282, y: 0.43708068}
