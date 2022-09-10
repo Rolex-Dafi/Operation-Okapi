@@ -769,7 +769,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1773803463}
         m_TargetAssemblyTypeName: NavMeshGraphGenerator, Assembly-CSharp
-        m_MethodName: GenerateNavMesh
+        m_MethodName: GenerateGraph
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

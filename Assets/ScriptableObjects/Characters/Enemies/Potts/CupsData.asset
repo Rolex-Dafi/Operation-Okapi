@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec555e45229292645aab319c3708cc84, type: 3}
   m_Name: CupsData
   m_EditorClassIdentifier: 
-  money: 2
+  money: 15
   health: 7
-  respect: 0
+  speed: 1
   attacks:
   - {fileID: 11400000, guid: 5881f0047ae974a4fb2ead18ba1ffc8e, type: 2}
   - {fileID: 11400000, guid: 14cd788273a4616408f54f599391feab, type: 2}
+  traps: []
   dash: {fileID: 0}
   onHitSound:
     Guid:

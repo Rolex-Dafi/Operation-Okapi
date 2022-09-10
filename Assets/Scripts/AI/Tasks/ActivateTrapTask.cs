@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class ActivateTrapTask : TaskBase
 {
-    public ActivateTrapTask(CharacterTreeBase characterBT, string debugName = "") : base(characterBT, debugName)
+    private Trap trap;
+    
+    public ActivateTrapTask(CharacterTreeBase characterBT, Trap trap, string debugName = "") : base(characterBT, debugName)
     {
+        this.trap = trap;
     }
     
     protected override void OnBegin()
@@ -15,6 +18,11 @@ public class ActivateTrapTask : TaskBase
 
     protected override void OnContinue()
     {
-        
+        // call on end when finished
+        if (!trap.InUse)
+        {
+            Debug.Log("calling on end");
+            OnEnd(true);
+        }
     }
 }

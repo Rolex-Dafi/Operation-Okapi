@@ -8,6 +8,8 @@ public class CharacterSO : ScriptableObject
     public int money;
     public int health;
 
+    public float speed;
+    
     // combat
     public AttackSO[] attacks;
     public TrapSO[] traps;

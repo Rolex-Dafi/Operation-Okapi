@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec555e45229292645aab319c3708cc84, type: 3}
   m_Name: NickITData
   m_EditorClassIdentifier: 
-  money: 2
+  money: 10
   health: 7
-  respect: 0
+  speed: 1
   attacks:
   - {fileID: 11400000, guid: 9bbc6081fc237f2468081993c007af88, type: 2}
   - {fileID: 11400000, guid: cdb48b99d81188b4d8eb033f40539f5f, type: 2}
+  traps: []
   dash: {fileID: 11400000, guid: 8c97c4ffb4da20e40bf8ca3e81518adc, type: 2}
   onHitSound:
     Guid:

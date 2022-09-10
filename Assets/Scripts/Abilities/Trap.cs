@@ -18,6 +18,12 @@ public class Trap : Ability
     public override void OnBegin()
     {
         trapController.ActivateTrap();
+        base.OnBegin();
+        OnEnd();
     }
 
+    public override void OnEnd()
+    {
+        InUse = false;
+    }
 }

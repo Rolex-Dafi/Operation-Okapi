@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec555e45229292645aab319c3708cc84, type: 3}
   m_Name: JimmyData
   m_EditorClassIdentifier: 
-  money: 15
+  money: 25
   health: 20
+  speed: 2
   attacks:
   - {fileID: 11400000, guid: 35624f1ed03a0b84bae0d5c7c27d907e, type: 2}
   traps:

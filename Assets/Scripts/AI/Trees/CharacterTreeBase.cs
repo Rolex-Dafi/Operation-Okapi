@@ -192,15 +192,15 @@ public abstract class CharacterTreeBase : TreeBase
         Node trapTask = new SequenceWithCachedLastChild(
             new List<Node>()
             {
-                new WaitFor(this, trap.Data.activationTime, debugName: "dash startup"), 
-                new ActivateTrapTask(this)
+                new WaitFor(this, trap.Data.activationTime, debugName: "trap startup"), 
+                new ActivateTrapTask(this, trap)
             }
         );
 
         List<Node> trapSequence = new List<Node>();
         if (checkCD)
         {
-            trapSequence.Add(new Inverter(new AbilityOnCD(this, trap, debugName: "attack on cd")));
+            trapSequence.Add(new Inverter(new AbilityOnCD(this, trap, debugName: "trap on cd")));
         }
         trapSequence.Add(trapTask);
 

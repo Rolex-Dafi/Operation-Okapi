@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9540b2db9093c4147a0b88e1faa9d827, type: 3}
   m_Name: JimmyFountain
   m_EditorClassIdentifier: 
-  coolDown: 5
-  damage: 2
+  coolDown: 2
+  damage: 1
   enemyPushbackDistance: 0
   enemyPushbackSpeed: 40
   onBeginSound:
@@ -32,4 +32,4 @@ MonoBehaviour:
     Path: 
   activationTime: 0.5
   spawnPosition: {x: -0.0013, y: 1.702, z: 0}
-  trapControllerPrefab: {fileID: 8566808554767225293, guid: 7cffaaab1c53dac498f890e4f7d35506, type: 3}
+  trapControllerPrefab: {fileID: 5624337126035033343, guid: 7cffaaab1c53dac498f890e4f7d35506, type: 3}

@@ -16,7 +16,7 @@ public class AIGenerator : MonoBehaviour
     /// <summary>
     /// Removes the current navmesh if present.
     /// </summary>
-    public void ClearNavMesh()
+    public void ClearGraph()
     {
         if (!AstarPath.active) return;
         
@@ -34,7 +34,7 @@ public class AIGenerator : MonoBehaviour
         this.roomGenerator = roomGenerator;
     }
     
-    public void GenerateNavMesh()
+    public void GenerateGraph()
     {
         // This holds all graph data
         AstarData data = AstarPath.active.data;

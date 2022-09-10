@@ -13,11 +13,12 @@ using UnityEngine.Events;
 public class CombatCharacter : Character, IDamagable
 {
     // movement
-    [SerializeField] protected float movementSpeed;
+    protected float movementSpeed;
     protected float currentSpeed;
     protected Vector2 facing;
 
     // combat
+    private bool isDead;
     protected Health health;
     protected bool canMove;
     protected List<Attack> attacks;
@@ -35,10 +36,10 @@ public class CombatCharacter : Character, IDamagable
     // vars exposed to other classes
     public Transform ProjectileSpawnerTransform { get => projectileSpawnerTransform; }
     // character rotation in Cartesian coordinates
-    public Vector2 Facing { get => facing; protected set => facing = value; }
+    public Vector2 Facing { get => facing; private set => facing = value; }
     public float ColliderRadius { get => col.radius; }
-    public Rigidbody2D RB { get => rb; protected set => rb = value; }
-    public Health Health { get => health; protected set => health = value; }
+    public Rigidbody2D RB { get => rb; private set => rb = value; }
+    public Health Health { get => health; private set => health = value; }
 
     public Dash GetDash() => dash; 
     public Attack GetAttackByID(int id) => attacks.Find(x => x.Data.id == id);
@@ -48,6 +49,7 @@ public class CombatCharacter : Character, IDamagable
     public override void Init()
     {
         base.Init();
+        movementSpeed = data.speed;
         currentSpeed = movementSpeed;
         Facing = Vector2.down;
 
@@ -143,6 +145,7 @@ public class CombatCharacter : Character, IDamagable
     /// <param name="trap">The trap to activate</param>
     public void ActivateTrap(Trap trap = null)
     {
+        Debug.Log("trying to activate trap", gameObject);
         if (trap == null)
         {
             if (traps.Count > 0)
@@ -196,7 +199,7 @@ public class CombatCharacter : Character, IDamagable
     {
         Animator.SetTrigger(EAnimationParameter.hit.ToString());
         int current = Health.ChangeCurrent(-amount);
-        if (current == 0) Die();
+        if (current == 0 && !isDead) Die();
         else
         {
             RuntimeManager.PlayOneShot(data.onHitSound.Guid);
@@ -208,6 +211,7 @@ public class CombatCharacter : Character, IDamagable
         Animator.SetTrigger(EAnimationParameter.death.ToString());
         RuntimeManager.PlayOneShot(data.onDeathSound.Guid);
         canMove = false;
+        isDead = true;
     }
 
     public void CleanUp()

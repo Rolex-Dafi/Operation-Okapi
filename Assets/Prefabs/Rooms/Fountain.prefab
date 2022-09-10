@@ -8,6 +8,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1117412084067513179, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
+      propertyPath: m_Name
+      value: Splash
+      objectReference: {fileID: 0}
+    - target: {fileID: 1117412084067513179, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1117412084067513179, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -339,7 +347,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 53.7
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4417183924494170617, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
 --- !u!1 &4613668727985970703 stripped
 GameObject:
@@ -351,6 +360,50 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1117412084067513179, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
   m_PrefabInstance: {fileID: 8937328683464936071}
   m_PrefabAsset: {fileID: 0}
+--- !u!60 &5333888430689872259
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613668727985970703}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.9685185, y: 2.7018518}
+    newSize: {x: 1.0777777, y: 0.83518517}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.56956875, y: 0.33750355}
+      - {x: -0.42823687, y: 0.3405491}
+      - {x: -0.87953633, y: 0.21965957}
+      - {x: -1.2826389, y: 0.005050659}
+      - {x: -1.449718, y: -0.24429405}
+      - {x: -1.4378102, y: -0.6514783}
+      - {x: -1.2560508, y: -0.99447846}
+      - {x: -0.7899182, y: -1.2280855}
+      - {x: -0.055810507, y: -1.3394883}
+      - {x: 0.7829375, y: -1.2341597}
+      - {x: 1.1803823, y: -1.0197632}
+      - {x: 1.331223, y: -0.89509654}
+      - {x: 1.4165231, y: -0.6765001}
+      - {x: 1.4636786, y: -0.49184823}
+      - {x: 1.4492453, y: -0.34755546}
+      - {x: 1.46616, y: -0.29373685}
+      - {x: 1.4016118, y: -0.13722572}
+      - {x: 1.2748636, y: -0.0039108396}
+      - {x: 1.1057708, y: 0.09421876}
 --- !u!95 &1462826215012622078
 Animator:
   serializedVersion: 3
@@ -370,7 +423,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8566808554767225293
+--- !u!114 &5624337126035033343
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -382,6 +435,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 634fcd5a38eadf943a44a2d59c9c8ae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1462826215012622078}
+  childrenTriggers:
+  - {fileID: 882734392342035817}
+--- !u!50 &1294087946055720023
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8324373169876302300}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!60 &8236462305353905043
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -392,7 +469,7 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -501,3 +578,15 @@ PolygonCollider2D:
       - {x: 0.055555556, y: -0.55370367}
       - {x: 0.087037034, y: -0.55}
       - {x: 0.11666667, y: -0.54444444}
+--- !u!114 &882734392342035817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8324373169876302300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ca9f1d0c3d72d545916e16242312747, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

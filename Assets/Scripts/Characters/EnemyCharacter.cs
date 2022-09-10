@@ -11,8 +11,6 @@ public class EnemyCharacter : CombatCharacter
 
     [SerializeField] private ItemSO[] drops;
     
-    private List<Trap> traps;
-
     private PlayerCharacter playerCharacter;
 
     private CharacterTreeBase enemyAI;
@@ -33,15 +31,19 @@ public class EnemyCharacter : CombatCharacter
     
     public override void Die()
     {
-        // drop item
-        // TODO bug - instantiate item under room so it gets destroyed when exiting the room
-        DroppedItem instance = Instantiate(droppedItemPrefab, transform.position, Quaternion.identity);
-        //instance.Init(money.GetCurrent());
+        // drop item - instantiate it under the current room so it gets destroyed when exiting the room
+        var instance = Instantiate(droppedItemPrefab, transform.position, Quaternion.identity, LevelManager.CurrentRoomTransform);
 
-        // TODO add item drops here + acc. for drop chances
-        // for testing - 100% drop chance
-        // TODO don't drop items which are already spawned (dropped by previous enemies)
-        instance.Init(GetDrop());
+        // flip a coin -> drop either money or an item
+        if (Random.Range(0, 2) == 0)
+        {
+            instance.Init(money.GetCurrent());
+        }
+        else
+        {
+            // TODO don't drop items which are already spawned (dropped by previous enemies)
+            instance.Init(GetDrop());
+        }
 
         base.Die();
     }

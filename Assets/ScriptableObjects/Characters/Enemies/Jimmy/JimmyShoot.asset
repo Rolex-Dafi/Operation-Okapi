@@ -35,7 +35,7 @@ MonoBehaviour:
   button: 1
   effect: 0
   cost: 0
-  recoveryTime: 1
+  recoveryTime: 0.5
   attackRange: 4
   movementSpeedFactor: 0
   projectilePrefab: {fileID: 4754095188408049542, guid: 5c61aeab842b3c545a391ffb9482a26b, type: 3}

@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec555e45229292645aab319c3708cc84, type: 3}
   m_Name: JoeData
   m_EditorClassIdentifier: 
-  money: 10
+  money: 15
   health: 5
+  speed: 1
   attacks: []
+  traps: []
   dash: {fileID: 11400000, guid: 16ed86b6e2d0d79459fd3a84c1120a95, type: 2}
   onHitSound:
     Guid:

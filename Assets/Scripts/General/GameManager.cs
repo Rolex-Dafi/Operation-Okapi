@@ -116,7 +116,6 @@ public class GameManager : MonoBehaviour
                 return;
         }
         
-        Debug.LogWarning("instantiating level ... ");
         // instantiate the level
         currentLevelInstance = Instantiate(levelManagerPrefab);  
         currentLevelInstance.Init(this, levelData.First(x => x.level == level));

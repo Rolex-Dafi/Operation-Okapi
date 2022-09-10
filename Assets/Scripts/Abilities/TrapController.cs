@@ -3,21 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 
-/// </summary>
-[RequireComponent(typeof(Animator), typeof(Collider2D))]
 public class TrapController : MonoBehaviour
 {
-    private TrapSO data;
+    [SerializeField] private Animator animator;
+
+    [SerializeField] private TrapTrigger[] childrenTriggers;
     
-    private Animator animator;
     private readonly string activate = "Activate";
     
     public void Init(TrapSO data)
     {
-        this.data = data;
-        animator = GetComponent<Animator>();
+        // the actual triggers are on child(ren)
+        foreach (var child in childrenTriggers)
+        {
+            child.Init(data);
+        }
     }
 
     /// <summary>
@@ -27,11 +27,6 @@ public class TrapController : MonoBehaviour
     {
         // play animation - the animation should enable the hitbox
         animator.SetTrigger(activate);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        HitBoxController.HandleCollision(transform, collision, data, tag);
     }
 
 }

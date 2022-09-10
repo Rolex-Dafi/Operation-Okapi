@@ -98,7 +98,7 @@ public class LevelManager : MonoBehaviour
             previousRoom = null;
         }
         
-        aiGenerator.ClearNavMesh();
+        aiGenerator.ClearGraph();
         
         // setup next room
         previousRoomWrapper = new GameObject
@@ -121,7 +121,7 @@ public class LevelManager : MonoBehaviour
         
                 // then generate the navmesh
                 aiGenerator.Init(roomGenerator);
-                aiGenerator.GenerateNavMesh();
+                aiGenerator.GenerateGraph();
                 var enemySpawnPoints = aiGenerator.GenerateEnemySpawnPoints(2); // TODO debug, change this to higher number
         
                 // spawn enemies

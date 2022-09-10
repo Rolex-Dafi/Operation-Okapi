@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec555e45229292645aab319c3708cc84, type: 3}
   m_Name: SmithData
   m_EditorClassIdentifier: 
-  money: 2
+  money: 25
   health: 7
+  speed: 0.5
   attacks:
   - {fileID: 11400000, guid: df44642c00dddae4f928ae7703988438, type: 2}
   - {fileID: 11400000, guid: 7bf2c5af8badee942a730b4a14917562, type: 2}
+  traps: []
   dash: {fileID: 0}
   onHitSound:
     Guid:

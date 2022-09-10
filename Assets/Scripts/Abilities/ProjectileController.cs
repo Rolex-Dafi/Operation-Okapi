@@ -25,8 +25,6 @@ public class ProjectileController : MonoBehaviour
     {
         StartCoroutine(rb.AddForceCustom(force, data.attackRange, data.projectileSpeed, OnEnd));
         
-        Debug.Log("force direction: " + force);
-        
         // rotate in the direction of travel
         var rotation = Quaternion.FromToRotation(transform.up, force);
         

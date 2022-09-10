@@ -23,14 +23,14 @@ public class JimmyBT : CharacterTreeBase
         // In Ranged Range ?
         Node rangedSequence = GetAttackBT(rangedAttack, true);
 
-        // Walk if not in ranged range
+        // Walk if not in ranged range TODO make him run away from the player - new task
         Node walk = new WalkToTarget(this, AIUtility.PCPositionName, debugName: "walk to pc");
 
         // Attack tree
         Node attackSelector = new Selector(
             new List<Node>()
             {
-                rangedSequence, walk
+                fountainSequence, rangedSequence, walk
             }
         );
 
