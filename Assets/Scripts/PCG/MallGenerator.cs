@@ -316,7 +316,7 @@ public class MallGenerator : MapGenerator
     {
         Random rnd = new Random();
 
-        /*if (Heads(rnd))*/ PutDownPillars(rnd);
+        if (Heads(rnd)) PutDownPillars(rnd);
     }
 
     private void PutDownPillars(Random rnd)
