@@ -14,7 +14,7 @@ public class BridgetBT : CharacterTreeBase
         RangedAttack rangedAttack = Character.GetAttackByID(baseAttackID) as RangedAttack;
 
         // always attack whenever you can
-        Root = GetAttackBT(rangedAttack, true);
+        Root = GetAttackBT(rangedAttack, true, true);
 
     }
 }

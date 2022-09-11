@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class ProjectileController : MonoBehaviour
 {
-    private AttackSO data;
+    private AbilitySO data;
 
     private Rigidbody2D rb;
 
@@ -20,7 +20,7 @@ public class ProjectileController : MonoBehaviour
     /// </summary>
     /// <param name="data">The data of the attack which spawned this projectile</param>
     /// <param name="friendlyTag">The tag of the game object which spawned this projectile</param>
-    public void Init(AttackSO data, string friendlyTag)
+    public void Init(AbilitySO data, string friendlyTag)
     {
         this.data = data;
 
@@ -38,7 +38,7 @@ public class ProjectileController : MonoBehaviour
     /// <param name="force">The force to add to the projectile</param>
     public void Shoot(Vector2 force)
     {
-        StartCoroutine(rb.AddForceCustom(force, data.attackRange, data.projectileSpeed, OnEnd));
+        StartCoroutine(rb.AddForceCustom(force, ((AttackSO)data).attackRange, ((AttackSO)data).projectileSpeed, OnEnd));
         
         // rotate in the direction of travel
         var rotation = Quaternion.FromToRotation(transform.up, force);

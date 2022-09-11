@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e64b9df5068ba247a2d408399dba8c8, type: 3}
-  m_Name: BridgetMoneyShot
+  m_Name: PottsBaseAttack 1
   m_EditorClassIdentifier: 
-  coolDown: 1
+  coolDown: 0.5
   damage: 1
   enemyPushbackDistance: 0
   enemyPushbackSpeed: 40
@@ -35,9 +35,9 @@ MonoBehaviour:
   button: 1
   effect: 0
   cost: 0
-  recoveryTime: 1
+  recoveryTime: 2
   attackRange: 10
   movementSpeedFactor: 0
   projectilePrefab: {fileID: 4754095188408049542, guid: 123066400bd31634a9f8b8cd9125c2b6, type: 3}
-  projectileSpeed: 100
+  projectileSpeed: 10
   projectileDelay: 0

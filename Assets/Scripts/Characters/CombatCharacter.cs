@@ -40,7 +40,8 @@ public class CombatCharacter : Character, IDamagable
     public Rigidbody2D RB { get => rb; private set => rb = value; }
     public Health Health { get => health; private set => health = value; }  // only enemies use this, the player has items instead of hp
 
-    public Dash GetDash() => dash; 
+    public Dash GetDash() => dash;
+
     public Attack GetAttackByID(int id) => attacks.Find(x => x.Data.id == id);
 
     public Trap GetMainTrap() => traps.Count > 0 ? traps[0] : null;
@@ -57,7 +58,10 @@ public class CombatCharacter : Character, IDamagable
         foreach (AttackSO attackSO in data.attacks)
         {
             Attack attack = attackSO.GetAttack(this);
-            if (attack != null) attacks.Add(attack);
+            if (attack != null)
+            {
+                attacks.Add(attack);
+            }
         }
 
         traps = new List<Trap>();
@@ -146,6 +150,31 @@ public class CombatCharacter : Character, IDamagable
         }
         return false;
     }
+    
+    /// <summary>
+    /// Tries to attack the specified target.
+    /// </summary>
+    /// <param name="attack">The attack to perform</param>
+    /// <param name="target">The target to attack</param>
+    /// <param name="attackCommand"></param>
+    /// <returns></returns>
+    public bool AttackTarget(Attack attack, Vector3 target, EAttackCommand attackCommand = EAttackCommand.Begin)
+    {
+        if (attack == null) return false;
+
+        attack.Target = target;
+        
+        switch (attackCommand)
+        {
+            case EAttackCommand.Begin:
+                attack.OnBegin();
+                return true;
+            case EAttackCommand.End:
+                attack.OnEnd();
+                return true;
+        }
+        return false;
+    }
 
     /// <summary>
     /// Activates the given trap. If no trap specified, activates the first trap in the characters trap list if present.
@@ -202,24 +231,6 @@ public class CombatCharacter : Character, IDamagable
 
         return false;
     }
-
-    /// <summary>
-    /// Tries to find a ranged attack and performs the first one it finds.
-    /// </summary>
-    /// <param name="attackCommand"></param>
-    /// <returns>Whether an attack was performed.</returns>
-    public bool RangedAttackTarget(EAttackCommand attackCommand = EAttackCommand.Begin)
-    {
-        RangedAttack attack = attacks.OfType<RangedAttack>().ToArray()[0];
-
-        if (attack != null)
-        {
-            Attack(attack, attackCommand);
-            return true;
-        }
-
-        return false;
-    }
     
     public virtual void TakeDamage(int amount)
     {
@@ -234,6 +245,8 @@ public class CombatCharacter : Character, IDamagable
 
     public virtual void Die()
     {
+        Debug.Log("in Die", gameObject);
+        
         Animator.SetTrigger(EAnimationParameter.death.ToString());
         RuntimeManager.PlayOneShot(data.onDeathSound.Guid);
         canMove = false;
@@ -242,6 +255,8 @@ public class CombatCharacter : Character, IDamagable
 
     public void CleanUp()
     {
+        Debug.Log("in Cleanup", gameObject);
+        
         onDeath.Invoke();
         Destroy(gameObject);
     }

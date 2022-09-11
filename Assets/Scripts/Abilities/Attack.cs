@@ -8,6 +8,8 @@ using UnityEngine.Events;
 /// </summary>
 public class Attack : Ability
 {
+    public Vector3? Target { get; set; }
+    
     public AttackSO Data => (AttackSO)data;
 
     protected Attack(CombatCharacter character, AttackSO data, EAbilityType type) : base(character, data, type)

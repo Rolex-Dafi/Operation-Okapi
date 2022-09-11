@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MallLevel
   m_EditorClassIdentifier: 
   level: 2
-  numberOfRooms: 3
+  numberOfRooms: 7
   enemies:
   - {fileID: 11400000, guid: ac07ad6af016a864ba7572b957a9e782, type: 2}
   - {fileID: 11400000, guid: 83b04af7c4cf3824e8d1f3f8b9fe05c0, type: 2}

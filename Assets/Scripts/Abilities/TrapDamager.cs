@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Handles the behaviour when the trap is triggered.
+/// Handles the behaviour when the trap is triggered, ex. whether it should deal damage.
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
 public class TrapDamager : MonoBehaviour

@@ -9,6 +9,8 @@ public class TrapSO : AbilitySO
     public Vector3 spawnPosition;
     public TrapController trapControllerPrefab;
 
+    public ProjectileController projectilePrefab;
+    
     public Trap GetTrap(CombatCharacter character)
     {
         return new Trap(character, this);

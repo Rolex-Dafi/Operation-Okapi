@@ -647,6 +647,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c0493c0912103b54c9c72a16ea9a791e, type: 2}
   - {fileID: 11400000, guid: d25644acb8a46f047a895503d5a6f84e, type: 2}
   - {fileID: 11400000, guid: 3b3ef8ae950c326408e6e792a99b838e, type: 2}
+  - {fileID: 11400000, guid: ccbb10aad3d290445bd85324170d2b90, type: 2}
   audioManager: {fileID: 166999711}
   uiInput: {fileID: 1752645816}
   playerSpawner: {fileID: 1752645817}

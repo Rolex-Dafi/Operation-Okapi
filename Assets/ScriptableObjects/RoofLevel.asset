@@ -18,10 +18,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ac07ad6af016a864ba7572b957a9e782, type: 2}
   - {fileID: 11400000, guid: 83b04af7c4cf3824e8d1f3f8b9fe05c0, type: 2}
   - {fileID: 11400000, guid: a8abf4ff10a38e340a5d64396286f4a6, type: 2}
-  - {fileID: 11400000, guid: db22889859e538743b33956f9a3dd56f, type: 2}
   - {fileID: 11400000, guid: 9d86bbfc01c92fb4098fc9636ec8a6a3, type: 2}
   boss: {fileID: 11400000, guid: c9f9ef82e2ea8094a8280b919013411d, type: 2}
   roomGeneratorPrefab: {fileID: 0}
   merchantRoomPrefab: {fileID: 0}
-  bossRoomPrefab: {fileID: 3068351568661815356, guid: ab80c0111ad3a694fa54614fcf09808e, type: 3}
+  bossRoomPrefab: {fileID: 4998985812912628588, guid: 65ea84089dae95d48aa7f2bbd1018efe, type: 3}
   bossNavGraphData: {fileID: 4900000, guid: 595c1af1d5d01bc43896047cdfbf822e, type: 3}

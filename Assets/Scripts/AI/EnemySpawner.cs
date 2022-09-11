@@ -66,6 +66,7 @@ public class EnemySpawner : MonoBehaviour
         
         enemyInstance.onDeath.AddListener(() =>
         {
+            Debug.Log("enemy dying " + gameObject.name);
             onEnemyDeath?.Invoke();
             CleanUpEnemy(healthBarInstance, enemyInstance);
         });

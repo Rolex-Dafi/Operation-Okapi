@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 308386233
   m_SortingLayer: 5
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 3c3cdc49e0851f24a9f67f9940ccaf7e, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_Size: {x: 6.974074, y: 5.9729133}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1001 &8937328683464936071
@@ -410,9 +410,17 @@ PrefabInstance:
       value: 0.05868648
       objectReference: {fileID: 0}
     - target: {fileID: 7060159797083217599, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
+      propertyPath: m_Size.x
+      value: 6.974074
+      objectReference: {fileID: 0}
+    - target: {fileID: 7060159797083217599, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
+      propertyPath: m_Size.y
+      value: 5.9729133
+      objectReference: {fileID: 0}
+    - target: {fileID: 7060159797083217599, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 72a61fc798c1c694ab74ff1b31419b73, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 7060159797083217599, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
       propertyPath: m_Color.a
       value: 1
@@ -428,6 +436,10 @@ PrefabInstance:
     - target: {fileID: 7060159797083217599, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
       propertyPath: m_Color.r
       value: 0.6117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7060159797083217599, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9030788843015826724, guid: 751cf7a5ab5626c47a776e9054c58c73, type: 3}
       propertyPath: m_LocalScale.x
@@ -561,6 +573,7 @@ MonoBehaviour:
   animator: {fileID: 1462826215012622078}
   childrenDamagers:
   - {fileID: 882734392342035817}
+  data: {fileID: 0}
 --- !u!50 &1294087946055720023
 Rigidbody2D:
   serializedVersion: 4
@@ -600,7 +613,7 @@ PolygonCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 6.974074, y: 5.9729133}
-    newSize: {x: 1.0777777, y: 0.83518517}
+    newSize: {x: 6.974074, y: 5.9729133}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
