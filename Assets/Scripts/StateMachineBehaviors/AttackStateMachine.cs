@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// State machine for attack states of all characters.
+/// </summary>
 public class AttackStateMachine : StateMachineBehaviour
 {
     private CombatCharacter combatCharacter;

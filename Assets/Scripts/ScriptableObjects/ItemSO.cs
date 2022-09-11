@@ -20,6 +20,9 @@ public class ItemEffect
 }
 
 
+/// <summary>
+/// Item data class.
+/// </summary>
 public class ItemSO : ScriptableObject
 {
     public int ID;

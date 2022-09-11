@@ -5,6 +5,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manager for the UI of items in the shop.
+/// </summary>
 public class ShopItemUI : MonoBehaviour
 {
     [SerializeField] private Image itemIcon;
@@ -33,12 +36,19 @@ public class ShopItemUI : MonoBehaviour
         gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// Updates the item UI according to the current player state.
+    /// </summary>
+    /// <param name="playerCharacter">The current player character instance</param>
     public void UpdateItem(PlayerCharacter playerCharacter)
     {
         // player has enough money and has space in the inventory
         buyButton.interactable = playerCharacter.Money.GetCurrent() >= currentItem.Cost && playerCharacter.Inventory.HasSpace();
     }
     
+    /// <summary>
+    /// Hides this item from the shop UI.
+    /// </summary>
     public void Hide()
     {
         buyButton.onClick.RemoveAllListeners();

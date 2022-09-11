@@ -1,11 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls the hitbox for all melee attacks.
+/// </summary>
 public class HitBoxController : MonoBehaviour
 {
     private AbilitySO data;
 
+    /// <summary>
+    /// Initializes the hitbox
+    /// </summary>
+    /// <param name="data"></param>
     public void Init(AbilitySO data)
     {
         this.data = data;
@@ -17,7 +22,7 @@ public class HitBoxController : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Handles all player versus enemy collision.
     /// </summary>
     /// <param name="transform">The transform of the object whose collision we're handling</param>
     /// <param name="collision">The collider of the object which collided with the transform</param>

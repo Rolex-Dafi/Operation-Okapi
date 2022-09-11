@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Attack data class.
+/// </summary>
 [CreateAssetMenu(fileName = "AttackData", menuName = "ScriptableObjects/Attack")]
 public class AttackSO : AbilitySO
 {

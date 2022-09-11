@@ -41,14 +41,6 @@ public class UIOverlayManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Load last save - only from main menu.
-    /// </summary>
-    public void LoadGame()
-    {
-        //TODO implement loading
-    }
-
-    /// <summary>
     /// After pausing game - only call from pause menu.
     /// </summary>
     public void ResumeGame()
@@ -78,13 +70,5 @@ public class UIOverlayManager : MonoBehaviour
         // TODO tween on menu close
         Destroy(gameObject);
     }
-    
-    /// <summary>
-    /// Opens a debug window.
-    /// </summary>
-    public void OpenDebug() 
-    {
-    
-    }
-    
+
 }

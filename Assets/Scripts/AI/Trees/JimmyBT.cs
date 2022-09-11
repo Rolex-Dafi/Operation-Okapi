@@ -1,6 +1,9 @@
 using BehaviourTree;
 using System.Collections.Generic;
 
+/// <summary>
+/// Behavioral tree for the second level boss.
+/// </summary>
 public class JimmyBT : CharacterTreeBase
 {
     private int baseAttackID = 1;

@@ -1,10 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Pathfinding;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Handles all AI related procedural content generation.
+/// </summary>
 public class AIGenerator : MonoBehaviour
 {
     [SerializeField] private MapGenerator roomGenerator;
@@ -29,11 +30,18 @@ public class AIGenerator : MonoBehaviour
         currentPointGraph.nodes = null;
     }
     
+    /// <summary>
+    /// Initializes the AI generator.
+    /// </summary>
+    /// <param name="roomGenerator">Procedural content generator which generates a room</param>
     public void Init(MapGenerator roomGenerator)
     {
         this.roomGenerator = roomGenerator;
     }
     
+    /// <summary>
+    /// Generates a navigation point graph to be used by the astar path.
+    /// </summary>
     public void GenerateGraph()
     {
         // This holds all graph data
@@ -107,22 +115,18 @@ public class AIGenerator : MonoBehaviour
                     }
                 }
             }
-            
-            // TODO add diagonal connections in both directions for smoother AI pathing
-            
-            // Add 2 nodes and connect them
-            /*var node1 = graph.AddNode((Int3) new Vector3(1, 2, 3));
-            var node2 = graph.AddNode((Int3) new Vector3(4, 5, 6));
-            var cost1 = (uint)(node2.position - node1.position).costMagnitude;
-            node1.AddConnection(node2, cost1);
-            node2.AddConnection(node1, cost1);*/
         }));
 
         // Run the above work item immediately
         AstarPath.active.FlushWorkItems();
     }
 
-    public Vector3[] GenerateEnemySpawnPoints(int numEnemies = 5) // TODO set this from level data
+    /// <summary>
+    /// Randomly generates enemy spawn points in the current room.
+    /// </summary>
+    /// <param name="numEnemies">The number of spawn points to generate</param>
+    /// <returns>The generated spawn points</returns>
+    public Vector3[] GenerateEnemySpawnPoints(int numEnemies)
     {
         if (gridTiles == null)
         {
@@ -174,33 +178,6 @@ public class AIGenerator : MonoBehaviour
         }
 
         return true;
-    }
-
-    public void LoadGraph(TextAsset graphData)
-    {
-        AstarPath.active.data.DeserializeGraphs(graphData.bytes);
-        AstarPath.active.Scan();
-        
-        // TODO scan the map manually - do this after colliders turned into polygon instead of edge
-        /*AstarPath.active.AddWorkItem(new AstarWorkItem(ctx => {
-            var gg = AstarPath.active.data.gridGraph;
-            for (int z = 0; z < gg.depth; z++) {
-                for (int x = 0; x < gg.width; x++) {
-                    var node = gg.GetNode(x, z);
-
-                    var nodeWorldSpacePos = (Vector3)node.position;
-                    
-                    // if inside collider do set node.walkable = false and call gg.CalculateConnectionsForCellAndNeighbours
-                }
-            }
-
-            // Recalculate all grid connections
-            // This is required because we have updated the walkability of some nodes
-            gg.GetNodes(node => gg.CalculateConnections((GridNodeBase)node));
-
-            // If you are only updating one or a few nodes you may want to use
-            // gg.CalculateConnectionsForCellAndNeighbours only on those nodes instead for performance.
-        }));*/
     }
     
     /// <summary>

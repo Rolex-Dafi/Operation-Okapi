@@ -106,6 +106,11 @@ public class PlayerCharacter : CombatCharacter, IPushable
         aimingGFX.SetActive(false);
     }
 
+    /// <summary>
+    /// Tries to begin or end an attack.
+    /// </summary>
+    /// <param name="attackButton">What button the player pressed</param>
+    /// <param name="command">What command to perform</param>
     public void Attack(EAttackButton attackButton, EAttackCommand command)
     {
         if (currentAttacks[attackButton] != null)
@@ -165,6 +170,12 @@ public class PlayerCharacter : CombatCharacter, IPushable
         Respect.CleanUp();
     }
 
+    /// <summary>
+    /// Pushes the character in the given direction.
+    /// </summary>
+    /// <param name="direction">The direction to push in</param>
+    /// <param name="distance">The distance of the push</param>
+    /// <param name="speed">The speed of the push</param>
     public void Push(Vector2 direction, float distance, float speed)
     {
         // interrupt movement

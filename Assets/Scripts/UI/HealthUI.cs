@@ -1,9 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
+/// <summary>
+/// Health bar UI manager class.
+/// </summary>
 public class HealthUI : MonoBehaviour
 {
     [SerializeField] private ItemUI itemPrefab;

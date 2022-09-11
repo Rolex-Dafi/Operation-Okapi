@@ -1,6 +1,9 @@
 using BehaviourTree;
 using System.Collections.Generic;
 
+/// <summary>
+/// Behavioral tree for the boss of the first level.
+/// </summary>
 public class SmithBT : CharacterTreeBase
 {
     private int roarAttackID = 0;

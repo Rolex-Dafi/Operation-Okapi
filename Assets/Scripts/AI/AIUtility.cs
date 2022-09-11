@@ -1,14 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public static class AIUtility
 {
     public static readonly string PCPositionName = "PCPosition";
     public static readonly int MeleeAttackID = 0;
     public static readonly int RangedAttackID = 1;
-
 }
 
 public enum EObstacleFilter
@@ -20,11 +16,21 @@ public enum EObstacleFilter
 
 public static class AIExtensions
 {
+    /// <summary>
+    /// Converts an obstacle filter into a bool.
+    /// </summary>
+    /// <param name="filter">The obstacle filter</param>
+    /// <returns>Whether the filter is set</returns>
     public static bool ShouldFilter(this EObstacleFilter filter)
     {
         return filter != EObstacleFilter.None;
     }
 
+    /// <summary>
+    /// Converts an obstacle filter to a layer mask.
+    /// </summary>
+    /// <param name="filter">The obstacle filter</param>
+    /// <returns>The layer mask corresponding to the filter</returns>
     public static LayerMask ToLayerMask(this EObstacleFilter filter)
     {
         switch (filter)

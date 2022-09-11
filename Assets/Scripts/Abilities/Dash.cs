@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// 
+/// Class for the dash ability.
 /// </summary>
 public class Dash : Ability
 {
@@ -14,6 +14,11 @@ public class Dash : Ability
 
     private readonly int characterLayerID;
     
+    /// <summary>
+    /// Creates a dash instance.
+    /// </summary>
+    /// <param name="character">The character to which the attack belongs</param>
+    /// <param name="data">The dash data</param>
     public Dash(CombatCharacter character, DashSO data) : base(character, data, EAbilityType.dash)
     {
         lastTimeUsed = 0;

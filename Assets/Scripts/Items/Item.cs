@@ -11,6 +11,10 @@ public class Item
     public int CurrentHealth => health.GetCurrent();
 
 
+    /// <summary>
+    /// Creates an item instance.
+    /// </summary>
+    /// <param name="data"></param>
     public Item(ItemSO data)
     {
         Data = data;
@@ -18,7 +22,10 @@ public class Item
         //ItemState = EItemState.Full;
     }
 
-    
+    /// <summary>
+    /// Deal damage to this item.
+    /// </summary>
+    /// <param name="damage"></param>
     public void ReceiveDamage(int damage)
     {
         health.ChangeCurrent(-damage);

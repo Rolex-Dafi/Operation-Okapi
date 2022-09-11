@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Wrapper class for data of all abilities.
+/// </summary>
 public class AbilitySO : ScriptableObject
 {
     public float coolDown;

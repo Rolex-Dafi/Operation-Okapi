@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Character data class.
+/// </summary>
 [CreateAssetMenu(fileName = "CharacterData", menuName = "ScriptableObjects/Character")]
 public class CharacterSO : ScriptableObject
 {

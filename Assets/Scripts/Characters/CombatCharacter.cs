@@ -99,7 +99,7 @@ public class CombatCharacter : Character, IDamagable
     }
 
     /// <summary>
-    /// Move this character in the given direction
+    /// Moves this character in the given direction.
     /// </summary>
     /// <param name="move">Direction to move in</param>
     public void Move(Vector2 move)
@@ -126,7 +126,7 @@ public class CombatCharacter : Character, IDamagable
     }
 
     /// <summary>
-    /// Performs a dash if this character can move.
+    /// Performs a dash.
     /// </summary>
     public void Dash()
     {
@@ -135,6 +135,12 @@ public class CombatCharacter : Character, IDamagable
         dash.OnBegin();
     }
 
+    /// <summary>
+    /// Tries to begin or end an attack.
+    /// </summary>
+    /// <param name="attack">The attack to perform</param>
+    /// <param name="attackCommand">The attack command (i.e. should the attack begin or end)</param>
+    /// <returns></returns>
     public bool Attack(Attack attack, EAttackCommand attackCommand = EAttackCommand.Begin)
     {
         if (attack == null) return false;
@@ -152,7 +158,7 @@ public class CombatCharacter : Character, IDamagable
     }
     
     /// <summary>
-    /// Tries to attack the specified target.
+    /// Tries to begin or end an attack on the specified target.
     /// </summary>
     /// <param name="attack">The attack to perform</param>
     /// <param name="target">The target to attack</param>
@@ -177,7 +183,7 @@ public class CombatCharacter : Character, IDamagable
     }
 
     /// <summary>
-    /// Activates the given trap. If no trap specified, activates the first trap in the characters trap list if present.
+    /// Activates the given trap. If no trap specified, activates the first trap in the characters trap list, if present.
     /// </summary>
     /// <param name="trap">The trap to activate</param>
     public void ActivateTrap(Trap trap = null)
@@ -195,43 +201,11 @@ public class CombatCharacter : Character, IDamagable
             trap.OnBegin();
         }
     }
-
-    /// <summary>
-    /// Tries to find a melee attack and performs the first one it finds.
-    /// </summary>
-    /// <param name="attackCommand"></param>
-    /// <returns>Whether an attack was performed.</returns>
-    public bool MeleeAttack(EAttackCommand attackCommand = EAttackCommand.Begin)
-    {
-        MeleeAttack attack = attacks.OfType<MeleeAttack>().ToArray()[0];
-
-        if (attack != null)
-        {
-            Attack(attack, attackCommand);
-            return true;
-        }
-
-        return false;
-    }
-
-    /// <summary>
-    /// Tries to find a ranged attack and performs the first one it finds.
-    /// </summary>
-    /// <param name="attackCommand"></param>
-    /// <returns>Whether an attack was performed.</returns>
-    public bool RangedAttack(EAttackCommand attackCommand = EAttackCommand.Begin)
-    {
-        RangedAttack attack = attacks.OfType<RangedAttack>().ToArray()[0];
-
-        if (attack != null)
-        {
-            Attack(attack, attackCommand);
-            return true;
-        }
-
-        return false;
-    }
     
+    /// <summary>
+    /// Deals damage to this character.
+    /// </summary>
+    /// <param name="amount">The amount of damage to deal</param>
     public virtual void TakeDamage(int amount)
     {
         Animator.SetTrigger(EAnimationParameter.hit.ToString());
@@ -243,6 +217,9 @@ public class CombatCharacter : Character, IDamagable
         }
     }
 
+    /// <summary>
+    /// Kills this character.
+    /// </summary>
     public virtual void Die()
     {
         Debug.Log("in Die", gameObject);
@@ -253,6 +230,9 @@ public class CombatCharacter : Character, IDamagable
         isDead = true;
     }
 
+    /// <summary>
+    /// Handles clean up of the character after death.
+    /// </summary>
     public void CleanUp()
     {
         Debug.Log("in Cleanup", gameObject);
@@ -261,12 +241,19 @@ public class CombatCharacter : Character, IDamagable
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Sets the movement speed of this character to the given value.
+    /// </summary>
+    /// <param name="movementSpeed"></param>
     public void SetMovementSpeed(float movementSpeed)
     {
         canMove = movementSpeed == 0 ? false : true;
         currentSpeed = movementSpeed * movementSpeed;
     }
 
+    /// <summary>
+    /// Ends all attacks of the character.
+    /// </summary>
     public void ResetAttacks()
     {
         foreach (var attack in attacks)
@@ -275,6 +262,9 @@ public class CombatCharacter : Character, IDamagable
         }
     }
 
+    /// <summary>
+    /// Resets movement speed of the character.
+    /// </summary>
     public void ResetMovementSpeed() 
     {
         currentSpeed = movementSpeed;

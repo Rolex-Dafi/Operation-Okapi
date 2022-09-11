@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -15,9 +13,9 @@ public class AttackTarget : TaskBase
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="characterBT"></param>
-    /// <param name="attack"></param>
-    /// <param name="targetName"></param>
+    /// <param name="characterBT">The behavioral tree of this character</param>
+    /// <param name="attack">The attack to perform</param>
+    /// <param name="targetName">The name of the target - this task will try to retrieve the target from shared memory.</param>
     /// <param name="precise">Should we attack the target specifically or attack in the direction of the target</param>
     /// <param name="debugName"></param>
     public AttackTarget(CharacterTreeBase characterBT, Attack attack, string targetName, bool precise = false, string debugName = "") : base(characterBT, debugName)

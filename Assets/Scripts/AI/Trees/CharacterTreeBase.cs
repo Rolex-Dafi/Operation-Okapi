@@ -4,6 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Base class for behavior trees of all characters in the game.
+/// </summary>
 [RequireComponent(typeof(Seeker), typeof(CombatCharacter))]
 public abstract class CharacterTreeBase : TreeBase
 {

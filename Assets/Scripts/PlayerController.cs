@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
 
     public bool Aiming { get => aiming; set => aiming = value; }
 
+    /// <summary>
+    /// Should we be currently reading input?
+    /// </summary>
     public bool ReadInput
     {
         get => playerInput.readInput;
@@ -88,7 +91,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttack<T>(T interaction)
     {
-        playerCharacter.Attack(interaction.ToEAttackButton(), interaction.ToEAttackCommand());
+        playerCharacter.Attack(interaction.ToEAttackButton(), InputExtensions.ToEAttackCommand<T>());
     }
 
     private void OnInteract<T>(T interaction)

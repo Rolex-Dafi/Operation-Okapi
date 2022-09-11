@@ -1,6 +1,9 @@
 using BehaviourTree;
 using System.Collections.Generic;
 
+/// <summary>
+/// Behavioral tree for a mob from the first level.
+/// </summary>
 public class PottsBT : CharacterTreeBase
 {
     private int baseAttackID = 1;

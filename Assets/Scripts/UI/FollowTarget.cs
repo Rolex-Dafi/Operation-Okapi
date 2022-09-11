@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Makes this game object follow a specified target.
+/// </summary>
 public class FollowTarget : MonoBehaviour
 {
     private Transform target;
@@ -11,6 +14,10 @@ public class FollowTarget : MonoBehaviour
 
     private bool initialized = false;
 
+    /// <summary>
+    /// Initializes the follower.
+    /// </summary>
+    /// <param name="target">The target to follow</param>
     public void Init(Transform target)
     {
         this.target = target;

@@ -5,6 +5,9 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// An editor window for setting up the in-game items.
+/// </summary>
 public class ItemSetUpWindow : EditorWindow
 {
     private string defaultItemFolder = "Sprites/Items/";

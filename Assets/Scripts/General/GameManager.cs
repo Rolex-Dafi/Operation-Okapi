@@ -2,6 +2,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// The game manager - main entry point of the game.
+/// </summary>
 [RequireComponent(typeof(UIInput))]
 public class GameManager : MonoBehaviour
 {
@@ -99,19 +102,6 @@ public class GameManager : MonoBehaviour
 
     private void StartLevel(Level level)
     {
-        /*switch (level)
-        {
-            // End the game
-            case Level.End:
-                GameEnd(true);
-                return;
-            // special level - has slightly different logic than the rest
-            case Level.Roof:                            
-                // for now:
-                GameEnd(true);
-                return;
-        }*/
-        
         // instantiate the level
         currentLevelInstance = Instantiate(levelManagerPrefab);  
         currentLevelInstance.Init(this, levelData.First(x => x.level == level));
@@ -164,6 +154,10 @@ public class GameManager : MonoBehaviour
         PlayerCharacterInstance.ReadInput = !pause;  // stop reading player input
     }
 
+    /// <summary>
+    /// Ends the game.
+    /// </summary>
+    /// <param name="won">Whether the game was won</param>
     public void GameEnd(bool won)
     {
         Debug.Log("ending game, won = " + won);
@@ -184,13 +178,5 @@ public class GameManager : MonoBehaviour
         
         // simply reload the scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    /// <summary>
-    /// Opens a debug window.
-    /// </summary>
-    public void OpenDebug()
-    {
-        
     }
 }

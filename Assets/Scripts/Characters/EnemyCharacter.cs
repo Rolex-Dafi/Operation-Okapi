@@ -5,6 +5,9 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+/// <summary>
+/// Class for all enemy characters.
+/// </summary>
 public class EnemyCharacter : CombatCharacter
 {
     [SerializeField] private DroppedItem droppedItemPrefab;
@@ -15,6 +18,10 @@ public class EnemyCharacter : CombatCharacter
 
     private CharacterTreeBase enemyAI;
 
+    /// <summary>
+    /// Stops the AI from updating (useful ex. when pausing the game).
+    /// </summary>
+    /// <param name="freeze"></param>
     public void Freeze(bool freeze)
     {
         enemyAI.ShouldUpdate = !freeze;

@@ -17,6 +17,9 @@ public struct Pivot
     public Vector2 vector;
 }
 
+/// <summary>
+/// Class which handles setting up the sprites for use in the game.
+/// </summary>
 public class SpriteSetUp
 {
     // remake this into a struct "sprite_info" later:

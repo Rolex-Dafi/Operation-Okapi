@@ -2,6 +2,9 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Class for game objects with which the player can interact by pressing the interact button.
+/// </summary>
 [RequireComponent(typeof(Collider2D))]
 public class Interactable : MonoBehaviour
 {
@@ -30,6 +33,10 @@ public class Interactable : MonoBehaviour
         tooltipInstance.Init(message); 
     }
 
+    /// <summary>
+    /// Set the text of the tooltip of this interactable, if present.
+    /// </summary>
+    /// <param name="message"></param>
     public void SetTooltip(string message)
     {
         if (tooltipInstance == null) return;

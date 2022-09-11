@@ -1,6 +1,9 @@
 using BehaviourTree;
 using System.Collections.Generic;
 
+/// <summary>
+/// Behavioral tree for a mob from the second level.
+/// </summary>
 public class JoeBT : CharacterTreeBase
 {
     protected override void Init()

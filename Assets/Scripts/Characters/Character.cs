@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -18,6 +16,9 @@ public class Character : MonoBehaviour
     public Money Money { get => money; private set => money = value; }
     public CharacterSO Data => data;
 
+    /// <summary>
+    /// Initializes the character.
+    /// </summary>
     public virtual void Init()
     {
         Money = new Money(data.money);

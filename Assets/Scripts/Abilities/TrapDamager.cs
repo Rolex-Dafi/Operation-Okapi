@@ -8,6 +8,10 @@ public class TrapDamager : MonoBehaviour
 {
     private TrapSO data;
     
+    /// <summary>
+    /// Initializes the damager.
+    /// </summary>
+    /// <param name="data">The trap data</param>
     public void Init(TrapSO data)
     {
         this.data = data;

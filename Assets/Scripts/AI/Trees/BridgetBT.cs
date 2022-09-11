@@ -1,8 +1,6 @@
-using BehaviourTree;
-using System.Collections.Generic;
 
 /// <summary>
-/// 
+/// Behavioral tree for the boss of the last level.
 /// </summary>
 public class BridgetBT : CharacterTreeBase
 {

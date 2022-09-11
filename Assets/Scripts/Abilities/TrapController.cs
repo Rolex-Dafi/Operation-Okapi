@@ -12,6 +12,10 @@ public class TrapController : MonoBehaviour
 
     [SerializeField] private TrapSO data;
     
+    /// <summary>
+    /// Initializes the controller.
+    /// </summary>
+    /// <param name="data">The trap data</param>
     public void Init(TrapSO data)
     {
         this.data = data;

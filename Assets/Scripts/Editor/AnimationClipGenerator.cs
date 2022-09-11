@@ -3,7 +3,9 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-
+/// <summary>
+/// A struct for custom animation clip properties.
+/// </summary>
 public struct AnimationClipProperties
 {
     public float frameRate;

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// A task which tries to find a target (typically the player) and save it.
+/// </summary>
 public class FindTargetInRange : CheckBase
 {
     private string targetName;
@@ -7,6 +10,15 @@ public class FindTargetInRange : CheckBase
     private string targetTag;
     private EObstacleFilter obstacleFilter;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="characterBT">The behavioral tree of this character</param>
+    /// <param name="targetName">The name of the target - this task will save any found target to shared memory.</param>
+    /// <param name="range"></param>
+    /// <param name="obstacleFilter"></param>
+    /// <param name="targetTag">The tag of the target we're trying to find</param>
+    /// <param name="debugName"></param>
     public FindTargetInRange(CharacterTreeBase characterBT, string targetName, float range, EObstacleFilter obstacleFilter = EObstacleFilter.None, 
         string targetTag = Utility.playerTagAndLayer, string debugName = "") : base(characterBT, debugName)
     {

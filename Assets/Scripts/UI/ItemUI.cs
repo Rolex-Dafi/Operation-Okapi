@@ -4,6 +4,9 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manager class for UI of the items currently equipped by the player.
+/// </summary>
 public class ItemUI : MonoBehaviour
 {
     [SerializeField] private Image backgroundBox;

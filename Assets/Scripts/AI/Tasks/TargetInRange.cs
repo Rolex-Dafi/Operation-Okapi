@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -11,6 +9,14 @@ public class TargetInRange : CheckBase
     private float range;
     private EObstacleFilter obstacleFilter;
 
+    /// <summary>
+    /// Creates a task instance.
+    /// </summary>
+    /// <param name="characterBT">The behavioral tree of this character</param>
+    /// <param name="targetName">The name of the target - this task will try to retrieve the target from shared memory.</param>
+    /// <param name="range">How far can the character see</param>
+    /// <param name="obstacleFilter">Specifies which objects in the scene should obstruct this character's line of sight</param>
+    /// <param name="debugName">Used in ToString() for debug purposes</param>
     public TargetInRange(CharacterTreeBase characterBT, string targetName, float range, 
         EObstacleFilter obstacleFilter = EObstacleFilter.None, string debugName = "") : base(characterBT, debugName)
     {
@@ -21,7 +27,7 @@ public class TargetInRange : CheckBase
 
     protected override bool Check()
     {
-        // try to get the taget from shared data
+        // try to get the target from shared data
         Vector3? target = bt.GetItem(targetName) as Vector3?;
         // if it's not in shared data -> report failure
         if (target == null)

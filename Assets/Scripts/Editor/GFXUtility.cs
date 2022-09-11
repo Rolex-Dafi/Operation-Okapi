@@ -30,6 +30,12 @@ public static class GFXUtility
             meleeHitBoxOnFrame = -1
         };
 
+    /// <summary>
+    /// Checks whether a folder could contain any sprites used in generating the animator controller.
+    /// </summary>
+    /// <param name="folderName">Name of the folder</param>
+    /// <param name="t"></param>
+    /// <returns></returns>
     public static bool IsFolderRelevant(string folderName, Type t)
     {
         if (t.Equals(typeof(EAbilityType)) || t.Equals(typeof(EDirection)))
@@ -45,6 +51,11 @@ public static class GFXUtility
 
 public static class GFXExtensions
 {
+    /// <summary>
+    /// Tries to convert a string to a Direction.
+    /// </summary>
+    /// <param name="direction">The string to convert</param>
+    /// <returns>A direction</returns>
     public static EDirection GetDirection(this string direction)
     {
         foreach (var value in Enum.GetValues(typeof(EDirection)))

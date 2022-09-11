@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Manages the shooting of projectiles from ranged attacks.
+/// Manages the shooting of projectiles for all ranged attacks.
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class ProjectileController : MonoBehaviour

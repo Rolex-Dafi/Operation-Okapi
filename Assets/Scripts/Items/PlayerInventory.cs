@@ -98,6 +98,11 @@ public class PlayerInventory
         return lastItemIndex < Equipped.Length - 1;
     }
     
+    /// <summary>
+    /// Checks whether an item is currently equipped.
+    /// </summary>
+    /// <param name="id">The id of the item to check</param>
+    /// <returns></returns>
     public bool ItemEquipped(int id)
     {
         return Equipped.Where(item => item != null).Any(item => item.Data.ID == id);

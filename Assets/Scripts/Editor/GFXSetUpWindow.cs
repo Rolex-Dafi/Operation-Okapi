@@ -1,6 +1,9 @@
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Editor window for all graphics' set-up.
+/// </summary>
 public class GFXSetUpWindow : EditorWindow
 {
     // Sprite organization
@@ -219,43 +222,3 @@ public class GFXSetUpWindow : EditorWindow
     }
 }
 
-public class ConfirmPopup : PopupWindowContent
-{
-    private bool confirmed;
-    private string message;
-
-    public bool Confirmed { get => confirmed; set => confirmed = value; }
-
-    public ConfirmPopup(string message = "Are you sure you want to proceed?")
-    {
-        confirmed = false;
-        this.message = message;
-    }
-
-    public override Vector2 GetWindowSize()
-    {
-        return new Vector2(250, 150);
-    }
-
-    public override void OnGUI(Rect rect)
-    {
-        GUILayout.Label(message, EditorStyles.boldLabel); 
-        
-        if (GUILayout.Button("Yes"))
-        {
-            confirmed = true;
-        }
-        if (GUILayout.Button("Cancel"))
-        {
-            confirmed = false;
-        }
-    }
-
-    public override void OnOpen()
-    {
-    }
-
-    public override void OnClose()
-    {
-    }
-}

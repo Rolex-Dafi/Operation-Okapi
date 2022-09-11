@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 
+/// </summary>
 public class HUDManager : MonoBehaviour
 {
-    //[SerializeField] private ResourceUI health;
     [SerializeField] private ResourceUI money;
-    [SerializeField] private ResourceUI respect;
+    //[SerializeField] private ResourceUI respect;
 
     [SerializeField] private HealthUI health;
 
@@ -16,13 +16,11 @@ public class HUDManager : MonoBehaviour
     /// Should be called from game manager after scene loaded.
     /// </summary>
     /// <param name="gameManager"></param>
-    /// <param name="playerCharacter"></param>
+    /// <param name="playerCharacter">The current player character instance</param>
     public void Init(GameManager gameManager, PlayerCharacter playerCharacter)
     {
-        //this.gameManager = gameManager;
-        
         money.Init(playerCharacter.Money);
-        respect.Init(playerCharacter.Respect);
+        //respect.Init(playerCharacter.Respect);
         
         health.Init(gameManager, playerCharacter.Inventory);
     }

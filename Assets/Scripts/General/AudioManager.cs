@@ -4,6 +4,9 @@ using UnityEngine;
 using FMODUnity;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages the ambience and the UI sounds in the game.
+/// </summary>
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private StudioEventEmitter[] ambientEmitters;

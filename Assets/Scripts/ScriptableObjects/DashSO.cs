@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Dash data class.
+/// </summary>
 [CreateAssetMenu(fileName = "DashData", menuName = "ScriptableObjects/Dash")]
 public class DashSO : AbilitySO
 {

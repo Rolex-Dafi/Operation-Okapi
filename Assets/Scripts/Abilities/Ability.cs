@@ -1,8 +1,6 @@
 using FMODUnity;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 /// <summary>
 /// Wrapper class for all characters' abilities.

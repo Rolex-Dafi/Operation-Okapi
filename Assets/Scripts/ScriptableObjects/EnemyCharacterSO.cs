@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Enemy character data class.
+/// </summary>
 [CreateAssetMenu(fileName = "CharacterData", menuName = "ScriptableObjects/Enemy Character")]
 public class EnemyCharacterSO : CharacterSO
 {

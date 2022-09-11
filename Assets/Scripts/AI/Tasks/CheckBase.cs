@@ -1,5 +1,4 @@
 using BehaviourTree;
-using UnityEngine;
 
 /// <summary>
 /// Base class for all checks. Checks only check whether this branch is valid.
@@ -8,6 +7,10 @@ public abstract class CheckBase : Leaf
 {
     protected CharacterTreeBase bt;
 
+    /// <summary> 
+    /// </summary>
+    /// <param name="characterBT">The behavioral tree of this character</param>
+    /// <param name="debugName">Used in ToString() for debug purposes</param>
     protected CheckBase(CharacterTreeBase characterBT, string debugName = "") : base(debugName)
     {
         bt = characterBT;

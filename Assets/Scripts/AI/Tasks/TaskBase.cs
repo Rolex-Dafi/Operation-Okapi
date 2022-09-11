@@ -10,6 +10,10 @@ public abstract class TaskBase : Leaf
 
     private bool taskInProgress = false;
 
+    /// <summary> 
+    /// </summary>
+    /// <param name="characterBT">The behavioral tree of this character</param>
+    /// <param name="debugName">Used in ToString() for debug purposes</param>
     protected TaskBase(CharacterTreeBase characterBT, string debugName = "") : base(debugName)
     {
         bt = characterBT;

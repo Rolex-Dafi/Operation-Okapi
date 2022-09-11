@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -10,7 +8,12 @@ public class DashToTarget : TaskBase
     private Vector3? target;
     private string targetName;
 
-    // for targets set at runtime by other tasks in this character's bt
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="characterBT">The behavioral tree of this character</param>
+    /// <param name="targetName">The name of the target - this task will try to retrieve the target from shared memory.</param>
+    /// <param name="debugName"></param>
     public DashToTarget(CharacterTreeBase characterBT, string targetName, string debugName = "") : base(characterBT, debugName)
     {
         this.targetName = targetName;

@@ -1,6 +1,8 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
+/// <summary>
+/// Trap data class.
+/// </summary>
 [CreateAssetMenu(fileName = "TrapData", menuName = "ScriptableObjects/Trap")]
 public class TrapSO : AbilitySO
 {
