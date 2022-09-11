@@ -5,8 +5,6 @@ using UnityEngine;
 /// </summary>
 public class RangedAttack : Attack
 {
-    public Vector3? Target { get; set; }
-    
     protected RangedAttack(CombatCharacter character, AttackSO data) : base(character , data, EAbilityType.ranged) { }
 
     protected void SpawnProjectile()

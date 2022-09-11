@@ -15,7 +15,8 @@ MonoBehaviour:
   money: 1000
   health: 1
   speed: 0
-  attacks: []
+  attacks:
+  - {fileID: 11400000, guid: 433aa12f9793a4349ad78bd075673873, type: 2}
   traps: []
   dash: {fileID: 0}
   onHitSound:

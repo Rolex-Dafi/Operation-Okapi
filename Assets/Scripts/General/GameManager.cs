@@ -106,11 +106,7 @@ public class GameManager : MonoBehaviour
                 GameEnd(true);
                 return;
             // special level - has slightly different logic than the rest
-            case Level.Roof:
-                // TODO implement special logic here - probably just spawn a prefab
-            
-                // and spawn the enemies - maybe one of each?
-                
+            case Level.Roof:                            
                 // for now:
                 GameEnd(true);
                 return;

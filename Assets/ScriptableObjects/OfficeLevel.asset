@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: OfficeLevel
   m_EditorClassIdentifier: 
   level: 0
-  numberOfRooms: 3
+  numberOfRooms: 8
   enemies:
   - {fileID: 11400000, guid: 9d86bbfc01c92fb4098fc9636ec8a6a3, type: 2}
   - {fileID: 11400000, guid: ac07ad6af016a864ba7572b957a9e782, type: 2}

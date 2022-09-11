@@ -10,11 +10,21 @@ public class AttackTarget : TaskBase
     private string targetName;
     private Vector3? target;
     private Attack attack;
+    private bool precise;
 
-    public AttackTarget(CharacterTreeBase characterBT, Attack attack, string targetName, string debugName = "") : base(characterBT, debugName)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="characterBT"></param>
+    /// <param name="attack"></param>
+    /// <param name="targetName"></param>
+    /// <param name="precise">Should we attack the target specifically or attack in the direction of the target</param>
+    /// <param name="debugName"></param>
+    public AttackTarget(CharacterTreeBase characterBT, Attack attack, string targetName, bool precise = false, string debugName = "") : base(characterBT, debugName)
     {
         this.targetName = targetName;
         this.attack = attack;
+        this.precise = precise;
     }
 
     protected override void OnBegin()
@@ -32,11 +42,21 @@ public class AttackTarget : TaskBase
         bt.Character.Rotate((target.GetValueOrDefault() - bt.Character.transform.position).normalized);
 
         // try to attack
-        if (!bt.Character.Attack(attack))
+        if (precise)
         {
-            OnEnd(false);
-            return;
+            if (!bt.Character.AttackTarget(attack, target.GetValueOrDefault()))
+            {
+                OnEnd(false);
+            }
         }
+        else
+        {
+            if (!bt.Character.Attack(attack))
+            {
+                OnEnd(false);
+            }
+        }
+        
     }
 
     protected override void OnContinue()

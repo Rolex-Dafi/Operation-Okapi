@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour
         }
         
         // Instantiate generator
-        roomGenerator = Instantiate(data.roomGeneratorPrefab, transform);
+        if (data.roomGeneratorPrefab != null) roomGenerator = Instantiate(data.roomGeneratorPrefab, transform);
 
         // init enemy spawner
         enemySpawner.Init(gameManager, gameManager.PlayerCharacterInstance);
@@ -221,36 +221,39 @@ public class LevelManager : MonoBehaviour
             return;
         }
         
-        // setup
-        previousRoomWrapper = new GameObject
-        {
-            transform =
+        // remove the astar in the level manager prefab first
+        aiGenerator.CleanUp(() => {
+            // setup
+            previousRoomWrapper = new GameObject
             {
-                parent = transform
+                transform =
+                {
+                    parent = transform
+                }
+            };
+            CurrentRoomTransform = previousRoomWrapper.transform;
+            roomBeaten = false;
+            
+            var bossRoom = Instantiate(data.bossRoomPrefab);
+            
+            // spawn the boss - register callback to win the game after defeating the boss
+            enemySpawner.SpawnEnemy(
+                bossRoom.EnemySpawn, 
+                bossRoom.EnemyPatrolPoints, 
+                data.boss, 
+                () => gameManager.GameEnd(true)
+            );
+            
+            // spawn the enemies
+            var enemiesToSpawn = data.GetEnemiesToSpawn();
+            for (int i = 0; i < enemiesToSpawn.Length; i++)
+            {
+                enemySpawner.SpawnEnemy(bossRoom.EnemyPatrolPoints[i], bossRoom.EnemyPatrolPoints, enemiesToSpawn[i]);
             }
-        };
-        CurrentRoomTransform = previousRoomWrapper.transform;
-        roomBeaten = false;
-        
-        var bossRoom = Instantiate(data.bossRoomPrefab);
-        
-        // spawn the boss - register callback to win the game after defeating the boss
-        enemySpawner.SpawnEnemy(
-            bossRoom.EnemySpawn, 
-            bossRoom.EnemyPatrolPoints, 
-            data.boss, 
-            () => gameManager.GameEnd(true)
-        );
-        
-        // spawn the enemies
-        var enemiesToSpawn = data.GetEnemiesToSpawn();
-        for (int i = 0; i < enemiesToSpawn.Length; i++)
-        {
-            enemySpawner.SpawnEnemy(bossRoom.EnemyPatrolPoints[i], bossRoom.EnemyPatrolPoints, enemiesToSpawn[i]);
-        }
 
-        // place the player - persistent from previous room/level
-        PlayerSpawner.PlacePlayer(player, bossRoom.Entrance.position);
+            // place the player - persistent from previous room/level
+            PlayerSpawner.PlacePlayer(player, bossRoom.Entrance.position);
+        });
     }
 
     private void SetRoomBeaten(Interactable exitTrigger)
@@ -302,7 +305,11 @@ public class LevelManager : MonoBehaviour
 
     private void EndLevel()
     {
-        // clean up last room - should always be the boss
+        // clean up last room
+        Destroy(previousRoomWrapper);
+        // if previous room was pcg and this one isn't
+        roomGenerator.DestroyCurrentRoom();
+        
         if (previousRoom != null)
         {
             Destroy(previousRoom);

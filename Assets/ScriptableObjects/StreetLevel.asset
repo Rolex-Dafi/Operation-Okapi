@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StreetLevel
   m_EditorClassIdentifier: 
   level: 1
-  numberOfRooms: 3
+  numberOfRooms: 8
   enemies:
   - {fileID: 11400000, guid: ac07ad6af016a864ba7572b957a9e782, type: 2}
   - {fileID: 11400000, guid: db22889859e538743b33956f9a3dd56f, type: 2}
