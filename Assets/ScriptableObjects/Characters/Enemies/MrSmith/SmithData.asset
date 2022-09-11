@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SmithData
   m_EditorClassIdentifier: 
   money: 25
-  health: 7
+  health: 20
   speed: 0.5
   attacks:
   - {fileID: 11400000, guid: df44642c00dddae4f928ae7703988438, type: 2}

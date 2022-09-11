@@ -34,7 +34,8 @@ public class LevelSO : ScriptableObject
     public EnemyCharacterSO[] GetEnemiesToSpawn(int roomNumber, int enemyCount)
     {
         if (roomNumber > numberOfRooms) return null;
-        
+
+        enemyCount += (int)level; // spawn +1 more enemies each level
         var enemiesToSpawn = new EnemyCharacterSO[enemyCount];
 
         if (roomNumber < enemies.Length)
