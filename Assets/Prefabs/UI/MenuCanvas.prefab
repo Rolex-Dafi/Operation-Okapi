@@ -174,15 +174,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: f24607b064d71fd46aaeaccd3fc49511, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -232,11 +232,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2708527398446400018, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 572
       objectReference: {fileID: 0}
     - target: {fileID: 2708527398446400018, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 151
       objectReference: {fileID: 0}
     - target: {fileID: 2708527398446400018, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_LocalPosition.x
@@ -268,11 +268,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2708527398446400018, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -630
       objectReference: {fileID: 0}
     - target: {fileID: 2708527398446400018, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 58.6
+      value: 352
       objectReference: {fileID: 0}
     - target: {fileID: 2708527398446400018, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -286,6 +286,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2991305248092504696, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4137346156716920184, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030849693540939194, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_Transition
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030849693540939194, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6ddf215868761f64c81a55872ae89600, type: 3}
+    - target: {fileID: 6030849693540939194, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_SpriteState.m_SelectedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3c7f58b8aba08ed4b87b3cb3ee488480, type: 3}
+    - target: {fileID: 6030849693540939194, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_SpriteState.m_HighlightedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3c7f58b8aba08ed4b87b3cb3ee488480, type: 3}
     - target: {fileID: 6030849693540939194, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -314,6 +338,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 9099321819469224500, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9099321819469224500, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6ddf215868761f64c81a55872ae89600, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
 --- !u!224 &7033725498219618176 stripped
@@ -362,11 +394,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2708527398446400018, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 572
       objectReference: {fileID: 0}
     - target: {fileID: 2708527398446400018, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 151
       objectReference: {fileID: 0}
     - target: {fileID: 2708527398446400018, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_LocalPosition.x
@@ -398,11 +430,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2708527398446400018, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -630
       objectReference: {fileID: 0}
     - target: {fileID: 2708527398446400018, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 163
       objectReference: {fileID: 0}
     - target: {fileID: 2708527398446400018, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -416,10 +448,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2991305248092504696, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4137346156716920184, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_text
-      value: Exit
+      value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6030849693540939194, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_Transition
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030849693540939194, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 58fbdb825312fa94197a2b4b5478a30e, type: 3}
+    - target: {fileID: 6030849693540939194, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_SpriteState.m_SelectedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0c6b9e2a0c5398f459c2ce930af7f45d, type: 3}
+    - target: {fileID: 6030849693540939194, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_SpriteState.m_HighlightedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0c6b9e2a0c5398f459c2ce930af7f45d, type: 3}
     - target: {fileID: 6030849693540939194, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -448,6 +500,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 9099321819469224500, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9099321819469224500, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 58fbdb825312fa94197a2b4b5478a30e, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b4bedf4688b2cb43a137f8e1db37507, type: 3}
 --- !u!224 &4651909288490450095 stripped
