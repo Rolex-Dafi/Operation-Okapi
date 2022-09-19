@@ -9,7 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5007803071707276541}
+  - component: {fileID: 4303790471426247472}
   - component: {fileID: 5007803071707276540}
+  - component: {fileID: 6902178719482327427}
   m_Layer: 0
   m_Name: AudioBase
   m_TagString: Untagged
@@ -31,6 +33,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4303790471426247472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5007803071707276543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76f2994723391b4fae9b0d619f9e54a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ambientEmitters:
+  - {fileID: 5007803071707276540}
+  - {fileID: 6902178719482327427}
+  buttonClick:
+    Guid:
+      Data1: -1955791566
+      Data2: 1196210648
+      Data3: 96319387
+      Data4: -2123086926
+    Path: event:/SFX/ButtonClick
 --- !u!114 &5007803071707276540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,13 +70,43 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 2145751516
-      Data2: 1340307067
-      Data3: -1418277201
-      Data4: 62841509
-    Path: event:/Test/Ambience Test
+      Data1: 1342120985
+      Data2: 1198222032
+      Data3: -1304659305
+      Data4: -730336472
+    Path: event:/Ambient/Menu
   Event: 
-  PlayEvent: 1
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &6902178719482327427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5007803071707276543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1724374947
+      Data2: 1176321511
+      Data3: -802306370
+      Data4: -1986812696
+    Path: event:/Ambient/Office
+  Event: 
+  PlayEvent: 0
   StopEvent: 0
   AllowFadeout: 1
   TriggerOnce: 0

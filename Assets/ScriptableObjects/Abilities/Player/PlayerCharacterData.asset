@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2ed895a3f3740a41a645751c8c27cb4, type: 3}
+  m_Name: PlayerCharacterData
+  m_EditorClassIdentifier: 
+  money: 100
+  health: 0
+  speed: 2
+  attacks:
+  - {fileID: 11400000, guid: cbd89847babe681479fc676aa8b37823, type: 2}
+  - {fileID: 11400000, guid: 5329dc980c59b8948bed671ec6720e39, type: 2}
+  traps: []
+  dash: {fileID: 11400000, guid: 4c560f02b7fcc884697340bbfbcb18e0, type: 2}
+  onHitSound:
+    Guid:
+      Data1: -9599751
+      Data2: 1199392618
+      Data3: -548353148
+      Data4: -275185102
+    Path: event:/SFX/Hit
+  onDeathSound:
+    Guid:
+      Data1: -1390615421
+      Data2: 1264603658
+      Data3: -2117765502
+      Data4: 1660216290
+    Path: event:/SFX/Death
+  respect: 0
+  startingItems:
+  - {fileID: 11400000, guid: 20da11f16aee6574cb24d8f63c1dad9c, type: 2}

@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,54 +9,32 @@ using UnityEngine.Events;
 /// </summary>
 public class PlayerInput : MonoBehaviour
 {
-    [HideInInspector] public Vector2 move;
+    [HideInInspector] public Vector2 movement;
+    [HideInInspector] public Vector2 mousePosition;
 
-    [HideInInspector] public UnityEvent dashEvent;
+    public Dictionary<EButtonDown, UnityEvent<EButtonDown>> buttonDownEvents;
+    public Dictionary<EButtonUp, UnityEvent<EButtonUp>> buttonUpEvents;
 
-    [HideInInspector] public UnityEvent meleeAttackEvent;
-    [HideInInspector] public UnityEvent rangedAttackEvent;
-    [HideInInspector] public UnityEvent specialAttackEvent;
-
-    [HideInInspector] public UnityEvent interactEvent;
-
+    public bool readInput;
+    
+    /// <summary>
+    /// Initializes the input events relevant to player input.
+    /// </summary>
     public void Init()
     {
-        dashEvent = new UnityEvent();
-        meleeAttackEvent = new UnityEvent();
-        rangedAttackEvent = new UnityEvent();
-        specialAttackEvent = new UnityEvent();
-
-        interactEvent = new UnityEvent();
+        InputUtility.InitEvents(ref buttonDownEvents);
+        InputUtility.InitEvents(ref buttonUpEvents);
     }
-
+    
     private void Update()
     {
-        move.x = Input.GetAxis("Horizontal");
-        move.y = Input.GetAxis("Vertical");
+        if (!readInput) return;
+        
+        movement = new Vector2(Input.GetAxis(EAxis.Horizontal.ToString()), Input.GetAxis(EAxis.Vertical.ToString()));
 
-        if (Input.GetButtonDown("Dash"))
-        {
-            dashEvent.Invoke();
-        }
+        mousePosition = Input.mousePosition;
 
-        if (Input.GetButtonDown("Melee"))
-        {
-            meleeAttackEvent.Invoke();
-        }
-
-        if (Input.GetButtonDown("Ranged"))
-        {
-            rangedAttackEvent.Invoke();
-        }
-
-        if (Input.GetButtonDown("Special"))
-        {
-            specialAttackEvent.Invoke();
-        }
-
-        if (Input.GetButtonDown("Interact"))
-        {
-            interactEvent.Invoke();
-        }
+        InputUtility.GetInput(ref buttonDownEvents);
+        InputUtility.GetInput(ref buttonUpEvents);        
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,17 +5,29 @@ using UnityEngine;
 /// </summary>
 public class Character : MonoBehaviour
 {
+    // scriptable objects
+    [SerializeField] protected CharacterSO data;
+
     // resources
     protected Money money;
 
-    // inventory/drops
+    // exposed vars
+    public Animator Animator { get; private set; }
+    public Money Money { get => money; private set => money = value; }
+    public CharacterSO Data => data;
 
-    // components
-
-
-    protected void Init(int startingMoney = 0)
+    /// <summary>
+    /// Initializes the character.
+    /// </summary>
+    public virtual void Init()
     {
-        money = new Money(startingMoney);
+        Money = new Money(data.money);
+        Animator = GetComponent<Animator>();
+    }
+
+    private void OnDestroy()
+    {
+        money.CleanUp();
     }
 
 }

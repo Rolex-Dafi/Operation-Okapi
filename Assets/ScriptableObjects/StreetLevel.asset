@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2aac87e2c278664ba08cba91671190a, type: 3}
+  m_Name: StreetLevel
+  m_EditorClassIdentifier: 
+  level: 1
+  numberOfRooms: 8
+  enemies:
+  - {fileID: 11400000, guid: ac07ad6af016a864ba7572b957a9e782, type: 2}
+  - {fileID: 11400000, guid: db22889859e538743b33956f9a3dd56f, type: 2}
+  - {fileID: 11400000, guid: a8abf4ff10a38e340a5d64396286f4a6, type: 2}
+  boss: {fileID: 11400000, guid: 92b2c8560676e1c4e8efc33f7ba5e54e, type: 2}
+  roomGeneratorPrefab: {fileID: 2931206626607887235, guid: 409e8cf51be992f469ef38f263e18e84, type: 3}
+  merchantRoomPrefab: {fileID: 480774433257717806, guid: 4af0d67d5f07b1d4da5be0644c43b768, type: 3}
+  bossRoomPrefab: {fileID: 3222346399066767362, guid: a342245f32067bb42a527589b3d7ddbe, type: 3}
+  bossNavGraphData: {fileID: 4900000, guid: 64ff43d04c576084cb7da98e78ad12ed, type: 3}

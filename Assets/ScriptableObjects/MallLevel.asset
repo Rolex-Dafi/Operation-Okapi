@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2aac87e2c278664ba08cba91671190a, type: 3}
+  m_Name: MallLevel
+  m_EditorClassIdentifier: 
+  level: 2
+  numberOfRooms: 7
+  enemies:
+  - {fileID: 11400000, guid: ac07ad6af016a864ba7572b957a9e782, type: 2}
+  - {fileID: 11400000, guid: 83b04af7c4cf3824e8d1f3f8b9fe05c0, type: 2}
+  - {fileID: 11400000, guid: a8abf4ff10a38e340a5d64396286f4a6, type: 2}
+  - {fileID: 11400000, guid: db22889859e538743b33956f9a3dd56f, type: 2}
+  boss: {fileID: 0}
+  roomGeneratorPrefab: {fileID: 6495269628943879577, guid: 5cfe4f83ac9d8fd4b8df75f02b5a8e82, type: 3}
+  merchantRoomPrefab: {fileID: 480774433257717806, guid: 034b2018aa4fe154ba6ead50e1cc7785, type: 3}
+  bossRoomPrefab: {fileID: 0}
+  bossNavGraphData: {fileID: 4900000, guid: 595c1af1d5d01bc43896047cdfbf822e, type: 3}

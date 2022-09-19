@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dddd9a1ab0594d2459647a1554cd3258, type: 3}
+  m_Name: headsetData
+  m_EditorClassIdentifier: 
+  ID: 2
+  ItemName: headset
+  ItemEffects:
+  - Type: 2
+    ValueModifier: 0.2
+  UISprite: {fileID: 21300000, guid: 8d8f55844c80d304ca352acfe57987e5, type: 3}
+  WorldSprite: {fileID: 21300000, guid: 1d2669f90d669d249b2b52286f2d2f1a, type: 3}
+  Health: 2
+  Cost: 15
