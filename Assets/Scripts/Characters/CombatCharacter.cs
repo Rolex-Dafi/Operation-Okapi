@@ -109,7 +109,7 @@ public class CombatCharacter : Character, IDamagable
         if (!canMove || (dash != null && dash.InUse)) return;
 
         // moving in isometric coordinates !
-        RB.MovePosition(RB.position + move.CartesianToIsometric().normalized * Time.fixedDeltaTime * currentSpeed);
+        RB.MovePosition(RB.position + move.CartesianToIsometric().normalized * (Time.fixedDeltaTime * currentSpeed));
 
         // animator in cartesian
         float speed = move.magnitude * currentSpeed;
@@ -164,11 +164,12 @@ public class CombatCharacter : Character, IDamagable
     /// <param name="target">The target to attack</param>
     /// <param name="attackCommand"></param>
     /// <returns></returns>
-    public bool AttackTarget(Attack attack, Vector3 target, EAttackCommand attackCommand = EAttackCommand.Begin)
+    public bool AttackTargetFromSky(RangedAttack attack, Vector3 target, EAttackCommand attackCommand = EAttackCommand.Begin)
     {
         if (attack == null) return false;
 
         attack.Target = target;
+        attack.SkyAttack = true;
         
         switch (attackCommand)
         {
@@ -222,8 +223,6 @@ public class CombatCharacter : Character, IDamagable
     /// </summary>
     public virtual void Die()
     {
-        Debug.Log("in Die", gameObject);
-        
         Animator.SetTrigger(EAnimationParameter.death.ToString());
         RuntimeManager.PlayOneShot(data.onDeathSound.Guid);
         canMove = false;
@@ -235,8 +234,6 @@ public class CombatCharacter : Character, IDamagable
     /// </summary>
     public void CleanUp()
     {
-        Debug.Log("in Cleanup", gameObject);
-        
         onDeath.Invoke();
         Destroy(gameObject);
     }
@@ -247,7 +244,7 @@ public class CombatCharacter : Character, IDamagable
     /// <param name="movementSpeed"></param>
     public void SetMovementSpeed(float movementSpeed)
     {
-        canMove = movementSpeed == 0 ? false : true;
+        canMove = movementSpeed != 0;
         currentSpeed = movementSpeed * movementSpeed;
     }
 

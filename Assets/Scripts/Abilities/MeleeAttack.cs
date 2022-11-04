@@ -18,6 +18,12 @@ public class MeleeAttack : Attack
 
     public override void OnBegin()
     {
+        if (Target != null)
+        {
+            // rotate tw target
+            character.Rotate((Target.GetValueOrDefault() - character.transform.position).normalized);
+        }
+        
         base.OnBegin();
         hitBoxController.Init(Data);
     }

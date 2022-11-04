@@ -8,7 +8,7 @@ public class AttackTarget : TaskBase
     private string targetName;
     private Vector3? target;
     private Attack attack;
-    private bool precise;
+    private bool fromSky;
 
     /// <summary>
     /// 
@@ -16,13 +16,13 @@ public class AttackTarget : TaskBase
     /// <param name="characterBT">The behavioral tree of this character</param>
     /// <param name="attack">The attack to perform</param>
     /// <param name="targetName">The name of the target - this task will try to retrieve the target from shared memory.</param>
-    /// <param name="precise">Should we attack the target specifically or attack in the direction of the target</param>
+    /// <param name="fromSky">Should we attack the target specifically or attack in the direction of the target</param>
     /// <param name="debugName"></param>
-    public AttackTarget(CharacterTreeBase characterBT, Attack attack, string targetName, bool precise = false, string debugName = "") : base(characterBT, debugName)
+    public AttackTarget(CharacterTreeBase characterBT, Attack attack, string targetName, bool fromSky = false, string debugName = "") : base(characterBT, debugName)
     {
         this.targetName = targetName;
         this.attack = attack;
-        this.precise = precise;
+        this.fromSky = fromSky;
     }
 
     protected override void OnBegin()
@@ -40,9 +40,9 @@ public class AttackTarget : TaskBase
         bt.Character.Rotate((target.GetValueOrDefault() - bt.Character.transform.position).normalized);
 
         // try to attack
-        if (precise)
+        if (fromSky)
         {
-            if (!bt.Character.AttackTarget(attack, target.GetValueOrDefault()))
+            if (!bt.Character.AttackTargetFromSky(attack as RangedAttack, target.GetValueOrDefault()))
             {
                 OnEnd(false);
             }

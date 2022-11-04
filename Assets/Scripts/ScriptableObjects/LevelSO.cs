@@ -36,10 +36,13 @@ public class LevelSO : ScriptableObject
     {
         if (roomNumber > numberOfRooms) return null;
 
+        // TODO make into variable and pre-set what enemies to spawn where
+        // or make this depend on how many rooms they've passed ? with some constraints
+        
         enemyCount += (int)level; // spawn +1 more enemies each level
         var enemiesToSpawn = new EnemyCharacterSO[enemyCount];
 
-        if (roomNumber < enemies.Length)
+        if (roomNumber < enemies.Length && (int)level < 2)  // from 3rd level spawn more enemy types
         {
             for (int i = 0; i < enemyCount; i++)
             {

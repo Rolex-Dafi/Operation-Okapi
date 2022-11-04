@@ -25,6 +25,8 @@ public class TrapController : MonoBehaviour
         {
             child.Init(data);
         }
+
+        tag = Utility.enemyTagAndLayer;
     }
 
     /// <summary>
@@ -52,8 +54,7 @@ public class TrapController : MonoBehaviour
         // Player and enemies have to be tagged correctly for this to work !
         instance.Init(data, tag);
 
-        instance.ShootAt(target);
-        
+        instance.ShootFromSky(target);
     }
 
 }

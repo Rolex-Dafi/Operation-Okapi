@@ -19,7 +19,7 @@ public class UIOverlayManager : MonoBehaviour
         this.gameManager = gameManager;
         
         // if gamepad is connected, try to select the first button you can find
-        UIInput.TrySelectFirstButton();
+        GeneralInput.TrySelectFirstButton();
     }
 
     /// <summary>

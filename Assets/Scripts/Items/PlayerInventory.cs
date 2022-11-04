@@ -39,8 +39,6 @@ public class PlayerInventory
     {
         if (!HasSpace()) return false;
 
-        Debug.Log("adding item " + item.ItemName + ", with health " + item.Health);
-        
         // if item of this type already equipped -> don't pick up
         // potential TODO heal the equipped item instead
         if (Equipped.Where(x => x != null).Any(x => item.ID == x.Data.ID)) return false;
@@ -68,8 +66,8 @@ public class PlayerInventory
     public int ReceiveDamage(int damage)
     {
         // in case the player is dead
-        if (lastItemIndex <= 0) return 0;
-        
+        if (lastItemIndex < 0) return 0;
+
         // get top item
         var topItem = Equipped[lastItemIndex];
         // only the top item receives damage -> no overkill dmg

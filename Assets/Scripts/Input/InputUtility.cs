@@ -83,15 +83,15 @@ public static class InputExtensions
         switch (button)
         {
             case EButtonDown.Dash:
-                return UIInput.GamepadConnected ? "A" : "Space";
+                return GeneralInput.GamepadConnected ? "A" : "Space";
             case EButtonDown.Melee:
-                return UIInput.GamepadConnected ? "X" : "RMB";
+                return GeneralInput.GamepadConnected ? "X" : "RMB";
             case EButtonDown.Ranged:
-                return UIInput.GamepadConnected ? "Y" : "LMB";
+                return GeneralInput.GamepadConnected ? "Y" : "LMB";
             case EButtonDown.Special:
-                return UIInput.GamepadConnected ? "B" : "MMB";
+                return GeneralInput.GamepadConnected ? "B" : "MMB";
             case EButtonDown.Interact:
-                return UIInput.GamepadConnected ? "RB" : "E";
+                return GeneralInput.GamepadConnected ? "RB" : "E";
             default:
                 return "";
         }

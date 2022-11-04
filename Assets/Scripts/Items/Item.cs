@@ -6,7 +6,6 @@ public class Item
     private Health health;
 
     public ItemSO Data { get; }
-    //public EItemState ItemState { get; private set; }
 
     public int CurrentHealth => health.GetCurrent();
 
@@ -19,7 +18,6 @@ public class Item
     {
         Data = data;
         health = new Health(data.Health);
-        //ItemState = EItemState.Full;
     }
 
     /// <summary>
@@ -30,6 +28,5 @@ public class Item
     {
         health.ChangeCurrent(-damage);
         var current = health.GetCurrent();
-        //ItemState = current <= 0 ? EItemState.Destroyed : current == 1 ? EItemState.Cracked : EItemState.Damaged;
     }
 }

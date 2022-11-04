@@ -105,7 +105,7 @@ public class PlayerCharacter : CombatCharacter, IPushable
         // hide aiming gfx
         aimingGFX.SetActive(false);
     }
-
+    
     /// <summary>
     /// Tries to begin or end an attack.
     /// </summary>
@@ -126,6 +126,12 @@ public class PlayerCharacter : CombatCharacter, IPushable
                 money.ChangeCurrent(-attackCost);
             }
 
+            // set target for attack according to where the player is pointing their cursor
+            if (!GeneralInput.GamepadConnected)
+            {
+                currentAttacks[attackButton].Target = playerController.GetMouseWorld();
+            }
+            
             Attack(currentAttacks[attackButton], command);
         }
     }

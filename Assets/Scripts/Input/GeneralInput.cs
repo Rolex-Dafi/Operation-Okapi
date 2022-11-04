@@ -7,7 +7,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Class for input which should be independent of the player character.
 /// </summary>
-public class UIInput : MonoBehaviour
+public class GeneralInput : MonoBehaviour
 {
     public Dictionary<EUIButton, UnityEvent<EUIButton>> buttonEvents;
 
@@ -45,7 +45,7 @@ public class UIInput : MonoBehaviour
             yield return new WaitForSeconds(2);
         }
     }
-
+    
     /// <summary>
     /// If a gamepad is connected, tries to select the first button it can find.
     /// </summary>

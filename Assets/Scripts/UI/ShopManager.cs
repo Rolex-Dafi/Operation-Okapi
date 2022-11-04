@@ -48,7 +48,7 @@ public class ShopManager : MonoBehaviour
         gameManager.PauseGame(true);
         
         // if gamepad is connected, try to select the first button you can find
-        UIInput.TrySelectFirstButton();
+        GeneralInput.TrySelectFirstButton();
     }
 
     private void BuyItem(ItemSO item)
@@ -63,7 +63,7 @@ public class ShopManager : MonoBehaviour
         }
         
         // if gamepad is connected, try to select the first button you can find
-        UIInput.TrySelectFirstButton();
+        GeneralInput.TrySelectFirstButton();
     }
     
     /// <summary>

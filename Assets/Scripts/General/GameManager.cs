@@ -1,11 +1,12 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// The game manager - main entry point of the game.
 /// </summary>
-[RequireComponent(typeof(UIInput))]
+[RequireComponent(typeof(GeneralInput))]
 public class GameManager : MonoBehaviour
 {
     [Header("Exposed Fields")]
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Managers and Components")] // These should already be added inside the scene
     public AudioManager audioManager;
-    public UIInput uiInput;
+    [FormerlySerializedAs("uiInput")] public GeneralInput generalInput;
     public PlayerSpawner playerSpawner;
     
     [Header("Prefabs")]  // These will be instantiated when needed
@@ -46,8 +47,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        uiInput.Init();
-        uiInput.buttonEvents[EUIButton.Escape].AddListener((_) => OpenClosePauseMenu());
+        generalInput.Init();
+        generalInput.buttonEvents[EUIButton.Escape].AddListener((_) => OpenClosePauseMenu());
 
         // load the first scene
         // for now the main menu
@@ -114,7 +115,7 @@ public class GameManager : MonoBehaviour
         else
         {
             // load the first room
-            currentLevelInstance.LoadRoom(PlayerCharacterInstance);
+            currentLevelInstance.LoadRoom(PlayerCharacterInstance, RoomType.Merchant);
 
             currentLevelInstance.onLevelComplete.AddListener(() => StartLevel(level + 1));
         }

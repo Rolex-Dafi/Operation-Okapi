@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 direction;
 
-        if (UIInput.GamepadConnected)
+        if (GeneralInput.GamepadConnected)
         {
             // when using gamepad get direction from movement input - already set in playerCharacter
             direction = playerCharacter.Facing;
@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             // player faces in the direction of the mouse
-            direction = (Camera.main.ScreenToWorldPoint(playerInput.mousePosition).ToVector2() - transform.position.ToVector2());
+            direction = Camera.main.ScreenToWorldPoint(playerInput.mousePosition).ToVector2() - transform.position.ToVector2();
         }
 
         // rotate the character
@@ -84,6 +84,14 @@ public class PlayerController : MonoBehaviour
         playerCharacter.RotateAimingGFX();
     }
 
+    public Vector2 GetMouseWorld()
+    {
+        var pos = Camera.main.ScreenToWorldPoint(playerInput.mousePosition).ToVector2();
+        
+        // isometric ?
+        return pos;
+    }
+    
     private void OnDash<T>(T interaction)
     {
         playerCharacter.Dash();

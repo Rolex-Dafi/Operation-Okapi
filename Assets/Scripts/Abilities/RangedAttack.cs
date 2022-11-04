@@ -5,6 +5,8 @@ using UnityEngine;
 /// </summary>
 public class RangedAttack : Attack
 {
+    public bool SkyAttack;
+    
     protected RangedAttack(CombatCharacter character, AttackSO data) : base(character , data, EAbilityType.ranged) { }
 
     protected void SpawnProjectile()
@@ -22,9 +24,17 @@ public class RangedAttack : Attack
 
         if (Target != null)
         {
-            instance.ShootAt(Target.GetValueOrDefault());
+            if (SkyAttack)
+            {
+                instance.ShootFromSky(Target.GetValueOrDefault());
+            }
+            else
+            {
+                instance.Shoot((Target.GetValueOrDefault() - character.transform.position).normalized);
+            }
             Target = null;  // reset target
         }
+        
         else
         {
             instance.Shoot(character.Facing);

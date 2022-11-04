@@ -65,10 +65,8 @@ public class LevelManager : MonoBehaviour
         
         onLevelComplete = new UnityEvent();
         
-        // merchant can't be in the first few rooms (those are for presenting new enemies) or the last room
-        //merchantRoomIndex = Random.Range(data.enemies.Length, data.numberOfRooms - 2); 
-        merchantRoomIndex = Random.Range(1, data.numberOfRooms - 2); 
-        //merchantRoomIndex = 0; // debug - remove this after merchant tested
+        // merchant always in first room
+        merchantRoomIndex = 0; 
         currentRoomIndex = 0;
     }
 
@@ -79,16 +77,6 @@ public class LevelManager : MonoBehaviour
     public void FreezeLevel(bool freeze)
     {
         enemySpawner.FreezeEnemies(freeze);
-    }
-
-    /// <summary>
-    /// Loads a room according to the room number.
-    /// </summary>
-    /// <param name="player">the current player character</param>
-    /// <param name="roomNumber">the number of the room to load</param>
-    public void LoadRoom(PlayerCharacter player, int roomNumber)
-    {
-        
     }
     
     /// <summary>
