@@ -14,6 +14,8 @@ public class LevelSO : ScriptableObject
     // only most common should be spawned in the first few rooms of the level
     // then later either common + rare or just rare
     public EnemyCharacterSO[] enemies;
+    public EnemyCharacterSO[] enemyOne;
+    public EnemyCharacterSO[] enemyTwo;
 
     public EnemyCharacterSO boss;
 
@@ -31,14 +33,31 @@ public class LevelSO : ScriptableObject
     /// </summary>
     /// <param name="roomNumber">The room number for which to spawn enemies</param>
     /// <param name="enemyCount">The amount of enemies to spawn</param>
+    /// <param name="roomsCompleted"></param>
     /// <returns>The data of the enemies to spawn</returns>
-    public EnemyCharacterSO[] GetEnemiesToSpawn(int roomNumber, int enemyCount)
+    public EnemyCharacterSO[] GetEnemiesToSpawn(int roomNumber, int enemyCount, int roomsCompleted = 0)
     {
         if (roomNumber > numberOfRooms) return null;
 
-        // TODO make into variable and pre-set what enemies to spawn where
-        // or make this depend on how many rooms they've passed ? with some constraints
+        // TODO make this depend on how many rooms they've passed
+        var enemiesToSpawn = new EnemyCharacterSO[enemyCount];
+        if (roomNumber == 1)
+        {
+            for (int i = 0; i < enemyCount; i++)
+            {
+                enemiesToSpawn[i] = enemyOne[i % (enemyOne.Length - 1)];
+            } 
+        }
+        else if (roomNumber == 2)
+        {
+            for (int i = 0; i < enemyCount; i++)
+            {
+                enemiesToSpawn[i] = enemyTwo[i % (enemyTwo.Length - 1)];
+            }
+        }
         
+        return enemiesToSpawn;
+        /*
         enemyCount += (int)level; // spawn +1 more enemies each level
         var enemiesToSpawn = new EnemyCharacterSO[enemyCount];
 
@@ -61,7 +80,7 @@ public class LevelSO : ScriptableObject
             }
         }
 
-        return enemiesToSpawn;
+        return enemiesToSpawn;*/
     }
     
     /// <summary>

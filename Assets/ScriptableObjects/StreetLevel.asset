@@ -13,11 +13,16 @@ MonoBehaviour:
   m_Name: StreetLevel
   m_EditorClassIdentifier: 
   level: 1
-  numberOfRooms: 3
+  numberOfRooms: 4
   enemies:
   - {fileID: 11400000, guid: ac07ad6af016a864ba7572b957a9e782, type: 2}
   - {fileID: 11400000, guid: db22889859e538743b33956f9a3dd56f, type: 2}
   - {fileID: 11400000, guid: a8abf4ff10a38e340a5d64396286f4a6, type: 2}
+  enemyOne:
+  - {fileID: 11400000, guid: db22889859e538743b33956f9a3dd56f, type: 2}
+  enemyTwo:
+  - {fileID: 11400000, guid: 9d86bbfc01c92fb4098fc9636ec8a6a3, type: 2}
+  - {fileID: 11400000, guid: 83b04af7c4cf3824e8d1f3f8b9fe05c0, type: 2}
   boss: {fileID: 11400000, guid: 92b2c8560676e1c4e8efc33f7ba5e54e, type: 2}
   roomGeneratorPrefab: {fileID: 2931206626607887235, guid: 409e8cf51be992f469ef38f263e18e84, type: 3}
   merchantRoomPrefab: {fileID: 480774433257717806, guid: 4af0d67d5f07b1d4da5be0644c43b768, type: 3}

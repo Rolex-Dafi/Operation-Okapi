@@ -13,11 +13,15 @@ MonoBehaviour:
   m_Name: OfficeLevel
   m_EditorClassIdentifier: 
   level: 0
-  numberOfRooms: 3
+  numberOfRooms: 4
   enemies:
   - {fileID: 11400000, guid: 9d86bbfc01c92fb4098fc9636ec8a6a3, type: 2}
   - {fileID: 11400000, guid: ac07ad6af016a864ba7572b957a9e782, type: 2}
   - {fileID: 11400000, guid: 83b04af7c4cf3824e8d1f3f8b9fe05c0, type: 2}
+  enemyOne:
+  - {fileID: 11400000, guid: 9d86bbfc01c92fb4098fc9636ec8a6a3, type: 2}
+  enemyTwo:
+  - {fileID: 11400000, guid: ac07ad6af016a864ba7572b957a9e782, type: 2}
   boss: {fileID: 11400000, guid: 4ad340b23ec6cfc4a9983c6a2ec4e680, type: 2}
   roomGeneratorPrefab: {fileID: 6983978336793118391, guid: 85f7f9e7b3ddb1c479981be9600b54d9, type: 3}
   merchantRoomPrefab: {fileID: 480774433257717806, guid: 6bb9cfc9cb6424a46b836d22212602ff, type: 3}
