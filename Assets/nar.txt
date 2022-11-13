@@ -1,0 +1,116 @@
+Level:1
+Room:1 % Merchant/tutorial
+Passage: Intro
+Hey there! 
+You’re the new recruit! 
+John Doe, right? I’m Anna!
+Let me run you through how things work around here.
+Passage: Movement
+See that flower in the corner? Bridget and I used to chat there all the time…
+Try getting over there using the arrow keys or the spacebar.
+% -pockam, nez tam hrac dojde-
+Passage: Interaction
+Oh, Bridget? Right. She was my girlfriend… I miss her every day.
+Anyway, it looks like they forgot to give you your uniform! Walk over to that table over there and pick it up with E.
+% -pockam, nez sebere uniformu (boty a sako)-
+Passage: Combat
+If you want to get anywhere in this company, you need to be ready to wrestle with your colleagues. 
+And I don’t mean that figuratively. You literally have to fight them. 
+Try slapping with the left mouse button and shooting with the right mouse button.
+% -pockam, nez to hrac udela-
+Passage: Goodbye
+I’ll be happy to help you out, so I’ll check on you from time to time, see if you need anything. 
+You kind of remind me of her, you know?
+
+Room:2 % Nick
+Passage
+I was never a huge fan of that Nick guy. 
+We went on a business trip together once and I didn’t want to share a room with him.
+He didn’t say anything but he became rather unfriendly with me after that.
+
+Room:3 % Ms Pots
+Passage
+With Ms Pots, we always kept our friendship professional. 
+She never really liked to talk about personal stuff, and I knew she wouldn’t approve of how I live my life, anyway.
+
+Room:4 % Boss
+Passage
+Once, during a company party, me and Bridget were a bit tipsy and wanted some privacy. So we went to the boss's empty room to hang out. 
+Of course, Mr Smith caught us and that’s how the whole office found out about us. 
+He told me he didn’t mean to out us like that but I never quite believed him.
+
+Level:2
+Room:1 % Merchant
+Passage
+The party wasn’t where our relationship began, of course. 
+We used to meet in Mr Smith’s room after office hours way back, though we always waited until all of our colleagues were gone so that nobody would find us out.
+
+Room:2 % Joe
+Passage
+This one time, we were walking through the park, holding hands with B, when Joe almost ran into us. 
+I panicked, of course, but he was so focused on his morning run he didn’t even notice we were there.
+
+Room:3 % Random mobky (vyber z Nicka, Ms Pots a Ms Cups)
+Passage
+We always used to make fun of these people with B. 
+You could barely tell them apart with how strictly they were trying to conform to the company code.
+
+Room:4 % Boss
+Passage
+At one point, Bridget started having meetings with Jimmy for “some work stuff” as she used to call it. 
+She was really secretive about it for some reason, we even had a fight about it. 
+I have no idea why she associated with the guy. Normally, she had no respect for people like him.
+
+Level:3
+Room:1 % Merchant
+Passage
+You’re almost at the top now.
+Here, there’s something I want to give you.
+It’s the last thing of Bridget’s I have left but, I think, it might bring you more luck than me.
+% - dostanes kravatu- (obrazek kravaty + hvezdicky treba - pokud mas kravatu na sobe, vymeni ti ji to za tuhle lepsi a vic shiny)
+
+Room:2 % Random mobky
+Passage
+Finally, Bridget got promoted. I was really happy for her, at first.
+But then, she started going out for lunch with my superiors, instead of with me.
+We barely even rode to work together anymore.
+And she didn’t stop there, she wanted to get to the very top.
+
+Room:3 % Random mobky
+Passage
+She just felt different, like we weren't even friends anymore, much less equals.
+Sorry. 
+I don’t really want to talk about her anymore.
+…
+Well, you’ll see for yourself soon enough.
+
+Level:4 % Roof
+Room:1
+Passage: Roof entrance
+Well, well, well.
+If it isn’t the John Doe I’ve heard so much about!
+I see Anna is as naive as ever. No way you’d get to the top without her help.
+She told you about me, didn’t she? 
+I bet she’s still obsessed with me. Pretty pathetic, if you ask me.
+Passage: After passing first row of traps
+She was always part of the plan. 
+Did you think I didn’t know they would catch us sneaking into the boss’s room to make out? 
+I knew that to succeed I had to get their attention first.
+Passage: After passing second row of traps
+What really helped me out, though, was meeting that police guy, Jimmy.
+He was such a sissy, and needed friends up top.
+He was so easy to use, and Anna barely suspected a thing. 
+I think she thought I was cheating on her with him. Blergh, can you imagine?
+Passage: Right before you reach Bridget
+Anna never understood. 
+She’s too naive to get far in this world. That’s why we didn’t work out. 
+That’s why I had to leave her behind.
+Passage: After the fight
+So, tell me. Did you appreciate Anna and what she did for you? 
+You’re the same as me.
+And you will end up the same.
+Still, I wouldn’t change a thing. 
+Would you?
+
+
+

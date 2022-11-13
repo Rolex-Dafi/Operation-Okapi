@@ -6,7 +6,6 @@ using UnityEngine;
 public class HUDManager : MonoBehaviour
 {
     [SerializeField] private ResourceUI money;
-    //[SerializeField] private ResourceUI respect;
 
     [SerializeField] private HealthUI health;
 
@@ -20,8 +19,6 @@ public class HUDManager : MonoBehaviour
     public void Init(GameManager gameManager, PlayerCharacter playerCharacter)
     {
         money.Init(playerCharacter.Money);
-        //respect.Init(playerCharacter.Respect);
-        
         health.Init(gameManager, playerCharacter.Inventory);
     }
 

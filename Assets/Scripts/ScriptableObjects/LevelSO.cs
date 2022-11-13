@@ -26,7 +26,7 @@ public class LevelSO : ScriptableObject
     public SpecialRoom merchantRoomPrefab;
     public SpecialRoom bossRoomPrefab;
 
-    public TextAsset bossNavGraphData; // pre-computed and saved data about the boss room navigation graph
+    public LevelDialogue levelDialogue;
 
     /// <summary>
     /// Semi-randomly generates what enemies to spawn depending on the room number.
