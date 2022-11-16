@@ -32,6 +32,8 @@ public class PlayerCharacter : CombatCharacter, IPushable
         } 
     }
 
+    private bool _invulnerable;
+
     /// <summary>
     /// Should the player character read input?
     /// </summary>
@@ -152,14 +154,19 @@ public class PlayerCharacter : CombatCharacter, IPushable
     /// <param name="onItemAdded">Called if the item was added successfully</param>
     public void CollectItem(ItemSO item, UnityAction onItemAdded = null)
     {
-        if (Inventory.AddItem(item))
+        if (Inventory.HasSpace())
         {
+            Inventory.AddItem(item);
             onItemAdded?.Invoke();
         }
     }
 
+    public void SetInvulnerable(bool invulnerable) => _invulnerable = invulnerable;
+    
     public override void TakeDamage(int amount)
     {
+        if (_invulnerable) return;
+        
         Animator.SetTrigger(EAnimationParameter.hit.ToString());
         
         // redirect dmg to inventory (equipped items), get back player health
@@ -174,6 +181,30 @@ public class PlayerCharacter : CombatCharacter, IPushable
     private void OnDestroy()
     {
         Respect.CleanUp();
+    }
+
+    public void ReceiveFancyTie(UnityAction onEnd = null)
+    {
+        // show anim
+        StartCoroutine(ReceiveFancyTieCo(onEnd));
+        
+        // hack - we always keep an extra space in inventory for this
+        Inventory.AddItem(Data.fancyTie);
+    }
+
+    private static IEnumerator ReceiveFancyTieCo(UnityAction onEnd = null)
+    {
+        var tieCont = FindObjectOfType<FancyTie>();
+
+        if (tieCont != null)
+        {
+            Debug.Log("receiving tie");
+            yield return tieCont.Receive();
+        }
+        
+        Debug.Log("hello from here end level invoke");
+        
+        onEnd?.Invoke();
     }
 
     /// <summary>

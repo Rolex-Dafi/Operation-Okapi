@@ -192,8 +192,16 @@ public class LevelManager : MonoBehaviour
         
         // initialize exit trigger
         if (exitTrigger != null)
-        {
-            exitTrigger.onInteractPressed.AddListener(CompleteRoom);
+        {            
+            // init on exit dialogue
+            var exitDialogue = exitTrigger.GetComponent<DialogueTrigger>();
+            if (exitDialogue != null)
+            {
+                exitDialogue.Init(gameManager.GetDialogueUI(), 
+                    data.levelDialogue.rooms[currentRoomIndex].GetOutroPassage());
+            }
+            
+            exitTrigger.onInteractPressed.AddListener(() => StartExitDialogue(exitDialogue));
         }
     }
 
@@ -229,15 +237,15 @@ public class LevelManager : MonoBehaviour
                 bossRoom.EnemySpawn, 
                 bossRoom.EnemyPatrolPoints, 
                 data.boss, 
-                () => gameManager.GameEnd(true)
+                StartGameEndDialogue
             );
             
             // spawn the enemies
-            var enemiesToSpawn = data.GetEnemiesToSpawn();
+            /*var enemiesToSpawn = data.GetEnemiesToSpawn();
             for (int i = 0; i < enemiesToSpawn.Length; i++)
             {
                 enemySpawner.SpawnEnemy(bossRoom.EnemyPatrolPoints[i], bossRoom.EnemyPatrolPoints, enemiesToSpawn[i]);
-            }
+            }*/
 
             // place the player - persistent from previous room/level
             PlayerSpawner.PlacePlayer(player, bossRoom.Entrance.position);
@@ -250,6 +258,49 @@ public class LevelManager : MonoBehaviour
         roomBeaten = true;
     }
 
+    private void StartExitDialogue(DialogueTrigger exitDialogue)
+    {
+        // activate exit dialogue
+        if (exitDialogue != null)
+        {
+            if (data.level == Level.Mall && currentRoomIndex == 0)
+            {
+                exitDialogue.StartDialogue(() =>
+                {
+                    gameManager.PlayerCharacterInstance.ReceiveFancyTie(CompleteRoom);
+                });
+            }
+            else
+            {
+                exitDialogue.StartDialogue(CompleteRoom);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("No exit dialogue found, completing the room instead");
+            CompleteRoom();
+        }
+    }
+
+    private void StartGameEndDialogue()
+    {
+        var exitDialogue = FindObjectOfType<DialogueTrigger>();
+        if (exitDialogue != null)
+        {            
+            // initialize exit dialogue
+            exitDialogue.Init(gameManager.GetDialogueUI(), 
+                data.levelDialogue.rooms[0].GetOutroPassage());
+            
+            // activate exit dialogue
+            exitDialogue.StartDialogue(()=>gameManager.GameEnd(true));
+        }
+        else
+        {
+            Debug.LogWarning("No game end dialogue found, ending game");
+            gameManager.GameEnd(true);
+        }
+    }
+    
     /// <summary>
     /// Should be called after the player has killed all enemies, is standing in the exit trigger
     /// and presses the exit (interact) button.

@@ -5,11 +5,11 @@ Hey there!
 You’re the new recruit! 
 John Doe, right? I’m Anna!
 Let me run you through how things work around here.
-See that flower in the corner? Bridget and I used to chat there all the time…
+See that flower in the corner? Bernard and I used to chat there all the time…
 Try getting over there using the arrow keys or the spacebar.
 % -pockam, nez tam hrac dojde-
 Passage: Interaction
-Oh, Bridget? Right. She was my girlfriend… I miss her every day.
+Oh, Bernard? Right. He was my boyfriend… I miss him every day.
 Anyway, it looks like they forgot to give you your uniform! Walk over to that table over there and pick it up with E.
 % -pockam, nez sebere uniformu (boty a sako)-
 Passage: Combat
@@ -19,7 +19,7 @@ Try slapping with the left mouse button and shooting with the right mouse button
 % -pockam, nez to hrac udela-
 Passage: Outro
 I’ll be happy to help you out, so I’ll check on you from time to time, see if you need anything. 
-You kind of remind me of her, you know?
+You kind of remind me of him, you know?
 
 Room:2 % Nick
 Passage
@@ -34,7 +34,7 @@ She never really liked to talk about personal stuff, and I knew she wouldn’t a
 
 Room:4 % Boss
 Passage
-Once, during a company party, me and Bridget were a bit tipsy and wanted some privacy. So we went to the boss's empty room to hang out. 
+Once, during a company party, me and Bernard were a bit tipsy and wanted some privacy. So we went to the boss's empty room to hang out. 
 Of course, Mr Smith caught us and that’s how the whole office found out about us. 
 He told me he didn’t mean to out us like that but I never quite believed him.
 
@@ -56,30 +56,30 @@ You could barely tell them apart with how strictly they were trying to conform t
 
 Room:4 % Boss
 Passage
-At one point, Bridget started having meetings with Jimmy for “some work stuff” as she used to call it. 
-She was really secretive about it for some reason, we even had a fight about it. 
-I have no idea why she associated with the guy. Normally, she had no respect for people like him.
+At one point, Bernard started having meetings with Jimmy for “some work stuff” as he used to call it. 
+He was really secretive about it for some reason, we even had a fight about it. 
+I have no idea why he associated with the guy. Normally, he had no respect for people like him.
 
 Level:3
 Room:1 % Merchant
 Passage
 You’re almost at the top now.
 Here, there’s something I want to give you.
-It’s the last thing of Bridget’s I have left but, I think, it might bring you more luck than me.
+It’s the last thing of Bernard’s I have left but, I think, it might bring you more luck than me.
 % - dostanes kravatu- (obrazek kravaty + hvezdicky treba - pokud mas kravatu na sobe, vymeni ti ji to za tuhle lepsi a vic shiny)
 
 Room:2 % Random mobky
 Passage
-Finally, Bridget got promoted. I was really happy for her, at first.
-But then, she started going out for lunch with my superiors, instead of with me.
+Finally, Bernard got promoted. I was really happy for him, at first.
+But then, he started going out for lunch with my superiors, instead of with me.
 We barely even rode to work together anymore.
-And she didn’t stop there, she wanted to get to the very top.
+And he didn’t stop there, he wanted to get to the very top.
 
 Room:3 % Random mobky
 Passage
-She just felt different, like we weren't even friends anymore, much less equals.
+He just felt different, like we weren't even friends anymore, much less equals.
 Sorry. 
-I don’t really want to talk about her anymore.
+I don’t really want to talk about him anymore.
 …
 Well, you’ll see for yourself soon enough.
 
@@ -101,7 +101,7 @@ What really helped me out, though, was meeting that police guy, Jimmy.
 He was such a sissy, and needed friends up top.
 He was so easy to use, and Anna barely suspected a thing. 
 I think she thought I was cheating on her with him. Blergh, can you imagine?
-Passage: Right before you reach Bridget
+Passage: Right before you reach Bernard
 Anna never understood. 
 She’s too naive to get far in this world. That’s why we didn’t work out. 
 That’s why I had to leave her behind.

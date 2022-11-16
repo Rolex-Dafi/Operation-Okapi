@@ -36,7 +36,15 @@ public class CombatCharacter : Character, IDamagable
     public Transform ProjectileSpawnerTransform { get => projectileSpawnerTransform; }
     // character rotation in Cartesian coordinates
     public Vector2 Facing { get => facing; private set => facing = value; }
-    public float ColliderRadius { get => col.radius; }
+    public float ColliderRadius
+    {
+        get
+        {
+            if (col != null) return col.radius;
+            else return 0;
+        }
+    }
+
     public Rigidbody2D RB { get => rb; private set => rb = value; }
     public Health Health { get => health; private set => health = value; }  // only enemies use this, the player has items instead of hp
 

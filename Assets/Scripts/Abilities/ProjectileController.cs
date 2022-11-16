@@ -64,9 +64,8 @@ public class ProjectileController : MonoBehaviour
             Debug.LogError("The projectile is missing an Animator component.");
             return;
         }
-
-        transform.position = position;
-        animator.SetTrigger(Utility.activateTrigger);
+        
+        transform.position = position + Vector2.up*.5f;
     }
 
     // TODO add animation/particle effect

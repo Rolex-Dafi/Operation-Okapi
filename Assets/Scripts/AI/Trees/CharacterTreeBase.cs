@@ -112,7 +112,7 @@ public abstract class CharacterTreeBase : TreeBase
         return new SequenceWithCachedLastChild(patrollTasks);
     }
 
-    protected Node GetAttackBT(Attack attack, bool checkCD = false, bool precise = false)
+    protected Node GetAttackBT(Attack attack, bool checkCD = false, bool fromSky = false)
     {
         // if the attack range is less than minimum obstacle size -> no need to check for obstacles
         EObstacleFilter obstacleFilter = attack.Data.attackRange < Utility.minObstacleSize ? EObstacleFilter.None : EObstacleFilter.Obstacles;
@@ -121,7 +121,7 @@ public abstract class CharacterTreeBase : TreeBase
         Node attackTask = new SequenceWithCachedLastChild(
             new List<Node>()
             {
-                new AttackTarget(this, attack, AIUtility.PCPositionName, precise, debugName:"attack pc"),                            // attack pc THEN
+                new AttackTarget(this, attack, AIUtility.PCPositionName, fromSky, debugName:"attack pc"),                            // attack pc THEN
                 new WaitFor(this, attack.Data.recoveryTime, debugName:"attack recovery")                                    // attack recovery 
             }
         );

@@ -45,6 +45,8 @@ public class GameManager : MonoBehaviour
     private bool gameInProgress = false;
     private bool gamePaused = false;
 
+    public DialogueUI GetDialogueUI() => hudInstance.GetDialogueUI();
+    
     private void Start()
     {
         generalInput.Init();
@@ -57,8 +59,6 @@ public class GameManager : MonoBehaviour
 
     private void OpenMainMenu()
     {
-        Debug.Log("opening menu");
-        
         audioManager.StartAmbience(Utility.mainMenuIndex);
         menuInstance = Instantiate(mainMenuPrefab);
         menuInstance.Init(this);
@@ -67,8 +67,6 @@ public class GameManager : MonoBehaviour
 
     private void OpenPauseMenu()
     {
-        Debug.Log("opening pause menu");
-        
         menuInstance = Instantiate(pauseMenuPrefab);
         menuInstance.Init(this);
         audioManager.Refresh(); // new buttons added -> find them and add sounds to them
@@ -79,8 +77,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void StartGame()
     {
-        Debug.Log("starting game");
-        
         // spawn player after scene loaded
         audioManager.StartAmbience(Utility.firstLevelIndex);
         //sceneLoader.LoadScene(Utility.firstLevelIndex, FinishGameLoad);
@@ -93,7 +89,7 @@ public class GameManager : MonoBehaviour
         hudInstance.Init(this, PlayerCharacterInstance);
 
         // start the first level
-        StartLevel(Level.Office);
+        StartLevel(Level.Mall);
         
         PlayerCharacterInstance.onDeath.AddListener(() => GameEnd(false));
         
@@ -153,6 +149,16 @@ public class GameManager : MonoBehaviour
         gamePaused = pause;
         currentLevelInstance.FreezeLevel(pause);     // stop updating all entities in the level
         PlayerCharacterInstance.ReadInput = !pause;  // stop reading player input
+        PlayerCharacterInstance.SetInvulnerable(pause);
+        if (pause)
+        {
+            PlayerCharacterInstance.SetMovementSpeed(0);
+            PlayerCharacterInstance.ForceIdle();
+        }
+        else
+        {
+            PlayerCharacterInstance.ResetMovementSpeed();
+        }
     }
 
     /// <summary>

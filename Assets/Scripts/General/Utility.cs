@@ -22,7 +22,7 @@ public static class Utility
     public const float minObstacleSize = .6f;
 
 
-    public const int maxHealthBarSlots = 4;
+    public const int maxHealthBarSlots = 5;
     // scenes
 
     public const int mainMenuIndex = 1;

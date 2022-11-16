@@ -34,14 +34,11 @@ public class PlayerInventory
     /// Adds an item to the inventory - this also adds health to the player.
     /// </summary>
     /// <param name="item">Data of the item to add</param>
-    /// <returns>Whether an item was added</returns>
-    public bool AddItem(ItemSO item)
+    public void AddItem(ItemSO item)
     {
-        if (!HasSpace()) return false;
-
         // if item of this type already equipped -> don't pick up
         // potential TODO heal the equipped item instead
-        if (Equipped.Where(x => x != null).Any(x => item.ID == x.Data.ID)) return false;
+        if (Equipped.Where(x => x != null).Any(x => item.ID == x.Data.ID)) return;
         
         // add the new item at the beginning of the array
         var next = Equipped[0];
@@ -54,8 +51,6 @@ public class PlayerInventory
         if (next != null) Equipped[lastItemIndex] = next;   // if next == null, this is the first item
         
         InventoryChanged.Invoke();
-        
-        return true;
     }
 
     /// <summary>
@@ -93,7 +88,7 @@ public class PlayerInventory
     public bool HasSpace()
     {
         // if health bars full -> can't pick up more items
-        return lastItemIndex < Equipped.Length - 1;
+        return lastItemIndex < Equipped.Length - 2;
     }
     
     /// <summary>

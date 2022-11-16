@@ -9,11 +9,12 @@ public class TrapTrigger : MonoBehaviour
     [SerializeField] private TrapController trapController;
 
     private float lastTriggered;
-    private const float RepeatTriggerTime = 2f;
+    private const float RepeatTriggerTime = 1f;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        TriggerTrap(other);
+        lastTriggered = Time.time;
+        //TriggerTrap(other);
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -27,7 +28,6 @@ public class TrapTrigger : MonoBehaviour
         // ignore if the collider in the trap is not the player
         if (!other.CompareTag(Utility.playerTagAndLayer)) return;
         
-        Debug.Log("shooting at " + other + " from trap " + gameObject.name, gameObject);
         lastTriggered = Time.time;
         trapController.ActivateTrap(other.transform.position);
     }

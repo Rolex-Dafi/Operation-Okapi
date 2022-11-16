@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6960007355078632575}
   - component: {fileID: 6960007355078632573}
   - component: {fileID: 2072101289599095820}
+  - component: {fileID: 3993057300073882037}
   m_Layer: 0
   m_Name: DroppedItem
   m_TagString: Untagged
@@ -71,7 +72,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 308386233
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b64f6637e8dfdb4499f813d6c2cf9574, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -96,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e9a967f9fd0c94098a2ab854f1613f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactable: {fileID: 0}
   onCollectSound:
     Guid:
       Data1: 455272924
@@ -118,4 +120,19 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.3
+--- !u!114 &3993057300073882037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6960007355078632574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf75251fcdb5dab4ab19c304ed132fbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onInteractPressed:
+    m_PersistentCalls:
+      m_Calls: []

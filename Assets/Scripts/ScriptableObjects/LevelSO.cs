@@ -45,14 +45,14 @@ public class LevelSO : ScriptableObject
         {
             for (int i = 0; i < enemyCount; i++)
             {
-                enemiesToSpawn[i] = enemyOne[i % (enemyOne.Length - 1)];
+                enemiesToSpawn[i] = enemyOne[i % (enemyOne.Length)];
             } 
         }
         else if (roomNumber == 2)
         {
             for (int i = 0; i < enemyCount; i++)
             {
-                enemiesToSpawn[i] = enemyTwo[i % (enemyTwo.Length - 1)];
+                enemiesToSpawn[i] = enemyTwo[i % (enemyTwo.Length)];
             }
         }
         

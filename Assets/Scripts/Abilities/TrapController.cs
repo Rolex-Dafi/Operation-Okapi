@@ -50,6 +50,7 @@ public class TrapController : MonoBehaviour
     
     private void SpawnProjectiles(Vector3 target)
     {
+        tag = Utility.enemyTagAndLayer;
         ProjectileController instance = Instantiate(data.projectilePrefab);
         // Player and enemies have to be tagged correctly for this to work !
         instance.Init(data, tag);

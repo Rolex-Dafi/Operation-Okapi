@@ -41,15 +41,26 @@ public class EnemyCharacter : CombatCharacter
         // drop item - instantiate it under the current room so it gets destroyed when exiting the room
         var instance = Instantiate(droppedItemPrefab, transform.position, Quaternion.identity, LevelManager.CurrentRoomTransform);
 
-        // flip a coin -> drop either money or an item
-        if (Random.Range(0, 2) == 0)
+        if (drops.Length > 0)
         {
-            instance.Init(money.GetCurrent());
-        }
-        else
-        {
-            // TODO don't drop items which are already spawned (dropped by previous enemies)
-            instance.Init(GetDrop());
+            // flip a coin -> drop either money or an item
+            if (Random.Range(0, 2) == 0)
+            {
+                instance.Init(money.GetCurrent());
+            }
+            else
+            {
+                var playerChar = FindObjectOfType<PlayerCharacter>();
+                if (playerChar != null && !playerChar.Inventory.HasSpace()) // only drop money if inventory full
+                {
+                    instance.Init(money.GetCurrent());
+                }
+                else
+                {
+                    // TODO don't drop items which are already spawned (dropped by previous enemies)
+                    instance.Init(GetDrop());
+                }
+            }
         }
 
         base.Die();

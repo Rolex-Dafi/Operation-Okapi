@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,6 +9,8 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Interactable))]
 public class MerchantCharacter : Character
 {
+    [SerializeField] private bool canShop = true;
+    
     [SerializeField] private Level level = Level.Office;
     [SerializeField] private ShopManager shopManager;
     [SerializeField] private Interactable interactable;
@@ -28,21 +28,23 @@ public class MerchantCharacter : Character
     {
         currentShop = (data as MerchantCharacterSO)?.shop.ToList();
         base.Init();
-
-        interactable.Init("Press " + EButtonDown.Interact.GetButtonName() + " to shop");
-        interactable.onInteractPressed.AddListener(OpenShop);
-        
-        gameManager = FindObjectOfType<GameManager>();
-        
-        shopManager.Init(gameManager, this);
-        ShuffleShop(); 
         
         // set the correct animation according to level
         Animator.SetTrigger(level.ToString());
+
+        gameManager = FindObjectOfType<GameManager>();
+        shopManager.Init(gameManager, this);
+
+        if (!canShop) return;
+        
+        interactable.Init("Press " + EButtonDown.Interact.GetButtonName() + " to shop");
+        interactable.onInteractPressed.AddListener(OpenShop);
     }
 
     private void OpenShop()
     {
+        if (!canShop) return;
+        
         // select three items from the current shop
         var itemsToShow = new ItemSO[3];
         var i = 0;
@@ -62,15 +64,6 @@ public class MerchantCharacter : Character
         shopManager.ShowShop(itemsToShow);
     }
 
-    private void ShuffleShop()
-    {
-        for (int i = currentShop.Count - 1; i < 1; i--)
-        {
-            var j = Random.Range(0, i);
-            (currentShop[i], currentShop[j]) = (currentShop[j], currentShop[i]);
-        }
-    }
-    
     /// <summary>
     /// Sell given item - should be called from shop manager, shop manager is responsible
     /// for checking if the player has enough money (and sets the buttons to non-interactable if not).

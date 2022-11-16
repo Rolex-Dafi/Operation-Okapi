@@ -11,4 +11,6 @@ public class PlayerCharacterSO : CharacterSO
     public int respect; 
 
     public List<ItemSO> startingItems;
+
+    public ItemSO fancyTie;
 }

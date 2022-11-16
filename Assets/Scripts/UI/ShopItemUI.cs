@@ -21,8 +21,8 @@ public class ShopItemUI : MonoBehaviour
     public void Init(ItemSO item, bool canInteract, UnityAction<ItemSO> onBuyPressed)
     {
         itemIcon.sprite = item.UISprite;
-        nameText.text = item.ItemName;
-        priceText.text = item.Cost + " coins";
+        nameText.text = "+" + item.Health + " HP";
+        priceText.text = item.Cost + " $";
 
         buyButton.interactable = canInteract;
         buyButton.onClick.AddListener(() =>

@@ -37,3 +37,4 @@ MonoBehaviour:
   respect: 0
   startingItems:
   - {fileID: 11400000, guid: 20da11f16aee6574cb24d8f63c1dad9c, type: 2}
+  fancyTie: {fileID: 11400000, guid: ea15bc79ad153c544805f321b1ec8602, type: 2}

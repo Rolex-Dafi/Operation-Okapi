@@ -11,6 +11,10 @@ public class HUDManager : MonoBehaviour
 
     //private GameManager gameManager;
 
+    [SerializeField] private DialogueUI dialogueUI;
+
+    public DialogueUI GetDialogueUI() => dialogueUI;
+    
     /// <summary>
     /// Should be called from game manager after scene loaded.
     /// </summary>
@@ -20,6 +24,7 @@ public class HUDManager : MonoBehaviour
     {
         money.Init(playerCharacter.Money);
         health.Init(gameManager, playerCharacter.Inventory);
+        dialogueUI.Init(gameManager);
     }
 
 }

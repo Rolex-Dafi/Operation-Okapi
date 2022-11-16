@@ -13,6 +13,8 @@ public class Interactable : MonoBehaviour
     [HideInInspector] public UnityEvent onInteractPressed;
     
     private TooltipUI tooltipInstance;
+    
+    public PlayerCharacter PlayerCharacter { get; private set; }
 
     public void Init(string message) // TODO take into account different inputs - ex. gamepad
     {
@@ -48,7 +50,6 @@ public class Interactable : MonoBehaviour
     {
         if (playerInRange)
         {
-            Debug.Log("Trying to interact with interactable", gameObject);
             onInteractPressed.Invoke();
         }
     }
@@ -57,9 +58,15 @@ public class Interactable : MonoBehaviour
     {
         if (other.CompareTag(Utility.playerTagAndLayer))
         {
-            Debug.Log("entering interactable trigger", gameObject);
-            tooltipInstance.ShowToolTip(true);
-            playerInRange = true;
+            if (other.TryGetComponent<PlayerCharacter>(out var character)) // only interact with player char, not projectiles
+            {
+                if (tooltipInstance == null) return;
+            
+                tooltipInstance.ShowToolTip(true);
+                playerInRange = true;
+                
+                PlayerCharacter = character;
+            }
         }
     }
 
@@ -67,9 +74,13 @@ public class Interactable : MonoBehaviour
     {
         if (other.CompareTag(Utility.playerTagAndLayer))
         {
-            Debug.Log("leaving interactable trigger", gameObject);
-            tooltipInstance.ShowToolTip(false);
-            playerInRange = false;
+            if (other.TryGetComponent<PlayerCharacter>(out _)) // only interact with player char, not projectiles
+            {
+                if (tooltipInstance == null) return;
+
+                tooltipInstance.ShowToolTip(false);
+                playerInRange = false;
+            }
         }
     }
 

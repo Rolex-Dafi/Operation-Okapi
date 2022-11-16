@@ -502,6 +502,7 @@ public abstract class MapGenerator : MonoBehaviour
     {
         var exitObj = Instantiate(entranceCollider, _roomHolder);
         exitObj.AddComponent<Interactable>();
+        exitObj.AddComponent<DialogueTrigger>();
         return exitObj;
     }
 
