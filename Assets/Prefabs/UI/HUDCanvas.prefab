@@ -1493,7 +1493,7 @@ MonoBehaviour:
   textBox: {fileID: 1766336652907656278}
   dialogueText: {fileID: 7047236561358902022}
   merchantAvatar: {fileID: 21300000, guid: 7bf22ae9cc7c2e84ea844de4558c9191, type: 3}
-  exAvatar: {fileID: 21300000, guid: 994b8dca6b91b974b84b42ed877debc7, type: 3}
+  exAvatar: {fileID: 21300000, guid: 7f53fdc67054b214a8d1b5edd7ae0143, type: 3}
 --- !u!225 &4194469024218970227
 CanvasGroup:
   m_ObjectHideFlags: 0
