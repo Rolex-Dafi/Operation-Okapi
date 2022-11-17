@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 // should be on a canvas/ui panel
 public class DialogueUI : MonoBehaviour
 {
+    [SerializeField] private Color merchantColor;
+    [SerializeField] private Color exColor;
+    
+    [SerializeField] private Image avatar;
+    [SerializeField] private Image textBox;
     [SerializeField] private TextMeshProUGUI dialogueText;
+
+    [SerializeField] private Sprite merchantAvatar;
+    [SerializeField] private Sprite exAvatar;
     
     private CanvasGroup canvasGroup;
     private GameManager gameManager;
@@ -19,6 +28,12 @@ public class DialogueUI : MonoBehaviour
         canvasGroup.alpha = 0;
     }
 
+    public void ChangeAvatar(bool merchant = true)
+    {
+        avatar.sprite = merchant ? merchantAvatar : exAvatar;
+        textBox.color = merchant ? merchantColor : exColor;
+    }
+    
     public IEnumerator PlaySingleLine(string line)
     {
         yield return Open();
@@ -46,10 +61,10 @@ public class DialogueUI : MonoBehaviour
         foreach (var t in line)
         {
             dialogueText.text += t;
-            yield return new WaitForSeconds(.01f);
+            yield return new WaitForSeconds(.05f);
         }
         
-        yield return null;
+        yield return new WaitForSeconds(.05f);;
     }
 
     public IEnumerator Close()

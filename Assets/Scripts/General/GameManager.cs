@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
         hudInstance.Init(this, PlayerCharacterInstance);
 
         // start the first level
-        StartLevel(Level.Mall);
+        StartLevel(Level.Office);
         
         PlayerCharacterInstance.onDeath.AddListener(() => GameEnd(false));
         

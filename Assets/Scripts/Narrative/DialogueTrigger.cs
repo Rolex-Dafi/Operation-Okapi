@@ -23,8 +23,14 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (startFromTrigger)
         {
+            var dialogueUI = FindObjectOfType<DialogueUI>();
+
+            if (dialogueUI == null || levelSo.levelDialogue.rooms.Count == 0) return;
+            
             // TODO this is a hack, won't work for many dialogue modifications, fix later
-            Init(FindObjectOfType<DialogueUI>(), levelSo.levelDialogue.rooms[0].passages[passageIndex]);
+            Init(dialogueUI, levelSo.levelDialogue.rooms[0].passages[passageIndex]);
+            
+            dialogueUI.ChangeAvatar(levelSo.level != Level.Roof); // the merchant is everywhere but the roof
         }
     }
 
