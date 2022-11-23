@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public struct Pair
@@ -29,11 +30,12 @@ public class SCIATController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI rightText;
     [SerializeField] private TextMeshProUGUI testText;
     [SerializeField] private Image redCross;
+
+    [SerializeField] private Button goToQst;
     
     private string[] instructionMessages =
     {
         // welcome message
-        "Welcome to the experiment\n" +
         "\n" +
         "In this experiment you will be shown words on your screen. Your task is to assign these words " +
         "into different categories. If you want to assign the word to the category on the left, press (E), if you want to assign it to the " +
@@ -109,8 +111,10 @@ public class SCIATController : MonoBehaviour
 
     private IEnumerator TestLoop()
     {
+        goToQst.gameObject.SetActive(false);
+        
         // welcome message
-        instructionsText.text = instructionMessages[0];
+        instructionsText.text = (Utility.secondSciat ? "Welcome to the experiment\n" : "Welcome back to the experiment\n") + instructionMessages[0];
         yield return new WaitUntil(GetAnyInput);
         yield return new WaitForEndOfFrame();
         
@@ -161,13 +165,36 @@ public class SCIATController : MonoBehaviour
         yield return RunTestBlock(false);
         
         // outro message
-        instructionsText.text = instructionMessages[3];
+        instructionsText.text = instructionMessages[3];        
+        testText.text = "";
+
         yield return new WaitUntil(GetAnyInput);
         yield return new WaitForEndOfFrame();
         
-        // TODO got to different scene/show formr link
+        // show formr link
+        instructionsText.text = Utility.secondSciat ? "Please go back to the questionnaire now" : "Please go to the following link to fill out a short questionnaire, then return here.";  // todo this depends if on 2nd go through
+        goToQst.gameObject.SetActive(true);
+
+        yield return new WaitUntil(GetAnyInput);
+        yield return new WaitForEndOfFrame();
+        
+        // got to different scene
+        GoToGame();
     }
 
+    public void GoToQst()
+    {
+        Application.OpenURL("https://diana.ms.mff.cuni.cz/formr/OcapiRun");
+        
+        GoToGame();
+    }
+    
+    private void GoToGame()
+    {
+        Debug.Log("switching scene");
+        SceneManager.LoadScene("SceneBase");
+    }
+    
     /// <summary>
     /// Stimuli for 1st block.
     /// </summary>

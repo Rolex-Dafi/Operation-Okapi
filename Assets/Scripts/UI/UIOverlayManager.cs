@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -69,6 +70,11 @@ public class UIOverlayManager : MonoBehaviour
     {
         // TODO tween on menu close
         Destroy(gameObject);
+    }
+
+    public void GoToSciat()
+    {
+        SceneManager.LoadScene("SC-IAT");
     }
 
 }

@@ -21,6 +21,7 @@ public static class Utility
     // TODO actually look this size up
     public const float minObstacleSize = .6f;
 
+    public static bool secondSciat = false;
 
     public const int maxHealthBarSlots = 5;
     // scenes
