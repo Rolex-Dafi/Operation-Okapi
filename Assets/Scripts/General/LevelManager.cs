@@ -197,8 +197,9 @@ public class LevelManager : MonoBehaviour
             var exitDialogue = exitTrigger.GetComponent<DialogueTrigger>();
             if (exitDialogue != null)
             {
+                var levelDialogue = Utility.gayVersion ? data.gayLevelDialogue : data.straightLevelDialogue;
                 exitDialogue.Init(gameManager.GetDialogueUI(), 
-                    data.levelDialogue.rooms[currentRoomIndex].GetOutroPassage());
+                    levelDialogue.rooms[currentRoomIndex].GetOutroPassage());
             }
             
             exitTrigger.onInteractPressed.AddListener(() => StartExitDialogue(exitDialogue));
@@ -286,10 +287,12 @@ public class LevelManager : MonoBehaviour
     {
         var exitDialogue = FindObjectOfType<DialogueTrigger>();
         if (exitDialogue != null)
-        {            
+        { 
+            var levelDialogue = Utility.gayVersion ? data.gayLevelDialogue : data.straightLevelDialogue;
+            
             // initialize exit dialogue
             exitDialogue.Init(gameManager.GetDialogueUI(), 
-                data.levelDialogue.rooms[0].GetOutroPassage());
+                levelDialogue.rooms[0].GetOutroPassage());
             
             // activate exit dialogue
             exitDialogue.StartDialogue(()=>gameManager.GameEnd(true));

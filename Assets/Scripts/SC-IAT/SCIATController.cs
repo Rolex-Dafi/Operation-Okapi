@@ -25,6 +25,8 @@ public struct Pair
 
 public class SCIATController : MonoBehaviour
 {
+    [SerializeField] private DataSaver dataSaver;
+    
     [SerializeField] private TextMeshProUGUI instructionsText;
     [SerializeField] private TextMeshProUGUI leftText;
     [SerializeField] private TextMeshProUGUI rightText;
@@ -79,14 +81,25 @@ public class SCIATController : MonoBehaviour
     // TODO each category has 8 words
     private string[] goodWords =
     {
-        "good",
-        "amazing"
+        "great",
+        "amazing",
+        "wonderful",
+        "pleasant",
+        "enjoyable",
+        "lovely",
+        "beautiful",
+        "delightful"
     };
     
     private string[] badWords =
     {
-        "bad",
-        "awful"
+        "awful",
+        "disgusting",
+        "immoral",
+        "gross",
+        "perverted",
+        "evil",
+        "shameful"
     };
 
     private string[] gayWords =
@@ -94,7 +107,11 @@ public class SCIATController : MonoBehaviour
         "lesbian",
         "bisexual",
         "gay",
-        "LGBT"
+        "LGBT",
+        "queer",
+        "homosexuality",
+        "lesbianism",
+        "bisexuality"
     };
     
     private List<Pair> stimuli = new List<Pair>();
@@ -103,9 +120,23 @@ public class SCIATController : MonoBehaviour
     private const KeyCode rightKey = KeyCode.I;
 
     private KeyCode lastInput;
+
+    private List<DataSet> allData = new List<DataSet>();
+    private DataSet currentDataSet;
+
+    private float lastStimulusTime;  // what time was the last stimulus shown
     
     private void Awake()
     {
+        Debug.Log("second sciat is " + Utility.secondSciat);
+        
+        if (!Utility.secondSciat) // TODO this will not result in a 50/50 ratio -> outside rng with condition
+        {
+            Utility.gayVersion = Random.Range(0, 2) == 0;
+            Debug.Log("version: " + Utility.gayVersion);
+            dataSaver.SaveVersion(Utility.gayVersion);
+        }
+        
         StartCoroutine(TestLoop());
     }
 
@@ -113,8 +144,9 @@ public class SCIATController : MonoBehaviour
     {
         goToQst.gameObject.SetActive(false);
         
+        Debug.Log("second sciat is " + Utility.secondSciat);
         // welcome message
-        instructionsText.text = (Utility.secondSciat ? "Welcome to the experiment\n" : "Welcome back to the experiment\n") + instructionMessages[0];
+        instructionsText.text = (Utility.secondSciat ? "Welcome back to the experiment\n" : "Welcome to the experiment\n") + instructionMessages[0];
         yield return new WaitUntil(GetAnyInput);
         yield return new WaitForEndOfFrame();
         
@@ -138,9 +170,11 @@ public class SCIATController : MonoBehaviour
         // 1st block - 2 blocks as one continuous
         FillStimuliB1(1); // 1 repetition for practice
         yield return RunTestBlock(true);
+        dataSaver.SaveData(currentDataSet, "Block1 - practice");
         
         FillStimuliB1(3); // 3 repetitions for test
         yield return RunTestBlock(false);
+        dataSaver.SaveData(currentDataSet, "Block1 - test");
         
         // --------------------------------------------
         // set instructions
@@ -160,9 +194,11 @@ public class SCIATController : MonoBehaviour
         // 2nd block - 2 blocks as one continuous
         FillStimuliB2(1); // 1 repetition for practice
         yield return RunTestBlock(true);
+        dataSaver.SaveData(currentDataSet, "Block2 - practice");
         
         FillStimuliB2(3); // 3 repetitions for test
         yield return RunTestBlock(false);
+        dataSaver.SaveData(currentDataSet, "Block2 - test");
         
         // outro message
         instructionsText.text = instructionMessages[3];        
@@ -174,14 +210,16 @@ public class SCIATController : MonoBehaviour
         // show formr link
         instructionsText.text = Utility.secondSciat ? "Please go back to the questionnaire now" : "Please go to the following link to fill out a short questionnaire, then return here.";  // todo this depends if on 2nd go through
         goToQst.gameObject.SetActive(true);
+        
+        dataSaver.EndSciatBlock();
 
-        yield return new WaitUntil(GetAnyInput);
+        /*yield return new WaitUntil(GetAnyInput);
         yield return new WaitForEndOfFrame();
         
         // got to different scene
-        GoToGame();
+        GoToGame();*/
     }
-
+    
     public void GoToQst()
     {
         Application.OpenURL("https://diana.ms.mff.cuni.cz/formr/OcapiRun");
@@ -241,6 +279,13 @@ public class SCIATController : MonoBehaviour
         }
         
         ShuffleStimuli();
+        
+        // begin new dataset
+        if (currentDataSet != null)
+        {
+            allData.Add(currentDataSet);
+        }
+        currentDataSet = new DataSet();
     }
 
     /// <summary>
@@ -254,6 +299,7 @@ public class SCIATController : MonoBehaviour
         {
             // show stimuli
             testText.text = pair.stimulus;
+            lastStimulusTime = Time.time;
             
             yield return WaitForInput(pair); 
         }
@@ -280,6 +326,8 @@ public class SCIATController : MonoBehaviour
     /// <returns></returns>
     private IEnumerator WaitForInput(Pair pair)
     {
+        var errorTime = 0f;
+        var numErrors = 0;
         while (true)
         {
             yield return new WaitUntil(GetInput);
@@ -287,7 +335,8 @@ public class SCIATController : MonoBehaviour
 
             if (lastInput == pair.key)
             {
-                // TODO save to data - time
+                // save data
+                currentDataSet.RecordEntry(pair.stimulus, Time.time - lastStimulusTime, numErrors, errorTime);
                 
                 Debug.Log("correct answer for " + pair);
                 
@@ -296,10 +345,9 @@ public class SCIATController : MonoBehaviour
             else
             {
                 // incorrect answer 
-                
-                // TODO save to data - time
-        
                 Debug.Log("!!! incorrect answer for " + pair);
+
+                errorTime = Time.time;
                 
                 // flash red cross
                 StartCoroutine(FlashRed());

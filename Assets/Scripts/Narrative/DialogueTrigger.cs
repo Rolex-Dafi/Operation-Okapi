@@ -24,11 +24,12 @@ public class DialogueTrigger : MonoBehaviour
         if (startFromTrigger)
         {
             var dialogueUI = FindObjectOfType<DialogueUI>();
+            var levelDialogue = Utility.gayVersion ? levelSo.gayLevelDialogue : levelSo.straightLevelDialogue;
 
-            if (dialogueUI == null || levelSo.levelDialogue.rooms.Count == 0) return;
+            if (dialogueUI == null || levelDialogue.rooms.Count == 0) return;
             
             // TODO this is a hack, won't work for many dialogue modifications, fix later
-            Init(dialogueUI, levelSo.levelDialogue.rooms[0].passages[passageIndex]);
+            Init(dialogueUI, levelDialogue.rooms[0].passages[passageIndex]);
             
             dialogueUI.ChangeAvatar(levelSo.level != Level.Roof); // the merchant is everywhere but the roof
         }

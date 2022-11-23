@@ -49,6 +49,8 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
+        Utility.secondSciat = false;
+        
         generalInput.Init();
         generalInput.buttonEvents[EUIButton.Escape].AddListener((_) => OpenClosePauseMenu());
 

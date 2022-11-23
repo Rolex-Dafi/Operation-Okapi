@@ -21,6 +21,8 @@ public static class Utility
     // TODO actually look this size up
     public const float minObstacleSize = .6f;
 
+    // Diplomka veci
+    public static bool gayVersion;
     public static bool secondSciat = false;
 
     public const int maxHealthBarSlots = 5;

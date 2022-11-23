@@ -26,7 +26,8 @@ public class LevelSO : ScriptableObject
     public SpecialRoom merchantRoomPrefab;
     public SpecialRoom bossRoomPrefab;
 
-    public LevelDialogue levelDialogue;
+    public LevelDialogue gayLevelDialogue;
+    public LevelDialogue straightLevelDialogue;
 
     /// <summary>
     /// Semi-randomly generates what enemies to spawn depending on the room number.

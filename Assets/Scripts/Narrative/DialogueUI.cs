@@ -16,7 +16,8 @@ public class DialogueUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText;
 
     [SerializeField] private Sprite merchantAvatar;
-    [SerializeField] private Sprite exAvatar;
+    [SerializeField] private Sprite exAvatarGay;
+    [SerializeField] private Sprite exAvatarStraight;
     
     private CanvasGroup canvasGroup;
     private GameManager gameManager;
@@ -30,7 +31,7 @@ public class DialogueUI : MonoBehaviour
 
     public void ChangeAvatar(bool merchant = true)
     {
-        avatar.sprite = merchant ? merchantAvatar : exAvatar;
+        avatar.sprite = merchant ? merchantAvatar : Utility.gayVersion ? exAvatarGay : exAvatarStraight;
         textBox.color = merchant ? merchantColor : exColor;
     }
     

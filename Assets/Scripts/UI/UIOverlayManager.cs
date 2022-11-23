@@ -74,6 +74,7 @@ public class UIOverlayManager : MonoBehaviour
 
     public void GoToSciat()
     {
+        Utility.secondSciat = true;
         SceneManager.LoadScene("SC-IAT");
     }
 

@@ -7,7 +7,8 @@ using UnityEngine;
 
 public class FileReaderWindow : EditorWindow
 {
-    private TextAsset dialogueFile;
+    private TextAsset dialogueFileGay;
+    private TextAsset dialogueFileStraight;
     
     private LevelSO officeLevel;
     private LevelSO streetLevel;
@@ -25,24 +26,31 @@ public class FileReaderWindow : EditorWindow
     void OnGUI()
     {
         GUILayout.Label("Dialogue reader", EditorStyles.boldLabel);
-        dialogueFile = (TextAsset)EditorGUILayout.ObjectField("Dialogue file", dialogueFile, typeof(TextAsset), false);
+        dialogueFileGay = (TextAsset)EditorGUILayout.ObjectField("Dialogue file gay", dialogueFileGay, typeof(TextAsset), false);
+        dialogueFileStraight = (TextAsset)EditorGUILayout.ObjectField("Dialogue file str8", dialogueFileStraight, typeof(TextAsset), false);
         
         officeLevel = (LevelSO)EditorGUILayout.ObjectField("Office level", officeLevel, typeof(LevelSO), false);
         streetLevel = (LevelSO)EditorGUILayout.ObjectField("Street level", streetLevel, typeof(LevelSO), false);
         mallLevel = (LevelSO)EditorGUILayout.ObjectField("Mall level", mallLevel, typeof(LevelSO), false);
         roofLevel = (LevelSO)EditorGUILayout.ObjectField("Roof level", roofLevel, typeof(LevelSO), false);
         
-        if (GUILayout.Button("Load from file"))
+        if (GUILayout.Button("Load from files"))
         {
-            var dict = ReadFile();
-            officeLevel.levelDialogue = dict[Level.Office];
-            streetLevel.levelDialogue = dict[Level.Street];
-            mallLevel.levelDialogue = dict[Level.Mall];
-            roofLevel.levelDialogue = dict[Level.Roof];
+            var dict = ReadFile(dialogueFileGay);
+            officeLevel.gayLevelDialogue = dict[Level.Office];
+            streetLevel.gayLevelDialogue = dict[Level.Street];
+            mallLevel.gayLevelDialogue = dict[Level.Mall];
+            roofLevel.gayLevelDialogue = dict[Level.Roof];
+            dict.Clear();
+            dict = ReadFile(dialogueFileStraight);
+            officeLevel.straightLevelDialogue = dict[Level.Office];
+            streetLevel.straightLevelDialogue = dict[Level.Street];
+            mallLevel.straightLevelDialogue = dict[Level.Mall];
+            roofLevel.straightLevelDialogue = dict[Level.Roof];
         }
     }
     
-    private Dictionary<Level, LevelDialogue> ReadFile()
+    private Dictionary<Level, LevelDialogue> ReadFile(TextAsset file)
     {
         var currentLevel = -1;
         var currentRoom = -1;
@@ -56,7 +64,7 @@ public class FileReaderWindow : EditorWindow
             { Level.Roof, new LevelDialogue() }
         };
 
-        var lines = dialogueFile.text.Split('\n');
+        var lines = file.text.Split('\n');
         
         foreach(var line in lines)
         {
