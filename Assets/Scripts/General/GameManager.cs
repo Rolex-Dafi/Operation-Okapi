@@ -44,6 +44,9 @@ public class GameManager : MonoBehaviour
     private LevelManager currentLevelInstance;
     private bool gameInProgress = false;
     private bool gamePaused = false;
+    
+    // analytics
+    private float gameStartTime;
 
     public DialogueUI GetDialogueUI() => hudInstance.GetDialogueUI();
     
@@ -177,6 +180,14 @@ public class GameManager : MonoBehaviour
         audioManager.Refresh(); // new buttons added -> find them and add sounds to them
     }
 
+    /// <summary>
+    /// Loads the thank you for playing scene - either after winning the game or a certain time.
+    /// </summary>
+    private void LoadThankYou()
+    {
+        SceneManager.LoadScene("ThxForPlaying");
+    }
+    
     /// <summary>
     /// Returns to main menu.
     /// </summary>

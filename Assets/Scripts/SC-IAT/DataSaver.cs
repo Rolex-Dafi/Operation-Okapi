@@ -78,7 +78,7 @@ public class DataSet
 
 public class DataSaver : MonoBehaviour
 {
-    private string filename = "data.txt";
+    private string filename = "data.csv";
 
     public void SaveVersion(bool gay)
     {
@@ -95,7 +95,7 @@ public class DataSaver : MonoBehaviour
             writer = new StreamWriter(filename);
         }
         
-        writer.WriteLine(gay ? "gay version" : "str8 version");
+        writer.WriteLine("Version, " +  (gay ? "Gay" : "Straight"));
         writer.Close();
     }
     
@@ -114,6 +114,8 @@ public class DataSaver : MonoBehaviour
             writer = new StreamWriter(filename);
         }
 
+        
+        
         writer.WriteLine(blockName);
         foreach (var word in dataSet.GetWords())
         {

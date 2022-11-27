@@ -7,7 +7,6 @@ public class EntryPoint : MonoBehaviour
     {
         Utility.secondSciat = false;
         
-        Debug.Log("setting second sciat to " + Utility.secondSciat);
         SceneManager.LoadScene("SC-IAT");
     }
 }
