@@ -5,8 +5,8 @@ public class EntryPoint : MonoBehaviour
 {
     private void Awake()
     {
-        // only change here for str8 version
-        Utility.gayVersion = true;
+        // change here for str8 version + switch Bridget animator manually
+        Utility.gayVersion = false;
         
         Utility.secondSciat = false;
         Utility.gameStartTime = -1;

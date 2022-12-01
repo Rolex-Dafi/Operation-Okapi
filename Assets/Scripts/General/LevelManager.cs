@@ -232,6 +232,7 @@ public class LevelManager : MonoBehaviour
             roomBeaten = false;
             
             var bossRoom = Instantiate(data.bossRoomPrefab);
+            data.boss.enemyName = Utility.gayVersion ? "Bridget" : "Bernard";
             
             // spawn the boss - register callback to win the game after defeating the boss
             enemySpawner.SpawnEnemy(

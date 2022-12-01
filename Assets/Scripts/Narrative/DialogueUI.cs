@@ -62,10 +62,10 @@ public class DialogueUI : MonoBehaviour
         foreach (var t in line)
         {
             dialogueText.text += t;
-            yield return new WaitForSeconds(.005f);
+            yield return new WaitForSeconds(.04f);
         }
         
-        yield return new WaitForSeconds(.005f);;
+        yield return new WaitForSeconds(.04f);;
     }
 
     public IEnumerator Close()
