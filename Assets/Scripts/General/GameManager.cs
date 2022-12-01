@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -62,6 +64,15 @@ public class GameManager : MonoBehaviour
         OpenMainMenu();
     }
 
+    private void Update()
+    {
+        if (Utility.gameStartTime > 0 && Time.time - Utility.gameStartTime > Utility.maxPlayTime)
+        {
+            // show thank you screen
+            SceneManager.LoadScene("ThxForPlaying");
+        }
+    }
+
     private void OpenMainMenu()
     {
         audioManager.StartAmbience(Utility.mainMenuIndex);
@@ -100,6 +111,9 @@ public class GameManager : MonoBehaviour
         
         // set game in progress
         gameInProgress = true;
+
+        // only record start time once
+        if (Utility.gameStartTime < 0) Utility.gameStartTime = Time.time;
     }
 
     private void StartLevel(Level level)
@@ -178,14 +192,25 @@ public class GameManager : MonoBehaviour
         menuInstance.Init(this);
         menuInstance.ChangeTitle(won ? "You win!" : "Game Over");
         audioManager.Refresh(); // new buttons added -> find them and add sounds to them
-    }
 
-    /// <summary>
-    /// Loads the thank you for playing scene - either after winning the game or a certain time.
-    /// </summary>
-    private void LoadThankYou()
-    {
-        SceneManager.LoadScene("ThxForPlaying");
+        if (won)
+        {
+            // record it
+            Utility.gameWon = true;
+            
+            // players can't go back to menu
+            menuInstance.HideButtons();
+            
+            // wait a bit then show thank you screen
+            StartCoroutine(ShowThankYou());
+        }
+        
+        IEnumerator ShowThankYou()
+        {
+            yield return new WaitForSeconds(.5f);
+
+            SceneManager.LoadScene("ThxForPlaying");
+        }
     }
     
     /// <summary>

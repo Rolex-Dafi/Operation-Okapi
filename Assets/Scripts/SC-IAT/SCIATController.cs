@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -31,7 +32,7 @@ public class SCIATController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI leftText;
     [SerializeField] private TextMeshProUGUI rightText;
     [SerializeField] private TextMeshProUGUI testText;
-    [SerializeField] private Image redCross;
+    [SerializeField] private CanvasGroup redCross;
 
     [SerializeField] private Button goToQst;
     
@@ -128,12 +129,8 @@ public class SCIATController : MonoBehaviour
     
     private void Awake()
     {
-        Debug.Log("second sciat is " + Utility.secondSciat);
-        
-        if (!Utility.secondSciat) // TODO this will not result in a 50/50 ratio -> outside rng with condition
+        if (!Utility.secondSciat) 
         {
-            Utility.gayVersion = Random.Range(0, 2) == 0;
-            Debug.Log("version: " + Utility.gayVersion);
             dataSaver.SaveVersion(Utility.gayVersion);
         }
         
@@ -144,11 +141,10 @@ public class SCIATController : MonoBehaviour
     {
         goToQst.gameObject.SetActive(false);
         
-        Debug.Log("second sciat is " + Utility.secondSciat);
         // welcome message
         instructionsText.text = (Utility.secondSciat ? "Welcome back to the experiment\n" : "Welcome to the experiment\n") + instructionMessages[0];
         yield return new WaitUntil(GetAnyInput);
-        yield return new WaitForEndOfFrame();
+        yield return null;
         
         // --------------------------------------------
         // set instructions
@@ -160,7 +156,7 @@ public class SCIATController : MonoBehaviour
         testText.text = "";
 
         yield return new WaitUntil(GetAnyInput);
-        yield return new WaitForEndOfFrame();
+        yield return null;
 
         // start test block
         instructionsText.text = "";
@@ -170,11 +166,11 @@ public class SCIATController : MonoBehaviour
         // 1st block - 2 blocks as one continuous
         FillStimuliB1(1); // 1 repetition for practice
         yield return RunTestBlock(true);
-        dataSaver.SaveData(currentDataSet, "Block1 - practice");
+        dataSaver.SaveDataArch(currentDataSet, "Block1 - practice");
         
         FillStimuliB1(3); // 3 repetitions for test
         yield return RunTestBlock(false);
-        dataSaver.SaveData(currentDataSet, "Block1 - test");
+        dataSaver.SaveDataArch(currentDataSet, "Block1 - test");
         
         // --------------------------------------------
         // set instructions
@@ -186,7 +182,7 @@ public class SCIATController : MonoBehaviour
         testText.text = "";
         
         yield return new WaitUntil(GetAnyInput);
-        yield return new WaitForEndOfFrame();
+        yield return null;
         
         // start test block
         instructionsText.text = "";
@@ -194,30 +190,24 @@ public class SCIATController : MonoBehaviour
         // 2nd block - 2 blocks as one continuous
         FillStimuliB2(1); // 1 repetition for practice
         yield return RunTestBlock(true);
-        dataSaver.SaveData(currentDataSet, "Block2 - practice");
+        dataSaver.SaveDataArch(currentDataSet, "Block2 - practice");
         
         FillStimuliB2(3); // 3 repetitions for test
         yield return RunTestBlock(false);
-        dataSaver.SaveData(currentDataSet, "Block2 - test");
+        dataSaver.SaveDataArch(currentDataSet, "Block2 - test");
         
         // outro message
         instructionsText.text = instructionMessages[3];        
         testText.text = "";
 
         yield return new WaitUntil(GetAnyInput);
-        yield return new WaitForEndOfFrame();
+        yield return null;
         
         // show formr link
         instructionsText.text = Utility.secondSciat ? "Please go back to the questionnaire now" : "Please go to the following link to fill out a short questionnaire, then return here.";  // todo this depends if on 2nd go through
         goToQst.gameObject.SetActive(true);
         
         dataSaver.EndSciatBlock();
-
-        /*yield return new WaitUntil(GetAnyInput);
-        yield return new WaitForEndOfFrame();
-        
-        // got to different scene
-        GoToGame();*/
     }
     
     public void GoToQst()
@@ -331,29 +321,36 @@ public class SCIATController : MonoBehaviour
         while (true)
         {
             yield return new WaitUntil(GetInput);
-            yield return new WaitForEndOfFrame();
+            yield return null;
 
             if (lastInput == pair.key)
             {
                 // save data
-                currentDataSet.RecordEntry(pair.stimulus, Time.time - lastStimulusTime, numErrors, errorTime);
+                currentDataSet.RecordEntryArch(pair.stimulus, Time.time - lastStimulusTime, numErrors, errorTime);
                 
                 Debug.Log("correct answer for " + pair);
                 
+                redCross.alpha = 0;
+                
                 break;
             }
-            else
+            else if (lastInput == GetOppositeKey(pair.key))
             {
                 // incorrect answer 
                 Debug.Log("!!! incorrect answer for " + pair);
 
                 errorTime = Time.time;
+                ++numErrors;
                 
-                // flash red cross
-                StartCoroutine(FlashRed());
+                redCross.alpha = 1;
             }
-
+            
         }
+    }
+
+    private KeyCode GetOppositeKey(KeyCode key)
+    {
+        return key == leftKey ? rightKey : leftKey;
     }
 
     /// <summary>
@@ -390,18 +387,13 @@ public class SCIATController : MonoBehaviour
         return ret;
     }
 
-    /// <summary>
-    /// Flashes the red cross graphics.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator FlashRed()
+    private WordCategory GetWordCategory(string word)
     {
-        redCross.DOKill();
-        var tween = redCross.DOFade(1, .1f);
-        yield return tween.WaitForCompletion();
-        yield return new WaitForSeconds(.2f);
-        tween = redCross.DOFade(0, .1f);
-        yield return tween.WaitForCompletion();
+        if (goodWords.Contains(word)) return WordCategory.Good;
+        if (badWords.Contains(word)) return WordCategory.Bad;
+        if (gayWords.Contains(word)) return WordCategory.Gay;
+
+        return WordCategory.NA;
     }
     
 }

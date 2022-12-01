@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,6 +15,8 @@ public class TransitionScreenController : MonoBehaviour
         toQuestionnaireGroup.alpha = 1;
         toSCIATGroup.alpha = 0;
         toSCIATGroup.gameObject.SetActive(false);
+
+        StartCoroutine(SwitchAfterTime());
     }
     
     void OnApplicationFocus(bool hasFocus)
@@ -46,6 +46,14 @@ public class TransitionScreenController : MonoBehaviour
         SceneManager.LoadScene("SC-IAT");
     }
 
+    private IEnumerator SwitchAfterTime()
+    {
+        // switch instructions after one minute - to be safe
+        yield return new WaitForSeconds(60);
+
+        SwitchInstructions();
+    }
+    
     private void SwitchInstructions()
     {
         if (instructionsSwitched) return;

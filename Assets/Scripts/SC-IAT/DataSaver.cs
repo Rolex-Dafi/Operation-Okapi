@@ -49,16 +49,71 @@ public struct Word
     }
 }
 
+public enum WordCategory
+{
+    Good,
+    Bad,
+    Gay,
+    NA
+}
+
+public enum TestType
+{
+    Practice1,
+    Test1,
+    Practice2,
+    Test2
+}
+
+/// <summary>
+/// One row of the sc-iat table.
+/// </summary>
+public class Entry
+{
+    public string word;
+    public TestType testType;
+    public KeyCode correctResponse;
+    public WordCategory wordCategory;
+    public float responseTime;
+    public int numErrors;
+    public float errorTime;
+    public int orderInSet;
+
+    public Entry(string word, TestType testType, KeyCode correctResponse, WordCategory wordCategory, float responseTime, int numErrors, float errorTime, int orderInSet)
+    {
+        this.word = word;
+        this.testType = testType;
+        this.correctResponse = correctResponse;
+        this.wordCategory = wordCategory;
+        this.responseTime = responseTime;
+        this.numErrors = numErrors;
+        this.errorTime = errorTime;
+        this.orderInSet = orderInSet;
+    }
+
+    /// <summary>
+    /// Returns entry as a string suitable for saving as a line in csv format. The first column is "sciat".
+    /// </summary>
+    /// <returns></returns>
+    public override string ToString()
+    {
+        return "sciat," + word + "," + testType + "," + correctResponse + "," + wordCategory + "," + responseTime + "," +
+               numErrors + "," + errorTime + "," + orderInSet;
+    }
+}
+
 public class DataSet
 {
     private Dictionary<string, Word> words;
+    private List<Entry> entries;
 
     public DataSet()
     {
         words = new Dictionary<string, Word>();
+        entries = new List<Entry>();
     }
 
-    public void RecordEntry(string word, float time, int errors = 0, float errorTime = 0f)
+    public void RecordEntryArch(string word, float time, int errors = 0, float errorTime = 0f)
     {
         if (words.ContainsKey(word))
         {
@@ -73,7 +128,17 @@ public class DataSet
         }
     }
 
+    public void RecordEntry(string word, TestType testType, KeyCode correctResponse, WordCategory wordCategory, 
+        float responseTime, int numErrors, float errorTime, int orderInSet)
+    {
+        var entry = new Entry(word, testType, correctResponse, wordCategory, 
+            responseTime, numErrors, errorTime, orderInSet);
+        entries.Add(entry);
+    }
+    
     public Dictionary<string, Word> GetWords() => words;
+
+    public List<Entry> GetEntries() => entries;
 }
 
 public class DataSaver : MonoBehaviour
@@ -95,11 +160,11 @@ public class DataSaver : MonoBehaviour
             writer = new StreamWriter(filename);
         }
         
-        writer.WriteLine("Version, " +  (gay ? "Gay" : "Straight"));
+        writer.WriteLine("Version," +  (gay ? "Gay" : "Straight"));
         writer.Close();
     }
     
-    public void SaveData(DataSet dataSet, string blockName)
+    public void SaveDataArch(DataSet dataSet, string blockName)
     {
         StreamWriter writer;
         
@@ -125,6 +190,28 @@ public class DataSaver : MonoBehaviour
         
         
         // TODO should save to an excel table
+    }
+    
+    public void SaveData(DataSet dataSet)
+    {
+        StreamWriter writer;
+        
+        if (File.Exists(filename))
+        {
+            Debug.Log("file " + filename + " already exists, appending");
+            writer = new StreamWriter(filename, append: true);
+        }
+        else
+        {
+            Debug.Log("creating file " + filename);
+            writer = new StreamWriter(filename);
+        }
+        
+        foreach (var entry in dataSet.GetEntries())
+        {
+            writer.WriteLine(entry);
+        }
+        writer.Close();
     }
 
     public void EndSciatBlock()

@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 838594688}
   - component: {fileID: 838594690}
   - component: {fileID: 838594689}
+  - component: {fileID: 838594691}
   m_Layer: 5
   m_Name: RedCross
   m_TagString: Untagged
@@ -173,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8584906, g: 0, b: 0, a: 0}
+  m_Color: {r: 0.735849, g: 0.12148449, b: 0.12148449, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -198,6 +199,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 838594687}
   m_CullTransparentMesh: 1
+--- !u!225 &838594691
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838594687}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &993513390
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,7 +602,7 @@ MonoBehaviour:
   leftText: {fileID: 1534828219}
   rightText: {fileID: 1696925016}
   testText: {fileID: 1680763791}
-  redCross: {fileID: 838594689}
+  redCross: {fileID: 838594691}
   goToQst: {fileID: 993513392}
 --- !u!114 &1229310016
 MonoBehaviour:

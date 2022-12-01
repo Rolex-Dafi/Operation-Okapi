@@ -12,6 +12,7 @@ using UnityEngine.UI;
 public class UIOverlayManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI title;
+    [SerializeField] private Button backButton;
     
     private GameManager gameManager;
 
@@ -30,6 +31,11 @@ public class UIOverlayManager : MonoBehaviour
     public void ChangeTitle(string text)
     {
         if (title != null) title.text = text;
+    }
+
+    public void HideButtons()
+    {
+        backButton.gameObject.SetActive(false);
     }
     
     /// <summary>
