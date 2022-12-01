@@ -33,5 +33,6 @@ MonoBehaviour:
       Data3: 1494663845
       Data4: 1392971024
     Path: event:/SFX/Roar
+  enemyName: Bridget
   lineOfSightRange: 20
   patrollWaitTime: 1

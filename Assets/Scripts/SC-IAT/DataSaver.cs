@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using UnityEngine;
 
@@ -98,8 +99,15 @@ public class Entry
     /// <returns></returns>
     public override string ToString()
     {
-        return word + "," + testType + "," + correctResponse + "," + wordCategory + "," + responseTime + "," +
-               numErrors + "," + errorTime + "," + orderInSet;
+        return (Utility.secondSciat ? "sciat2" : "sciat1") + "," +
+               word + "," + 
+               testType + "," + 
+               correctResponse + "," + 
+               wordCategory + "," + 
+               responseTime.ToString(CultureInfo.InvariantCulture).Replace(",", ".") + "," +
+               numErrors + "," + 
+               errorTime.ToString(CultureInfo.InvariantCulture).Replace(",", ".") + "," + 
+               orderInSet;
     }
 }
 
@@ -210,7 +218,7 @@ public class DataSaver : MonoBehaviour
         }
         
         // header
-        writer.WriteLine("word,testType,correctResponse,wordCategory,responseTime,numErrors,errorTime,orderInSet");
+        writer.WriteLine("testNumber,word,testType,correctResponse,wordCategory,responseTime,numErrors,errorTime,orderInSet");
         
         foreach (var entry in dataSet.GetEntries())
         {
@@ -225,7 +233,6 @@ public class DataSaver : MonoBehaviour
     {
         var writer = new StreamWriter(filename, true);
         
-        writer.WriteLine("");
         writer.WriteLine("");
         writer.Close();
     }
@@ -247,8 +254,13 @@ public class DataSaver : MonoBehaviour
         
         // analytics
         writer.WriteLine("Version," +  (Utility.gayVersion ? "Gay" : "Straight"));
+        writer.WriteLine("Fps," + Utility.avgFps.ToString(CultureInfo.InvariantCulture).Replace(",", "."));
         writer.WriteLine("Game won," + (Utility.gameWon ? "Yes" : "No"));
+        writer.WriteLine("Game duration," + Utility.gameDuration.ToString(CultureInfo.InvariantCulture).Replace(",", "."));
         writer.WriteLine("Date," +  DateTime.Today);
+        
+        writer.WriteLine("");
+        writer.WriteLine("");
         
         writer.Close();
     }

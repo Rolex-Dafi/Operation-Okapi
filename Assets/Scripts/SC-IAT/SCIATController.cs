@@ -137,7 +137,7 @@ public class SCIATController : MonoBehaviour
         
         StartCoroutine(TestLoop());
     }
-
+    
     private IEnumerator TestLoop()
     {
         goToQst.gameObject.SetActive(false);
@@ -222,8 +222,19 @@ public class SCIATController : MonoBehaviour
     public void GoToQst()
     {
         Application.OpenURL("https://diana.ms.mff.cuni.cz/formr/OcapiRun");
-        
-        GoToGame();
+
+        if (Utility.secondSciat)
+        {
+            Debug.Log("quitting game");
+            Application.Quit();
+        }
+        else
+        {
+            // count the frame rate for first sciat
+            Utility.avgFps = Time.frameCount / Time.time;
+            
+            GoToGame();
+        }
     }
     
     private void GoToGame()
@@ -321,9 +332,10 @@ public class SCIATController : MonoBehaviour
     }
 
     /// <summary>
-    /// Only returns after pressing the correct key
+    /// Returns after pressing the correct key.
     /// </summary>
     /// <param name="pair">A pair of the correct key code and the stimulus it belongs to</param>
+    /// <param name="order">Order of the stimulus in the set</param>
     /// <returns></returns>
     private IEnumerator WaitForInput(Pair pair, int order)
     {
@@ -339,7 +351,8 @@ public class SCIATController : MonoBehaviour
                 // save data
                 //currentDataSet.RecordEntryArch(pair.stimulus, Time.time - lastStimulusTime, numErrors, errorTime);
                 currentDataSet.RecordEntry(pair.stimulus, currentTestType, pair.key, GetWordCategory(pair.stimulus),
-                    Time.time - lastStimulusTime, numErrors, errorTime, order);
+                    Time.time - lastStimulusTime, numErrors, 
+                    numErrors > 0 ? Time.time - errorTime : 0, order);
                 
                 Debug.Log("correct answer for " + pair);
                 

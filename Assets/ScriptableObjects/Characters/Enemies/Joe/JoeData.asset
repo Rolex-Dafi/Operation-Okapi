@@ -32,5 +32,6 @@ MonoBehaviour:
       Data3: -2117765502
       Data4: 1660216290
     Path: event:/SFX/Death
+  enemyName: Joe
   lineOfSightRange: 3
   patrollWaitTime: 1

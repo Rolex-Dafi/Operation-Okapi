@@ -197,6 +197,8 @@ public class GameManager : MonoBehaviour
         {
             // record it
             Utility.gameWon = true;
+            // only relevant if game won - otherwise should be 30*60 (30 minutes)
+            Utility.gameDuration = Time.time - Utility.gameStartTime;
             
             // players can't go back to menu
             menuInstance.HideButtons();

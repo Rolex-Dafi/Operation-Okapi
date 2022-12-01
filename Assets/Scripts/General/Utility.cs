@@ -29,6 +29,8 @@ public static class Utility
     
     // analytics
     public static float gameStartTime;
+    public static float avgFps;
+    public static float gameDuration;
     public static bool gameWon;
 
     public const int maxHealthBarSlots = 5;

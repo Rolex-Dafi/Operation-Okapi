@@ -6,6 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CharacterData", menuName = "ScriptableObjects/Enemy Character")]
 public class EnemyCharacterSO : CharacterSO
 {
+    public string enemyName;
+    
     [Range(1, 20)] public float lineOfSightRange;
 
     [Range(1, 10)] public float patrollWaitTime = 1f;

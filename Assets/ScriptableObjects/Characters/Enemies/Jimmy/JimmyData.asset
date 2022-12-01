@@ -34,5 +34,6 @@ MonoBehaviour:
       Data3: -2117765502
       Data4: 1660216290
     Path: event:/SFX/Death
+  enemyName: Jimmy
   lineOfSightRange: 10
   patrollWaitTime: 1

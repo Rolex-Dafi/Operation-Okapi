@@ -63,6 +63,7 @@ public class EnemySpawner : MonoBehaviour
         var healthBarInstance = Instantiate(healthBarPrefab, gameManager.worldSpaceCanvas.transform);
         healthBarInstance.Init(enemyInstance.Health);
         healthBarInstance.GetComponent<FollowTarget>().Init(enemyInstance.transform);
+        healthBarInstance.GetComponent<CharacterName>().Init(enemy.enemyName);
         
         enemyInstance.onDeath.AddListener(() =>
         {
