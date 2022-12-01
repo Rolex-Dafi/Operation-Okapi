@@ -124,6 +124,7 @@ public class SCIATController : MonoBehaviour
 
     private List<DataSet> allData = new List<DataSet>();
     private DataSet currentDataSet;
+    private TestType currentTestType;
 
     private float lastStimulusTime;  // what time was the last stimulus shown
     
@@ -165,12 +166,16 @@ public class SCIATController : MonoBehaviour
         
         // 1st block - 2 blocks as one continuous
         FillStimuliB1(1); // 1 repetition for practice
+        currentTestType = TestType.Practice1;
         yield return RunTestBlock(true);
-        dataSaver.SaveDataArch(currentDataSet, "Block1 - practice");
+        dataSaver.SaveSciatData(currentDataSet);
+        //dataSaver.SaveDataArch(currentDataSet, "Block1 - practice");
         
         FillStimuliB1(3); // 3 repetitions for test
+        currentTestType = TestType.Test1;
         yield return RunTestBlock(false);
-        dataSaver.SaveDataArch(currentDataSet, "Block1 - test");
+        dataSaver.SaveSciatData(currentDataSet);
+        //dataSaver.SaveDataArch(currentDataSet, "Block1 - test");
         
         // --------------------------------------------
         // set instructions
@@ -189,12 +194,16 @@ public class SCIATController : MonoBehaviour
 
         // 2nd block - 2 blocks as one continuous
         FillStimuliB2(1); // 1 repetition for practice
+        currentTestType = TestType.Practice2;
         yield return RunTestBlock(true);
-        dataSaver.SaveDataArch(currentDataSet, "Block2 - practice");
+        dataSaver.SaveSciatData(currentDataSet);
+        //dataSaver.SaveDataArch(currentDataSet, "Block2 - practice");
         
         FillStimuliB2(3); // 3 repetitions for test
+        currentTestType = TestType.Test2;
         yield return RunTestBlock(false);
-        dataSaver.SaveDataArch(currentDataSet, "Block2 - test");
+        dataSaver.SaveSciatData(currentDataSet);
+        //dataSaver.SaveDataArch(currentDataSet, "Block2 - test");
         
         // outro message
         instructionsText.text = instructionMessages[3];        
@@ -285,13 +294,15 @@ public class SCIATController : MonoBehaviour
     /// <returns></returns>
     private IEnumerator RunTestBlock(bool practice = false)
     {
+        var index = 0;
         foreach (var pair in stimuli)
         {
             // show stimuli
             testText.text = pair.stimulus;
             lastStimulusTime = Time.time;
             
-            yield return WaitForInput(pair); 
+            yield return WaitForInput(pair, index);
+            ++index;
         }
     }
     
@@ -314,7 +325,7 @@ public class SCIATController : MonoBehaviour
     /// </summary>
     /// <param name="pair">A pair of the correct key code and the stimulus it belongs to</param>
     /// <returns></returns>
-    private IEnumerator WaitForInput(Pair pair)
+    private IEnumerator WaitForInput(Pair pair, int order)
     {
         var errorTime = 0f;
         var numErrors = 0;
@@ -326,7 +337,9 @@ public class SCIATController : MonoBehaviour
             if (lastInput == pair.key)
             {
                 // save data
-                currentDataSet.RecordEntryArch(pair.stimulus, Time.time - lastStimulusTime, numErrors, errorTime);
+                //currentDataSet.RecordEntryArch(pair.stimulus, Time.time - lastStimulusTime, numErrors, errorTime);
+                currentDataSet.RecordEntry(pair.stimulus, currentTestType, pair.key, GetWordCategory(pair.stimulus),
+                    Time.time - lastStimulusTime, numErrors, errorTime, order);
                 
                 Debug.Log("correct answer for " + pair);
                 

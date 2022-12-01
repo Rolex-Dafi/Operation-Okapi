@@ -25,7 +25,7 @@ public static class Utility
     public static bool gayVersion;
     public static bool secondSciat = false;
 
-    public const float maxPlayTime = 1 * 60; // 30 minutes
+    public const float maxPlayTime = 30 * 60; // 30 minutes
     
     // analytics
     public static float gameStartTime;

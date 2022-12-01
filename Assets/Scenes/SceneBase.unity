@@ -648,7 +648,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3b3ef8ae950c326408e6e792a99b838e, type: 2}
   - {fileID: 11400000, guid: ccbb10aad3d290445bd85324170d2b90, type: 2}
   audioManager: {fileID: 166999711}
-  uiInput: {fileID: 1752645816}
+  generalInput: {fileID: 1752645816}
   playerSpawner: {fileID: 1752645817}
   playerCharacterPrefab: {fileID: 2929782994530680384, guid: 28ac508a4fd66e246911f9d0874995e6, type: 3}
   levelManagerPrefab: {fileID: 6955649104209725719, guid: fa36e70c87b372f4282e342d883d4e6c, type: 3}

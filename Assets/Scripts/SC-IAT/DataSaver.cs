@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -92,12 +93,12 @@ public class Entry
     }
 
     /// <summary>
-    /// Returns entry as a string suitable for saving as a line in csv format. The first column is "sciat".
+    /// Returns entry as a string suitable for saving as a line in csv format. 
     /// </summary>
     /// <returns></returns>
     public override string ToString()
     {
-        return "sciat," + word + "," + testType + "," + correctResponse + "," + wordCategory + "," + responseTime + "," +
+        return word + "," + testType + "," + correctResponse + "," + wordCategory + "," + responseTime + "," +
                numErrors + "," + errorTime + "," + orderInSet;
     }
 }
@@ -161,6 +162,7 @@ public class DataSaver : MonoBehaviour
         }
         
         writer.WriteLine("Version," +  (gay ? "Gay" : "Straight"));
+        writer.WriteLine("");
         writer.Close();
     }
     
@@ -192,7 +194,7 @@ public class DataSaver : MonoBehaviour
         // TODO should save to an excel table
     }
     
-    public void SaveData(DataSet dataSet)
+    public void SaveSciatData(DataSet dataSet)
     {
         StreamWriter writer;
         
@@ -207,10 +209,15 @@ public class DataSaver : MonoBehaviour
             writer = new StreamWriter(filename);
         }
         
+        // header
+        writer.WriteLine("word,testType,correctResponse,wordCategory,responseTime,numErrors,errorTime,orderInSet");
+        
         foreach (var entry in dataSet.GetEntries())
         {
             writer.WriteLine(entry);
         }
+        
+        writer.WriteLine("");
         writer.Close();
     }
 
@@ -218,8 +225,31 @@ public class DataSaver : MonoBehaviour
     {
         var writer = new StreamWriter(filename, true);
         
-        writer.WriteLine("SC-IAT Block end");
         writer.WriteLine("");
+        writer.WriteLine("");
+        writer.Close();
+    }
+
+    public void SaveAnalytics()
+    {
+        StreamWriter writer;
+        
+        if (File.Exists(filename))
+        {
+            Debug.Log("file " + filename + " already exists, appending");
+            writer = new StreamWriter(filename, append: true);
+        }
+        else
+        {
+            Debug.Log("creating file " + filename);
+            writer = new StreamWriter(filename);
+        }
+        
+        // analytics
+        writer.WriteLine("Version," +  (Utility.gayVersion ? "Gay" : "Straight"));
+        writer.WriteLine("Game won," + (Utility.gameWon ? "Yes" : "No"));
+        writer.WriteLine("Date," +  DateTime.Today);
+        
         writer.Close();
     }
     

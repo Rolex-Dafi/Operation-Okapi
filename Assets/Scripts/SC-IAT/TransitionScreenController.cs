@@ -8,10 +8,14 @@ public class TransitionScreenController : MonoBehaviour
     [SerializeField] private CanvasGroup toQuestionnaireGroup;
     [SerializeField] private CanvasGroup toSCIATGroup;
 
+    [SerializeField] private DataSaver dataSaver;
+    
     private bool instructionsSwitched;
     
     private void Awake()
     {
+        dataSaver.SaveAnalytics();
+        
         toQuestionnaireGroup.alpha = 1;
         toSCIATGroup.alpha = 0;
         toSCIATGroup.gameObject.SetActive(false);
