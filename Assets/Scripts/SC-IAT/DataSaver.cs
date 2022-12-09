@@ -109,7 +109,7 @@ public class Entry
                responseTime.ToString(CultureInfo.InvariantCulture).Replace(",", ".") + "," +
                numErrors + "," +
                errorTime.ToString(CultureInfo.InvariantCulture).Replace(",", ".") + "," +
-               orderInSet +
+               orderInSet + "," +
                firstErrorTime.ToString(CultureInfo.InvariantCulture).Replace(",", ".");
     }
 }
@@ -172,7 +172,7 @@ public class DataSaver : MonoBehaviour
             writer = new StreamWriter(filename);
         }
         
-        writer.WriteLine("Version," +  (gay ? "Gay" : "Straight"));
+        writer.WriteLine("Version," +  (gay ? "Gay" : "Straight") + ",2");
         writer.WriteLine("");
         writer.Close();
     }
@@ -221,7 +221,7 @@ public class DataSaver : MonoBehaviour
         }
         
         // header
-        writer.WriteLine("testNumber,word,testType,correctResponse,wordCategory,responseTime,numErrors,errorTime,orderInSet");
+        writer.WriteLine("testNumber,word,testType,correctResponse,wordCategory,responseTime,numErrors,errorTime,orderInSet,firstErrorTime");
         
         foreach (var entry in dataSet.GetEntries())
         {
