@@ -340,6 +340,7 @@ public class SCIATController : MonoBehaviour
     private IEnumerator WaitForInput(Pair pair, int order)
     {
         var errorTime = 0f;
+        var firstErrorTime = 0f;
         var numErrors = 0;
         while (true)
         {
@@ -352,9 +353,7 @@ public class SCIATController : MonoBehaviour
                 //currentDataSet.RecordEntryArch(pair.stimulus, Time.time - lastStimulusTime, numErrors, errorTime);
                 currentDataSet.RecordEntry(pair.stimulus, currentTestType, pair.key, GetWordCategory(pair.stimulus),
                     Time.time - lastStimulusTime, numErrors, 
-                    numErrors > 0 ? Time.time - errorTime : 0, order);
-                
-                Debug.Log("correct answer for " + pair);
+                    numErrors > 0 ? Time.time - errorTime : 0, order, firstErrorTime);
                 
                 redCross.alpha = 0;
                 
@@ -362,8 +361,11 @@ public class SCIATController : MonoBehaviour
             }
             else if (lastInput == GetOppositeKey(pair.key))
             {
-                // incorrect answer 
-                Debug.Log("!!! incorrect answer for " + pair);
+                // first error
+                if (numErrors == 0)
+                {
+                    firstErrorTime = Time.time - lastStimulusTime;
+                }
 
                 errorTime = Time.time;
                 ++numErrors;

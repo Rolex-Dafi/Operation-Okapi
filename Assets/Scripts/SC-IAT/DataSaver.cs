@@ -80,8 +80,9 @@ public class Entry
     public int numErrors;
     public float errorTime;
     public int orderInSet;
+    public float firstErrorTime;
 
-    public Entry(string word, TestType testType, KeyCode correctResponse, WordCategory wordCategory, float responseTime, int numErrors, float errorTime, int orderInSet)
+    public Entry(string word, TestType testType, KeyCode correctResponse, WordCategory wordCategory, float responseTime, int numErrors, float errorTime, int orderInSet, float firstErrorTime)
     {
         this.word = word;
         this.testType = testType;
@@ -91,6 +92,7 @@ public class Entry
         this.numErrors = numErrors;
         this.errorTime = errorTime;
         this.orderInSet = orderInSet;
+        this.firstErrorTime = firstErrorTime;
     }
 
     /// <summary>
@@ -100,14 +102,15 @@ public class Entry
     public override string ToString()
     {
         return (Utility.secondSciat ? "sciat2" : "sciat1") + "," +
-               word + "," + 
-               testType + "," + 
-               correctResponse + "," + 
-               wordCategory + "," + 
+               word + "," +
+               testType + "," +
+               correctResponse + "," +
+               wordCategory + "," +
                responseTime.ToString(CultureInfo.InvariantCulture).Replace(",", ".") + "," +
-               numErrors + "," + 
-               errorTime.ToString(CultureInfo.InvariantCulture).Replace(",", ".") + "," + 
-               orderInSet;
+               numErrors + "," +
+               errorTime.ToString(CultureInfo.InvariantCulture).Replace(",", ".") + "," +
+               orderInSet +
+               firstErrorTime.ToString(CultureInfo.InvariantCulture).Replace(",", ".");
     }
 }
 
@@ -138,10 +141,10 @@ public class DataSet
     }
 
     public void RecordEntry(string word, TestType testType, KeyCode correctResponse, WordCategory wordCategory, 
-        float responseTime, int numErrors, float errorTime, int orderInSet)
+        float responseTime, int numErrors, float errorTime, int orderInSet, float firstErrorTime)
     {
         var entry = new Entry(word, testType, correctResponse, wordCategory, 
-            responseTime, numErrors, errorTime, orderInSet);
+            responseTime, numErrors, errorTime, orderInSet, firstErrorTime);
         entries.Add(entry);
     }
     
