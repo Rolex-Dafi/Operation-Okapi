@@ -183,6 +183,10 @@ public class PlayerCharacter : CombatCharacter, IPushable
         Respect.CleanUp();
     }
 
+    /// <summary>
+    /// Adds the fancy tie gift from the merchant to the player's inventory and displays UI feedback.
+    /// </summary>
+    /// <param name="onEnd"></param>
     public void ReceiveFancyTie(UnityAction onEnd = null)
     {
         // show anim
@@ -198,11 +202,8 @@ public class PlayerCharacter : CombatCharacter, IPushable
 
         if (tieCont != null)
         {
-            Debug.Log("receiving tie");
             yield return tieCont.Receive();
         }
-        
-        Debug.Log("hello from here end level invoke");
         
         onEnd?.Invoke();
     }

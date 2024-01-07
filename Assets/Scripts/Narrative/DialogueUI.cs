@@ -1,11 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// should be on a canvas/ui panel
+/// <summary>
+/// Controls the dialogue UI. Should be on a canvas or UI panel.
+/// </summary>
 public class DialogueUI : MonoBehaviour
 {
     [SerializeField] private Color merchantColor;
@@ -22,6 +23,10 @@ public class DialogueUI : MonoBehaviour
     private CanvasGroup canvasGroup;
     private GameManager gameManager;
     
+    /// <summary>
+    /// Initializes the class with a game manager.
+    /// </summary>
+    /// <param name="gameManager"></param>
     public void Init(GameManager gameManager)
     {
         this.gameManager = gameManager;
@@ -29,12 +34,21 @@ public class DialogueUI : MonoBehaviour
         canvasGroup.alpha = 0;
     }
 
+    /// <summary>
+    /// Changes the character avatar next to the dialogue bubble.
+    /// </summary>
+    /// <param name="merchant"></param>
     public void ChangeAvatar(bool merchant = true)
     {
         avatar.sprite = merchant ? merchantAvatar : Utility.gayVersion ? exAvatarGay : exAvatarStraight;
         textBox.color = merchant ? merchantColor : exColor;
     }
     
+    /// <summary>
+    /// Plays a single line of dialogue and waits for player input.
+    /// </summary>
+    /// <param name="line"></param>
+    /// <returns></returns>
     public IEnumerator PlaySingleLine(string line)
     {
         yield return Open();
@@ -43,6 +57,10 @@ public class DialogueUI : MonoBehaviour
         yield return Close();
     }
     
+    /// <summary>
+    /// Pauses the game and opens the dialogue UI.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator Open()
     {
         // pause the game
@@ -54,6 +72,11 @@ public class DialogueUI : MonoBehaviour
         yield return tween.WaitForCompletion();
     }
     
+    /// <summary>
+    /// Displays a line of dialogue.
+    /// </summary>
+    /// <param name="line">The dialogue line to display</param>
+    /// <returns></returns>
     public IEnumerator PlayLine(string line)
     {
         dialogueText.text = "";
@@ -68,6 +91,10 @@ public class DialogueUI : MonoBehaviour
         yield return new WaitForSeconds(.04f);;
     }
 
+    /// <summary>
+    /// Closes the dialogue UI.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator Close()
     {
         // unpause the game

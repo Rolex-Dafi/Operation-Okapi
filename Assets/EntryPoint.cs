@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// The entry point for the application. Sets which version of the game (experimental or control) is active.
+/// </summary>
 public class EntryPoint : MonoBehaviour
 {
     private void Awake()

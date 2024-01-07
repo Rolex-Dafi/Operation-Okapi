@@ -1,13 +1,13 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
-// should be on a trigger 2d
+/// <summary>
+/// Triggers a dialogue when put on a 2d collider which is a trigger.
+/// </summary>
 public class DialogueTrigger : MonoBehaviour
 {
-    [SerializeField] private bool startFromTrigger; // if this is false, the some function needs to start the dialogue manually
+    [SerializeField] private bool startFromTrigger; // if this is false, then some function needs to start the dialogue manually
     [SerializeField] private LevelSO levelSo;
     [SerializeField] private int passageIndex;
     
@@ -28,14 +28,18 @@ public class DialogueTrigger : MonoBehaviour
 
             if (dialogueUI == null || levelDialogue.rooms.Count == 0) return;
             
-            // TODO this is a hack, won't work for many dialogue modifications, fix later
+            // this is a hack, won't work for many dialogue modifications
             Init(dialogueUI, levelDialogue.rooms[0].passages[passageIndex]);
             
             dialogueUI.ChangeAvatar(levelSo.level != Level.Roof); // the merchant is everywhere but the roof
         }
     }
 
-    // should be called when spawning the room - from lvl man
+    /// <summary>
+    /// Initializes the dialogue trigger. Should be called from level manager when spawning the room.
+    /// </summary>
+    /// <param name="dialogueUI">The dialogue UI</param>
+    /// <param name="dialogue">The dialogue passage</param>
     public void Init(DialogueUI dialogueUI, Passage dialogue)
     {
         this.dialogueUI = dialogueUI;

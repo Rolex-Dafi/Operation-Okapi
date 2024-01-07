@@ -58,30 +58,6 @@ public class LevelSO : ScriptableObject
         }
         
         return enemiesToSpawn;
-        /*
-        enemyCount += (int)level; // spawn +1 more enemies each level
-        var enemiesToSpawn = new EnemyCharacterSO[enemyCount];
-
-        if (roomNumber < enemies.Length && (int)level < 2)  // from 3rd level spawn more enemy types
-        {
-            for (int i = 0; i < enemyCount; i++)
-            {
-                enemiesToSpawn[i] = enemies[roomNumber];
-            }
-        }
-        else
-        {
-            // spawn two different types of enemies randomly
-            var idx1 = Random.Range(0, enemies.Length);
-            var idx2 = Random.Range(0, enemies.Length);  // ! this will sometimes spawn only one enemy type
-            for (int i = 0; i < enemyCount; i++)
-            {
-                var idx = i < enemyCount / 2 ? idx1 : idx2;
-                enemiesToSpawn[i] = enemies[idx];
-            }
-        }
-
-        return enemiesToSpawn;*/
     }
     
     /// <summary>

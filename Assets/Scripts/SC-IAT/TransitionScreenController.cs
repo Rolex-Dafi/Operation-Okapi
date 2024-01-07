@@ -3,6 +3,9 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// A controller for the transition screen which redirects the player to the questionnaires and the SC-IAT.
+/// </summary>
 public class TransitionScreenController : MonoBehaviour
 {
     [SerializeField] private CanvasGroup toQuestionnaireGroup;
@@ -22,19 +25,22 @@ public class TransitionScreenController : MonoBehaviour
 
         StartCoroutine(SwitchAfterTime());
     }
-    
-    void OnApplicationFocus(bool hasFocus)
+
+    private void OnApplicationFocus(bool hasFocus)
     {
         // switch instructions when losing focus
         if (!hasFocus) SwitchInstructions();
     }
 
-    void OnApplicationPause(bool pauseStatus)
+    private void OnApplicationPause(bool pauseStatus)
     {
         // switch instructions on pressing home button
         if (pauseStatus) SwitchInstructions();
     }
     
+    /// <summary>
+    /// Opens the questionnaire for the study.
+    /// </summary>
     public void GoToQst()
     {
         Application.OpenURL("https://diana.ms.mff.cuni.cz/formr/OcapiRun");
@@ -42,6 +48,9 @@ public class TransitionScreenController : MonoBehaviour
         SwitchInstructions();
     }
     
+    /// <summary>
+    /// Loads the second SC-IAT scene.
+    /// </summary>
     public void GoTo2ndSciat()
     {
         // set variable 2nd sciat = true

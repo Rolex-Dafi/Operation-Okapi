@@ -7,6 +7,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// A wrapper for a pair of keyboard key and stimulus.
+/// </summary>
 public struct Pair
 {
     public KeyCode key;
@@ -24,6 +27,9 @@ public struct Pair
     }
 }
 
+/// <summary>
+/// Responsible for all logic pertaining to the SC-IAT.
+/// </summary>
 public class SCIATController : MonoBehaviour
 {
     [SerializeField] private DataSaver dataSaver;
@@ -79,7 +85,6 @@ public class SCIATController : MonoBehaviour
     private string badWord = "bad words";
     private string gayShit = "lesbian or bisexual women";
 
-    // TODO each category has 8 words
     private string[] goodWords =
     {
         "great",
@@ -138,12 +143,17 @@ public class SCIATController : MonoBehaviour
         StartCoroutine(TestLoop());
     }
     
+    /// <summary>
+    /// The test loop which runs the SC-IAT.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator TestLoop()
     {
         goToQst.gameObject.SetActive(false);
         
         // welcome message
-        instructionsText.text = (Utility.secondSciat ? "Welcome back to the experiment\n" : "Welcome to the experiment\n") + instructionMessages[0];
+        instructionsText.text = (Utility.secondSciat ? "Welcome back to the experiment\n" : "Welcome to the experiment\n") 
+                                + instructionMessages[0];
         yield return new WaitUntil(GetAnyInput);
         yield return null;
         
@@ -161,21 +171,17 @@ public class SCIATController : MonoBehaviour
 
         // start test block
         instructionsText.text = "";
-
-        //yield return new WaitForSeconds(.1f);
         
         // 1st block - 2 blocks as one continuous
         FillStimuliB1(1); // 1 repetition for practice
         currentTestType = TestType.Practice1;
         yield return RunTestBlock(true);
         dataSaver.SaveSciatData(currentDataSet);
-        //dataSaver.SaveDataArch(currentDataSet, "Block1 - practice");
         
         FillStimuliB1(3); // 3 repetitions for test
         currentTestType = TestType.Test1;
         yield return RunTestBlock(false);
         dataSaver.SaveSciatData(currentDataSet);
-        //dataSaver.SaveDataArch(currentDataSet, "Block1 - test");
         
         // --------------------------------------------
         // set instructions
@@ -197,13 +203,11 @@ public class SCIATController : MonoBehaviour
         currentTestType = TestType.Practice2;
         yield return RunTestBlock(true);
         dataSaver.SaveSciatData(currentDataSet);
-        //dataSaver.SaveDataArch(currentDataSet, "Block2 - practice");
         
         FillStimuliB2(3); // 3 repetitions for test
         currentTestType = TestType.Test2;
         yield return RunTestBlock(false);
         dataSaver.SaveSciatData(currentDataSet);
-        //dataSaver.SaveDataArch(currentDataSet, "Block2 - test");
         
         // outro message
         instructionsText.text = instructionMessages[3];        
@@ -213,12 +217,16 @@ public class SCIATController : MonoBehaviour
         yield return null;
         
         // show formr link
-        instructionsText.text = Utility.secondSciat ? "Please go back to the questionnaire now" : "Please go to the following link to fill out a short questionnaire, then return here.";  // todo this depends if on 2nd go through
+        instructionsText.text = Utility.secondSciat ? "Please go back to the questionnaire now" : 
+            "Please go to the following link to fill out a short questionnaire, then return here.";  
         goToQst.gameObject.SetActive(true);
         
         dataSaver.EndSciatBlock();
     }
     
+    /// <summary>
+    /// Opens the questionnaire web-page.
+    /// </summary>
     public void GoToQst()
     {
         Application.OpenURL("https://diana.ms.mff.cuni.cz/formr/OcapiRun");
@@ -237,6 +245,9 @@ public class SCIATController : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Starts the game.
+    /// </summary>
     private void GoToGame()
     {
         Debug.Log("switching scene");
@@ -299,7 +310,7 @@ public class SCIATController : MonoBehaviour
     }
 
     /// <summary>
-    /// Runs one test block
+    /// Runs one test block.
     /// </summary>
     /// <param name="practice">practice needs to be evaluated separately</param>
     /// <returns></returns>
@@ -318,7 +329,7 @@ public class SCIATController : MonoBehaviour
     }
     
     /// <summary>
-    /// Fisher-Yates
+    /// Fisher-Yates shuffling algorithm.
     /// </summary>
     private void ShuffleStimuli()  
     {  

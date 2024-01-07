@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
+/// <summary>
+/// Wrapper for the fancy tie item UI illustration which the player receives from the merchant as a gift.
+/// </summary>
 public class FancyTie : MonoBehaviour
 {
     private CanvasGroup canvasGroup;
@@ -16,6 +19,10 @@ public class FancyTie : MonoBehaviour
         canvasGroup.alpha = 0;
     }
 
+    /// <summary>
+    /// Shows the UI for the item.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator Receive()
     {
         canvasGroup.DOFade(1, waitTime/2);
@@ -25,7 +32,5 @@ public class FancyTie : MonoBehaviour
         canvasGroup.DOFade(0, waitTime/2);
         transform.DOScale(1, waitTime);
         yield return new WaitForSeconds(waitTime);
-        
-        Debug.Log("hello from fancy tie");
     }
 }
