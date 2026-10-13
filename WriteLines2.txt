@@ -1,0 +1,9 @@
+Block2 - test
+[LGBT, word: LGBT {responseTime: 0.1937037, numErrors: 0 errorTime: 9.874624}  {responseTime: 0.1242476, numErrors: 0 errorTime: 0}  {responseTime: 0.2493591, numErrors: 0 errorTime: 13.42122} ]
+[bad, word: bad {responseTime: 0.197854, numErrors: 0 errorTime: 0}  {responseTime: 0.4615278, numErrors: 0 errorTime: 11.57066}  {responseTime: 0.2601633, numErrors: 0 errorTime: 13.68469} ]
+[good, word: good {responseTime: 0.1220589, numErrors: 0 errorTime: 0}  {responseTime: 0.2819843, numErrors: 0 errorTime: 10.67544}  {responseTime: 0.1878824, numErrors: 0 errorTime: 0} ]
+[amazing, word: amazing {responseTime: 0.2800627, numErrors: 0 errorTime: 10.43877}  {responseTime: 0.1496496, numErrors: 0 errorTime: 0}  {responseTime: 0.1542845, numErrors: 0 errorTime: 0} ]
+[bisexual, word: bisexual {responseTime: 0.07805729, numErrors: 0 errorTime: 0}  {responseTime: 0.1986523, numErrors: 0 errorTime: 11.96271}  {responseTime: 0.2152233, numErrors: 0 errorTime: 14.66282} ]
+[awful, word: awful {responseTime: 0.07247257, numErrors: 0 errorTime: 0}  {responseTime: 0.2267084, numErrors: 0 errorTime: 0}  {responseTime: 0.2033949, numErrors: 0 errorTime: 14.14695} ]
+[gay, word: gay {responseTime: 0.2427549, numErrors: 0 errorTime: 12.20272}  {responseTime: 0.2364302, numErrors: 0 errorTime: 12.43678}  {responseTime: 0.2066059, numErrors: 0 errorTime: 13.21682} ]
+[lesbian, word: lesbian {responseTime: 0.283699, numErrors: 0 errorTime: 12.95482}  {responseTime: 0.1902981, numErrors: 0 errorTime: 13.92491}  {responseTime: 0.1064796, numErrors: 0 errorTime: 0} ]

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{cf6c7177-453c-4bae-995a-da4917c07f92}">
+		<property name="assetPath">
+			<value>334987__paulocorona__phone-answer.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>16.431020408163267</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{153e4516-e241-4fb0-a4a9-78df614b083a}</destination>
+		</relationship>
+	</object>
+</objects>
